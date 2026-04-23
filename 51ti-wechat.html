@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>51TI · 劳动者人格测试</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #0a0a0f; color: #fff; min-height: 100vh; overflow-x: hidden; }
@@ -58,6 +59,30 @@
     .fade-in { animation: fadeInUp 0.4s ease forwards; }
     .fade-in-delay { animation: fadeInUp 0.4s 0.15s ease forwards; opacity: 0; }
     .fade-in-delay2 { animation: fadeInUp 0.4s 0.3s ease forwards; opacity: 0; }
+    /* 工牌生成器样式 */
+    .idcard-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; flex-direction: column; }
+    .idcard-modal.active { display: flex; }
+    .idcard-wrapper { position: relative; width: 320px; height: 200px; background: linear-gradient(135deg, #1a1a2e 0%, #12122a 50%, #0f1a3a 100%); border-radius: 12px; border: 2px solid #ff6b35; padding: 16px; box-shadow: 0 10px 40px rgba(255,107,53,0.3); }
+    .idcard-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+    .idcard-title { font-size: 11px; color: #f7c948; letter-spacing: 2px; }
+    .idcard-节日 { position: absolute; bottom: 16px; left: 16px; font-size: 10px; color: #f7c948; }
+    .idcard-type { text-align: center; margin: 8px 0; }
+    .idcard-type-name { font-size: 22px; font-weight: 900; background: linear-gradient(135deg, #ff6b35, #f7c948); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; }
+    .idcard-slogan { font-size: 10px; color: #8888aa; text-align: right; max-width: 120px; line-height: 1.4; }
+    .idcard-info { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid #2a2a50; }
+    .idcard-info-left { font-size: 11px; color: #c0c0d8; }
+    .idcard-info-left div { margin-bottom: 2px; }
+    .idcard-info-left .label { color: #666688; font-size: 9px; }
+    .idcard-qr { width: 50px; height: 50px; }
+    .idcard-qr img { width: 100%; height: 100%; border-radius: 4px; }
+    .idcard-close { position: absolute; top: 10px; right: 10px; background: none; border: none; color: #666688; font-size: 20px; cursor: pointer; }
+    .idcard-input-wrap { margin-top: 16px; text-align: center; }
+    .idcard-input { background: #1a1a2e; border: 1px solid #2a2a50; border-radius: 8px; padding: 10px 16px; color: #fff; font-size: 14px; text-align: center; width: 200px; margin-bottom: 12px; }
+    .idcard-input::placeholder { color: #666688; }
+    .idcard-btns { display: flex; gap: 10px; justify-content: center; }
+    .btn-idcard { background: linear-gradient(135deg, #ff6b35, #f7c948); color: #0a0a0f; border: none; padding: 10px 24px; font-size: 14px; font-weight: 700; border-radius: 50px; cursor: pointer; }
+    .btn-idcard-outline { background: transparent; border: 2px solid #ff6b35; color: #ff6b35; padding: 10px 24px; font-size: 14px; font-weight: 700; border-radius: 50px; cursor: pointer; }
+    .btn-save { background: linear-gradient(135deg, #ff6b35, #f7c948); color: #0a0a0f; border: none; padding: 12px 32px; font-size: 14px; font-weight: 700; border-radius: 50px; cursor: pointer; margin-top: 16px; }
   </style>
 </head>
 <body>
@@ -96,6 +121,7 @@
     <div class="manifesto-text">无论你是<span class="manifesto-highlight">卷王牛马</span>还是<span class="manifesto-highlight">摸鱼王</span>，认真劳动的人，都值得被尊重。<br><br><strong style="color:#f7c948">五一劳动节，致敬每一位认真工作的你。</strong></div>
   </div>
   <button class="btn-share fade-in-delay2" onclick="showShareTip()">分享到朋友圈</button><br>
+  <button class="btn-share fade-in-delay2" style="margin-top:8px;background:transparent;border:2px solid #f7c948;color:#f7c948;" onclick="openIdCard()">生成工牌</button><br>
   <button class="btn-retry" onclick="restartTest()">重新测试</button>
 </div>
 
@@ -104,6 +130,39 @@
   <div class="share-tip-text">点击右上角「···」分享</div>
   <div class="share-tip-sub">让朋友们也来测测自己的劳动者人格</div>
   <button class="share-tip-close" onclick="hideShareTip()">知道了</button>
+</div>
+
+<!-- 工牌生成器 -->
+<div class="idcard-modal" id="idcard-modal">
+  <div class="idcard-wrapper" id="idcard-wrapper">
+    <button class="idcard-close" onclick="closeIdCard()">×</button>
+    <div class="idcard-header">
+      <div class="idcard-title">51TI</div>
+      <div class="idcard-slogan" id="idcard-slogan">瓜田猹本猹，闰土看了都摇头</div>
+    </div>
+    <div class="idcard-type">
+      <div class="idcard-type-name" id="idcard-type-name">职场猹猹</div>
+    </div>
+    <div class="idcard-info">
+      <div class="idcard-info-left">
+        <div><span class="label">姓名</span> <span id="idcard-name-display">打工人</span></div>
+        <div><span class="label">部门</span> <span id="idcard-dept">八卦部</span></div>
+        <div><span class="label">工号</span> <span id="idcard-id">8866</span></div>
+      </div>
+      <div class="idcard-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://lincolnsama.github.io/51ti/51ti-wechat.html" crossorigin="anonymous"></div>
+    </div>
+    <div class="idcard-节日">🎉 五一劳动节快乐！扫码测你的劳动者人格</div>
+  </div>
+  <div class="idcard-input-wrap" id="idcard-input-wrap">
+    <input type="text" class="idcard-input" id="idcard-name-input" placeholder="输入你的名字（选填）" maxlength="6">
+    <div class="idcard-btns">
+      <button class="btn-idcard" onclick="generateIdCard()">生成工牌</button>
+      <button class="btn-idcard-outline" onclick="saveIdCard()">保存图片</button>
+    </div>
+  </div>
+  <div id="idcard-save-wrap" style="display:none; text-align:center;">
+    <button class="btn-save" onclick="saveIdCard()">保存到相册</button>
+  </div>
 </div>
 
 <script>
@@ -251,6 +310,7 @@ function showResult() {
   }
   document.getElementById('result-type').textContent = p.cn;
   document.getElementById('result-cn').textContent = p.en;
+  currentResultType = type; // 保存当前人格类型key
   document.getElementById('result-desc').textContent = p.desc;
   var tagsEl = document.getElementById('result-tags');
   tagsEl.innerHTML = '';
@@ -281,6 +341,72 @@ function updateCountdown() {
 }
 
 updateCountdown();
+var currentResultType = '';
+var personaSlogans = {
+  'PTBS': '我就是一打工的，别cue我',
+  'PTBO': '加班是我的宿命',
+  'PTRS': '上班是为了更好的摸鱼',
+  'PTRO': '在混乱中寻找意义',
+  'PGBS': '瓜田猹本猹，闰土看了都摇头',
+  'PGBO': '没有我聊不开的天',
+  'PGRS': '一个人就是一支队伍',
+  'PGRO': '独处是我的充电方式',
+  'LTBS': '躺平才是终极目标',
+  'LTBO': '摸鱼才是人生真谛',
+  'LTRS': '饼太大，噎到了',
+  'LTRO': '老油条，永不翻车',
+  'LGBS': '低调做事，高调做人',
+  'LGBO': '和气生财，peace&love',
+  'LGRS': '无欲则刚，淡是最浓的味',
+  'LGRO': '我的灵魂已经下班了'
+};
+
+var currentPersona = null;
+
+var personaDepts = {
+  'PTBS': '摸鱼部', 'PTBO': '加班部', 'PTRS': '效率部', 'PTRO': '救火部',
+  'PGBS': '八卦部', 'PGBO': '社交部', 'PGRS': '独狼部', 'PGRO': '独处部',
+  'LTBS': '躺平部', 'LTBO': '摸鱼部', 'LTRS': '反饼部', 'LTRO': '老油条部',
+  'LGBS': '低调部', 'LGBO': '和事部', 'LGRS': '淡人部', 'LGRO': '战损部'
+};
+
+function openIdCard() {
+  var type = currentResultType;
+  var cn = document.getElementById('result-type').textContent;
+  currentPersona = personas[type] || { cn: cn, en: '', desc: '', tags: [] };
+  
+  document.getElementById('idcard-type-name').textContent = currentPersona.cn;
+  document.getElementById('idcard-name-display').textContent = '打工人';
+  document.getElementById('idcard-id').textContent = Math.floor(Math.random() * 9000 + 1000);
+  document.getElementById('idcard-slogan').textContent = personaSlogans[type] || '打工魂永不灭';
+  document.getElementById('idcard-dept').textContent = personaDepts[type] || '打工人部';
+  document.getElementById('idcard-input-wrap').style.display = 'block';
+  document.getElementById('idcard-save-wrap').style.display = 'none';
+  document.getElementById('idcard-modal').classList.add('active');
+}
+
+function closeIdCard() {
+  document.getElementById('idcard-modal').classList.remove('active');
+}
+
+function generateIdCard() {
+  var name = document.getElementById('idcard-name-input').value.trim() || '打工人';
+  document.getElementById('idcard-name-display').textContent = name;
+  document.getElementById('idcard-input-wrap').style.display = 'none';
+  document.getElementById('idcard-save-wrap').style.display = 'block';
+}
+
+function saveIdCard() {
+  var wrapper = document.getElementById('idcard-wrapper');
+  html2canvas(wrapper, { backgroundColor: null, scale: 2 }).then(function(canvas) {
+    var link = document.createElement('a');
+    link.download = '51TI工牌.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }).catch(function(err) {
+    alert('保存失败，请长按工牌截图保存');
+  });
+}
 </script>
 </body>
 </html>
