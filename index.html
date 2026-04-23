@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>51TI · 劳动者人格测试</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .page { display: none; min-height: 100vh; padding: 20px; }
+    .page.active { display: flex; flex-direction: column; }
+    #page-start {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 50%, #0f1a3a 100%);
+    }
+    .logo-badge {
+      background: linear-gradient(135deg, #ff6b35, #f7c948);
+      color: #0a0a0f;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      display: inline-block;
+    }
+    #page-start h1 {
+      font-size: 72px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #ff6b35, #f7c948, #ff6b35);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s linear infinite;
+      margin-bottom: 8px;
+      letter-spacing: 4px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    #page-start .subtitle {
+      font-size: 15px;
+      color: #8888aa;
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #ff6b35, #f7c948);
+      color: #0a0a0f;
+      border: none;
+      padding: 16px 52px;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      letter-spacing: 3px;
+    }
+    .btn-primary:hover { transform: scale(1.05); box-shadow: 0 8px 30px rgba(255,107,53,0.4); }
+    .countdown-badge { margin-top: 30px; font-size: 13px; color: #666688; }
+    .countdown-badge span { color: #f7c948; font-weight: 700; }
+    .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: float-up linear infinite;
+    }
+    @keyframes float-up {
+      0% { transform: translateY(100vh) scale(1); opacity: 0; }
+      10% { opacity: 0.3; }
+      90% { opacity: 0.3; }
+      100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+    }
+    #page-test { padding-top: 20px; background: #0a0a0f; }
+    .progress-wrap { margin-bottom: 20px; }
+    .progress-text { font-size: 12px; color: #666688; margin-bottom: 8px; letter-spacing: 1px; }
+    .progress-bar { width: 100%; height: 4px; background: #1a1a2e; border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #ff6b35, #f7c948); border-radius: 4px; transition: width 0.4s ease; }
+    .progress-dots { display: flex; gap: 5px; margin-top: 8px; justify-content: center; flex-wrap: wrap; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: #2a2a50; transition: all 0.3s; }
+    .dot.done { background: #ff6b35; }
+    .dot.current { background: #f7c948; width: 18px; border-radius: 3px; }
+    .question-card {
+      background: #12122a;
+      border: 1px solid #1e1e40;
+      border-radius: 20px;
+      padding: 28px 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .q-emoji { font-size: 40px; margin-bottom: 14px; }
+    .q-number { font-size: 11px; color: #ff6b35; font-weight: 700; letter-spacing: 2px; margin-bottom: 10px; }
+    .q-text { font-size: 20px; font-weight: 600; line-height: 1.5; margin-bottom: 28px; color: #e0e0f0; }
+    .options { display: flex; flex-direction: column; gap: 12px; flex: 1; }
+    .option-btn {
+      background: #1a1a2e;
+      border: 1.5px solid #2a2a50;
+      border-radius: 14px;
+      padding: 16px 20px;
+      color: #c0c0d8;
+      font-size: 15px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+    .option-btn:hover { border-color: #ff6b35; color: #fff; background: #1e1838; transform: translateX(4px); }
+    .option-btn:active { transform: scale(0.97); }
+    .option-btn.selected { border-color: #ff6b35; background: #1e1838; color: #fff; }
+    #page-result {
+      align-items: center;
+      background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 50%, #0a0a0f 100%);
+      padding-top: 20px;
+    }
+    .result-badge { font-size: 11px; letter-spacing: 3px; color: #f7c948; margin-bottom: 16px; }
+    .result-type-display { font-size: 48px; font-weight: 900; letter-spacing: 6px; margin-bottom: 6px; background: linear-gradient(135deg, #ff6b35, #f7c948); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 3s linear infinite; }
+    .result-cn { font-size: 13px; color: #8888aa; margin-bottom: 20px; font-style: italic; line-height: 1.5; }
+    .result-card { background: #12122a; border: 1px solid #1e1e40; border-radius: 20px; padding: 22px; width: 100%; max-width: 380px; margin-bottom: 18px; }
+    .result-desc { font-size: 14px; color: #c0c0d8; line-height: 1.75; margin-bottom: 18px; }
+    .result-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { background: #1e1838; border: 1px solid #ff6b35; color: #ff6b35; font-size: 11px; padding: 4px 12px; border-radius: 20px; }
+    .manifesto { background: linear-gradient(135deg, #1a0a2e, #0f1a3a); border: 1px solid #2a2a50; border-radius: 16px; padding: 20px; width: 100%; max-width: 380px; margin-bottom: 22px; }
+    .manifesto-title { font-size: 11px; color: #f7c948; letter-spacing: 3px; margin-bottom: 12px; text-align: center; }
+    .manifesto-text { font-size: 13px; color: #9999bb; line-height: 1.85; text-align: center; }
+    .manifesto-highlight { color: #f7c948; font-weight: 600; }
+    .btn-share { background: transparent; border: 2px solid #ff6b35; color: #ff6b35; padding: 14px 40px; font-size: 16px; font-weight: 700; border-radius: 50px; cursor: pointer; letter-spacing: 2px; transition: all 0.2s; margin-bottom: 10px; }
+    .btn-share:hover { background: #ff6b35; color: #0a0a0f; }
+    .btn-retry { background: transparent; border: none; color: #666688; font-size: 13px; cursor: pointer; text-decoration: underline; margin-bottom: 40px; }
+    .share-tip { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 999; flex-direction: column; text-align: center; padding: 40px; }
+    .share-tip.active { display: flex; }
+    .share-tip-icon { font-size: 60px; margin-bottom: 20px; }
+    .share-tip-text { font-size: 18px; color: #fff; margin-bottom: 8px; }
+    .share-tip-sub { font-size: 14px; color: #8888aa; }
+    .share-tip-close { margin-top: 30px; background: #ff6b35; color: #0a0a0f; border: none; padding: 12px 32px; border-radius: 50px; font-size: 15px; font-weight: 700; cursor: pointer; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeInUp 0.4s ease forwards; }
+    .fade-in-delay { animation: fadeInUp 0.4s 0.15s ease forwards; opacity: 0; }
+    .fade-in-delay2 { animation: fadeInUp 0.4s 0.3s ease forwards; opacity: 0; }
+  </style>
+</head>
+<body>
+<div class="particles" id="particles"></div>
+
+<div class="page active" id="page-start">
+  <div class="logo-badge">WORK PERSONA TEST</div>
+  <h1>51TI</h1>
+  <div class="subtitle">30道题 &middot; 测出你的劳动者人格<br>16种类型 &middot; 总有一款属于你</div>
+  <button class="btn-primary" onclick="startTest()">开始测试</button>
+  <div class="countdown-badge">👷 还有 <span id="days-to-51">?</span> 天就是五一劳动节</div>
+</div>
+
+<div class="page" id="page-test">
+  <div class="progress-wrap">
+    <div class="progress-text" id="progress-text">第 1 / 30 题</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:3.3%"></div></div>
+    <div class="progress-dots" id="progress-dots"></div>
+  </div>
+  <div class="question-card">
+    <div class="q-emoji" id="q-emoji"></div>
+    <div class="q-number" id="q-number">Q1</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options" id="options"></div>
+  </div>
+</div>
+
+<div class="page" id="page-result">
+  <div class="result-badge fade-in">YOUR WORK PERSONA</div>
+  <div class="result-type-display fade-in" id="result-type"></div>
+  <div class="result-cn fade-in-delay" id="result-cn"></div>
+  <div class="result-card fade-in-delay">
+    <div class="result-desc" id="result-desc"></div>
+    <div class="result-tags" id="result-tags"></div>
+  </div>
+  <div class="manifesto fade-in-delay2">
+    <div class="manifesto-title">51TI 劳动者宣言</div>
+    <div class="manifesto-text">
+      无论你是<span class="manifesto-highlight">卷王牛马</span>还是<span class="manifesto-highlight">辞职预备役</span>，<br>
+      无论你是<span class="manifesto-highlight">老黄牛</span>还是<span class="manifesto-highlight">摸鱼仙人</span>，<br>
+      认真劳动的人，都值得被尊重。<br><br>
+      <strong style="color:#f7c948">五一劳动节，致敬每一位认真工作的你。</strong>
+    </div>
+  </div>
+  <button class="btn-share fade-in-delay2" onclick="showShareTip()">分享到朋友圈</button><br>
+  <button class="btn-retry" onclick="restartTest()">重新测试</button>
+</div>
+
+<div class="share-tip" id="share-tip">
+  <div class="share-tip-icon">👆</div>
+  <div class="share-tip-text">点击右上角「···」分享</div>
+  <div class="share-tip-sub">让朋友们也来测测自己的劳动者人格</div>
+  <button class="share-tip-close" onclick="hideShareTip()">知道了</button>
+</div>
+
+<script>
+var questions = [
+  { dim: 'P', emoji: '⏰', q: '周一闹钟响了，你的第一反应是？', opts: ['秒醒，立刻弹起来', '按掉，再睡三分钟'] },
+  { dim: 'P', emoji: '📱', q: '收到领导发来的加班通知，你？', opts: ['秒回"没问题！"', '假装没看见，等五分钟再回'] },
+  { dim: 'P', emoji: '⏳', q: 'Deadline就在今天，你？', opts: ['肾上腺素飙升，立刻开干', '明天再说，反正没人知道'] },
+  { dim: 'P', emoji: '👀', q: '看到同事在加班，你？', opts: ['我也不能走，陪着', '关我什么事，到点下班'] },
+  { dim: 'P', emoji: '💬', q: '工作群突然弹出领导消息，你？', opts: ['秒回"收到"', '意念回复，等下班再看'] },
+  { dim: 'P', emoji: '🌙', q: '周末双休，但工作群有消息，你？', opts: ['立刻回复，处理完再说', '周六谁看工作消息？'] },
+  { dim: 'P', emoji: '💰', q: '发工资那天，你？', opts: ['立刻打开银行App算清楚', '懒得看，反正月光'] },
+  { dim: 'P', emoji: '🚪', q: '下班前领导突然找你，你？', opts: ['停下所有事，立刻响应', '明天再回，反正也下班了'] },
+  { dim: 'T', emoji: '🤔', q: '工作中遇到一个棘手问题，你？', opts: ['拉群讨论，集思广益', '自己研究，自己搞定'] },
+  { dim: 'T', emoji: '📚', q: '同事来请教你，你？', opts: ['倾囊相授，一起进步', '留一手，教会徒弟饿死师傅'] },
+  { dim: 'T', emoji: '🎤', q: '项目汇报的时候，你？', opts: ['团队一起讲，功劳是大家的', '自己做主角，展现我的贡献'] },
+  { dim: 'T', emoji: '🎉', q: '公司组织团建活动，你？', opts: ['积极参与，多认识人', '找个角落待着，别来烦我'] },
+  { dim: 'T', emoji: '🔧', q: '项目需要更多资源支持，你？', opts: ['找领导协调，申请支援', '自己想办法克服'] },
+  { dim: 'T', emoji: '🏆', q: '项目获奖了，发表感言时你？', opts: ['感谢团队，没有大家就没有我', '主要是我的功劳，我付出最多'] },
+  { dim: 'T', emoji: '💥', q: '工作出了差错，你？', opts: ['主动认领，一起扛', '谁的问题谁负责'] },
+  { dim: 'T', emoji: '📋', q: '讨论方案的时候，你？', opts: ['开会头脑风暴，热火朝天', '写完文档发群里，各看各的'] },
+  { dim: 'B', emoji: '🔄', q: '方案被领导否了，你？', opts: ['继续改，改到第三版', '爱咋咋地，随便吧'] },
+  { dim: 'B', emoji: '📝', q: '客户临时改需求，你？', opts: ['好的没问题，马上改', '加钱，不加不做'] },
+  { dim: 'B', emoji: '🍕', q: '领导又开始画饼了，你？', opts: ['默默听完，点头表示理解', '心里翻白眼，脸上笑嘻嘻'] },
+  { dim: 'B', emoji: '🥺', q: '同事甩锅给你，你？', opts: ['忍了，多一事不如少一事', '当场反驳，我不背这个锅'] },
+  { dim: 'B', emoji: '😵', q: '已经连续加班一周了，你？', opts: ['还能扛，咬咬牙就过去了', '提离职，现在，立刻，马上'] },
+  { dim: 'B', emoji: '🎊', q: '得知同事升职了，你？', opts: ['真不错，真心恭喜他', '为什么不是我？凭什么是他？'] },
+  { dim: 'B', emoji: '📉', q: '公司开始"降本增效"传遍全网，你？', opts: ['继续努力，稳住心态', '简历悄悄更新，随时准备跑'] },
+  { dim: 'S', emoji: '😴', q: '下午三点开始犯困，你？', opts: ['硬撑，喝咖啡熬过去', '借口去茶水间，溜达一下'] },
+  { dim: 'S', emoji: '📦', q: '快递到了，你？', opts: ['必须亲自去拿，顺便活动', '让同事带，懒得动'] },
+  { dim: 'S', emoji: '🚽', q: '厕所时间，你？', opts: ['速战速决，赶紧回去', '带手机进去蹲十五分钟'] },
+  { dim: 'S', emoji: '🚶', q: '需要外出办事，你？', opts: ['能线上就不线下，省事', '正好借机出去透透气'] },
+  { dim: 'S', emoji: '🍱', q: '午饭时间，你？', opts: ['电脑前解决，边吃边看', '必须出门走走，换换空气'] },
+  { dim: 'S', emoji: '📹', q: '开线上会议，你？', opts: ['必须开摄像头，精神面貌很重要', '能不开就不开，省心'] },
+  { dim: 'S', emoji: '🏃', q: '下班时间到了，你？', opts: ['等领导先走我再走', '准点消失，绝不多待一秒'] }
+];
+
+var personas = {
+  // dim1=P/L, dim2=T/G, dim3=B/R, dim4=S/O
+  // P-责任心强, L-躺平放松, T-团队协作, G-独立自主, B-逆来顺受, R-有棱有角, S-休息优先, O-工作优先
+  'PTBS': { cn: '卷王牛马', en: 'Pusher Ox — The Ox Who Runs Before the Whistle', desc: '你是办公室里最早到、最晚走的那一个。领导的消息你秒回，加班通知你接活。团队的事就是你的事，责任心强到停不下来。辛苦了，卷王。', tags: ['责任心爆棚', '领导最爱', '全勤标兵'] },
+  'PTBO': { cn: '拼命三郎', en: '996 Survivor — Still Breathing After 9 to 9, 6 Days', desc: '你是那个连续加班一周还笑着说"没事"的狠人。别人在抱怨，你已经在改了。别人在摸鱼，你在写方案。你不是不累，是不敢累。', tags: ['抗压王者', 'Deadline Fighter', '铁打的'] },
+  'PTRS': { cn: '效率刺客', en: 'Slackmaster General — Busy Doing Nothing at All', desc: '你看起来很忙，其实你很会忙。消息秒回、会议必到、表格填满，但你总能在最后关头精准完成。时间管理大师，效率与社交的平衡高手。', tags: ['效率高手', '社交达人', '时间管理大师'] },
+  'PTRO': { cn: '节奏大师', en: 'Chaos Coordinator — Looks Busy, Everything Everywhere', desc: '你永远在救火的路上，同时还在组织下一场火。混乱是你最熟悉的战场，先干了再说。你是团队的多线程处理器。', tags: ['多线程战士', '救火队长', '边干边想'] },
+  'PGBS': { cn: '吃瓜狗', en: 'Pro Gossipper — Information Hub of the Office', desc: '你是办公室的情报中心，谁要离职、谁和谁有矛盾、哪个部门要合并，你第一个知道。你独立但也爱八卦——活是干的，瓜也不能落下。', tags: ['情报大师', '社交润滑剂', '消息灵通'] },
+  'PGBO': { cn: '社交蝴蝶', en: 'Social Butterfly — Work Is Just My Social Arena', desc: '你的工作就是维持办公室的人际关系。群消息你秒回，会议你捧场，聚餐你组织。你的社交能力让你在职场如鱼得水。', tags: ['社交高手', '气氛组', '人脉王'] },
+  'PGRS': { cn: '独行侠', en: 'The Closer — Solo Mission, No Backup Needed', desc: '你不需要团队，你一个人就是一支队伍。遇到问题自己解决，扛着压力往前冲。高冷的能力者，孤独是你的常态。', tags: ['独立能力', '单兵作战', '高冷大佬'] },
+  'PGRO': { cn: '独处大佬', en: 'Lone Wolf — PrefersWorking Alone', desc: '你喜欢独立思考，不喜欢被人打扰。工作是工作，生活是生活，你把界限划得很清楚。不是不合群，是更喜欢独处。', tags: ['独立思考', '边界感强', '专注力强'] },
+  'LTBS': { cn: '躺平专业户', en: 'Quiet Quitter — On Payroll, Not On Work', desc: '你是那个"不卷、不争、不站队"的三不员工。活能少就少，事能推就推。你不是没能力，你是看透了：卷来卷去，不如躺平。', tags: ['精神解脱', '不争不抢', '岁月静好'] },
+  'LTBO': { cn: '职场摸鱼王', en: 'Professional Slacker — Masters of Doing Nothing', desc: '你的工作状态：人在工位上，魂在摸鱼中。领导来了马上敲键盘，领导走了马上玩手机。你是办公室的太极高手。', tags: ['摸鱼大师', '时间管理大师', '演技派'] },
+  'LTRS': { cn: '快乐打工仔', en: 'Happy Camper — Work to Live, Not Live to Work', desc: '你上班就是来赚钱的，下班才是真正的生活。工作是副业，快乐是本职。你的座右铭：给多少钱干多少活，绝不多付出。', tags: ['人间清醒', '务实派', '性价比选手'] },
+  'LTRO': { cn: '职场老油条', en: 'Office Veteran — Seen It All, Done It All', desc: '你什么世面没见过？加班、甩锅、站队、画饼，你都经历过。现在你的策略是：少说多做，少做少错，不做不错。', tags: ['职场老鸟', '人精', '不粘锅'] },
+  'LGBS': { cn: '低调做事', en: 'Quiet Professional — Let Your Work Speak', desc: '你默默干活，从不邀功。团队的事你能帮则帮，但你更喜欢独立完成工作。你是那种让领导放心、让同事依赖的存在。', tags: ['任劳任怨', '团队基石', '靠谱担当'] },
+  'LGBO': { cn: '和事佬', en: 'Office Peacekeeper — Smooth Operator, No Waves Made', desc: '你总是在冲突爆发之前就悄悄化解了。你不站队、不冒尖、不出头，但你是团队运转的隐形润滑油。没有你，办公室早就吵翻天了。', tags: ['调和高手', '隐形润滑', '和平使者'] },
+  'LGRS': { cn: '淡人', en: 'Chill Vibes Only — Nothing Bothers Me', desc: '你的人生字典里没有"焦虑"两个字。工资够了就行，职位不强求，快乐最重要。你是那种活得最通透的人。', tags: ['人间清醒', '无欲则刚', '内心平静'] },
+  'LGRO': { cn: '职场丧尸', en: 'The Working Dead — Already a Zombie, Just Waiting for Monday', desc: '周一等周五，周五等下一个周一。你的灵魂已经下班，但你的身体还在工位上。你不是没有梦想，你的梦想就是不上班。', tags: ['灵魂已下班', '人形工位', '周一快乐'] }
+};
+
+var currentQ = 0;
+var answers = [];
+var opposite = { P: 'L', L: 'P', T: 'G', G: 'T', B: 'R', R: 'B', S: 'O', O: 'S' };
+
+
+function startTest() {
+  currentQ = 0;
+  answers = [];
+  showPage('page-test');
+  renderProgressDots();
+  renderQuestion();
+}
+
+function renderProgressDots() {
+  var container = document.getElementById('progress-dots');
+  container.innerHTML = '';
+  for (var i = 0; i < questions.length; i++) {
+    var d = document.createElement('div');
+    d.className = 'dot' + (i < currentQ ? ' done' : (i === currentQ ? ' current' : ''));
+    container.appendChild(d);
+  }
+}
+
+function renderQuestion() {
+  var q = questions[currentQ];
+  document.getElementById('q-emoji').textContent = q.emoji;
+  document.getElementById('q-number').textContent = 'Q' + (currentQ + 1);
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('progress-text').textContent = '第 ' + (currentQ + 1) + ' / ' + questions.length + ' 题';
+  document.getElementById('progress-fill').style.width = (((currentQ + 1) / questions.length) * 100).toFixed(1) + '%';
+  var opts = document.getElementById('options');
+  opts.innerHTML = '';
+  for (var i = 0; i < q.opts.length; i++) {
+    var winDim = i === 0 ? q.dim : opposite[q.dim];
+    var btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = q.opts[i];
+    (function(wd, b) {
+      b.onclick = function() { answer(wd, b); };
+    })(winDim, btn);
+    opts.appendChild(btn);
+  }
+  renderProgressDots();
+}
+
+function answer(winDim, btn) {
+  answers[currentQ] = winDim;
+  var allBtns = document.querySelectorAll('.option-btn');
+  for (var i = 0; i < allBtns.length; i++) {
+    allBtns[i].style.pointerEvents = 'none';
+    allBtns[i].style.opacity = '0.5';
+  }
+  btn.style.opacity = '1';
+  btn.style.borderColor = '#ff6b35';
+  btn.classList.add('selected');
+  setTimeout(function() {
+    currentQ++;
+    if (currentQ < questions.length) {
+      renderQuestion();
+    } else {
+      showResult();
+    }
+  }, 300);
+}
+
+function showResult() {
+  var scores = { P: 0, L: 0, T: 0, G: 0, B: 0, R: 0, S: 0, O: 0 };
+  for (var i = 0; i < answers.length; i++) {
+    var dim = answers[i];
+    if (dim) scores[dim]++;
+  }
+  var dim1 = scores.P >= scores.L ? 'P' : 'L';
+  var dim2 = scores.T >= scores.G ? 'T' : 'G';
+  var dim3 = scores.B >= scores.R ? 'B' : 'R';
+  var dim4 = scores.S >= scores.O ? 'S' : 'O';
+  var type = dim1 + dim2 + dim3 + dim4;
+  var p = personas[type];
+  if (!p) {
+    document.getElementById('result-type').textContent = '???';
+    document.getElementById('result-cn').textContent = '人格未识别（' + type + '）';
+    showPage('page-result');
+    return;
+  }
+  document.getElementById('result-type').textContent = p.cn;
+  document.getElementById('result-cn').textContent = p.en;
+  document.getElementById('result-desc').textContent = p.desc;
+  var tagsEl = document.getElementById('result-tags');
+  tagsEl.innerHTML = '';
+  for (var i = 0; i < p.tags.length; i++) {
+    var span = document.createElement('span');
+    span.className = 'tag';
+    span.textContent = p.tags[i];
+    tagsEl.appendChild(span);
+  }
+  showPage('page-result');
+}
+
+function showPage(id) {
+  var pages = document.querySelectorAll('.page');
+  for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active'); }
+  document.getElementById(id).classList.add('active');
+}
+
+function restartTest() { startTest(); }
+function showShareTip() { document.getElementById('share-tip').classList.add('active'); }
+function hideShareTip() { document.getElementById('share-tip').classList.remove('active'); }
+
+function updateCountdown() {
+  var wuyi = new Date('2026-05-01');
+  var now = new Date();
+  var diff = Math.ceil((wuyi - now) / (1000 * 60 * 60 * 24));
+  document.getElementById('days-to-51').textContent = diff > 0 ? diff : '今天！';
+}
+
+function createParticles() {
+  var container = document.getElementById('particles');
+  for (var i = 0; i < 20; i++) {
+    var p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = (Math.random() * 100) + '%';
+    p.style.animationDuration = (5 + Math.random() * 10) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    var size = 2 + Math.random() * 3;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.background = Math.random() > 0.5 ? '#ff6b35' : '#f7c948';
+    container.appendChild(p);
+  }
+}
+
+updateCountdown();
+createParticles();
+</script>
+</body>
+</html>
