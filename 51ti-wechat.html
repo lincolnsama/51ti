@@ -600,6 +600,37 @@
       margin-bottom: 2px;
     }
 
+
+    .result-en-name {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-weight: 800;
+      margin: 2px 0 8px;
+    }
+
+    .poster-mini-en {
+      font-size: 10px;
+      line-height: 1.4;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .worker-id-en {
+      margin-top: 4px;
+      color: var(--text-faint);
+      font-size: 11px;
+      line-height: 1.4;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 800;
+    }
+
     .result-summary {
       display: inline-flex;
       gap: 8px;
@@ -1571,6 +1602,7 @@
             <div>
               <div class="result-type-display" id="result-type">静音高效工</div>
               <div class="result-subtitle" id="result-subtitle">副标题</div>
+              <div class="result-en-name" id="result-en-name">SILENT EFFICIENT</div>
               <div class="result-badges" id="result-badges"></div>
             </div>
           </div>
@@ -1578,6 +1610,7 @@
             <div class="poster-mini-top">今日状态</div>
             <div class="poster-mini-emoji" id="poster-mini-emoji">💼</div>
             <div class="poster-mini-type" id="poster-mini-type">静音高效工</div>
+            <div class="poster-mini-en" id="poster-mini-en">SILENT EFFICIENT</div>
             <div class="poster-mini-line" id="poster-mini-line">后台高效运行</div>
           </div>
         </div>
@@ -1598,6 +1631,7 @@
               <div>
                 <div class="worker-id-label">工型身份</div>
                 <div class="worker-id-type" id="idcard-type-name">静音高效工</div>
+                <div class="worker-id-en" id="idcard-type-en">SILENT EFFICIENT</div>
                 <div class="worker-id-subtitle" id="idcard-subtitle">副标题</div>
               </div>
               <div class="worker-id-dept" id="idcard-dept">劳动者人格研究院</div>
@@ -1735,6 +1769,7 @@
     const RESULTS = {
       'silent-efficient': {
         name: '静音高效工',
+        enName: 'Silent Efficient Worker',
         subtitle: '话少不是冷淡，是进度条在后台跑。',
         description: '你不是不合群，你只是把大部分能量都留给了真正要交付的事。你话不多，废话更少。别人还在讨论怎么推进，你已经默默开了文档。',
         traits: ['稳定交付', '低调推进', '不爱废话', '结果导向'],
@@ -1748,6 +1783,7 @@
       },
       'seen-no-reply': {
         name: '已读不回工',
+        enName: 'Seen No Reply Worker',
         subtitle: '消息我看到了，灵魂还在加载。',
         description: '你不是不回消息，你是在给每一句回复做心理预热。你的已读不是冷漠，而是一种缓冲机制。你知道很多消息不急着回，反而能回得更稳。',
         traits: ['消息缓冲', '谨慎回复', '后台处理', '社交省电'],
@@ -1761,6 +1797,7 @@
       },
       'spirit-offline': {
         name: '精神离岗工',
+        enName: 'Spirit Offline Worker',
         subtitle: '人在工位，心有年假。',
         description: '你的身体负责上班，你的灵魂负责保持自由。你可以坐在工位上完成任务，也可以在脑海里完成一次短途旅行。你不是不认真，只是需要偶尔把精神拿出去透透气。',
         traits: ['精神放风', '灵魂自由', '适度抽离', '照常交付'],
@@ -1774,6 +1811,7 @@
       },
       'deadline-warrior': {
         name: '截止日前夜战神',
+        enName: 'Deadline Eve Warrior',
         subtitle: '不倒计时，不启动最终形态。',
         description: '你不是拖延，你是在等待压力把潜能唤醒。你平时看起来云淡风轻，一到 deadline 前夜，整个人突然进入战斗模式。',
         traits: ['临门爆发', '高压输出', '极限交付', '战斗模式'],
@@ -1787,6 +1825,7 @@
       },
       'emotion-stable': {
         name: '情绪稳定工',
+        enName: 'Emotion Stable Worker',
         subtitle: '脸上风平浪静，心里开过三轮会。',
         description: '你不是没有情绪，你只是很会把情绪放进静音模式。你经常在心里完成一整套崩溃流程，然后抬头说：好的，我看一下。',
         traits: ['情绪管理', '表面冷静', '稳定接住', '体面处理'],
@@ -1800,6 +1839,7 @@
       },
       'requirements-translator': {
         name: '需求翻译工',
+        enName: 'Requirements Translator',
         subtitle: '专门把“你看着办”翻译成人话。',
         description: '你对模糊需求有天然警觉。别人听到一句“简单弄一下”，你已经开始拆解目标、边界、时间和交付标准。你不是麻烦，你是在减少返工。',
         traits: ['拆解需求', '确认边界', '减少返工', '精准沟通'],
@@ -1813,6 +1853,7 @@
       },
       'meeting-endurance': {
         name: '会议续航工',
+        enName: 'Meeting Endurance Worker',
         subtitle: '会议越长，表情越稳。',
         description: '你拥有一种神奇的会议续航能力。无论议题如何绕远，你都能保持基本在线。你不一定每分钟都想发言，但你会在关键节点稳稳接住。',
         traits: ['会议续航', '稳定在线', '关键补充', '耐心听完'],
@@ -1826,6 +1867,7 @@
       },
       'desk-charger': {
         name: '工位充电工',
+        enName: 'Desk Charger Worker',
         subtitle: '电量不高，但系统稳定。',
         description: '你不是满电选手，但你很擅长低电量运行。你每天都在 20% 电量左右徘徊，但总能神奇地撑到任务完成。',
         traits: ['低电运行', '缓慢开机', '稳定续航', '需要充电'],
@@ -1839,6 +1881,7 @@
       },
       'boundary-keeper': {
         name: '边界守门工',
+        enName: 'Boundary Keeper Worker',
         subtitle: '温柔可以，但不能无限加班。',
         description: '你很清楚自己的时间和能量边界。你不是不配合，而是知道一件事如果没有边界，很容易从帮忙变成默认负责。',
         traits: ['边界清晰', '温柔拒绝', '合理协作', '能量保护'],
@@ -1852,6 +1895,7 @@
       },
       'surface-business': {
         name: '表面营业工',
+        enName: 'Surface Business Worker',
         subtitle: '看起来很正常，其实正在后台重启。',
         description: '你很擅长维持外在状态。哪怕内心正在加载、重启、弹窗报错，你也能先保持一个看起来还不错的工作界面。',
         traits: ['表情管理', '外在在线', '后台重启', '临场应对'],
@@ -1865,6 +1909,7 @@
       },
       'detail-polisher': {
         name: '细节抛光工',
+        enName: 'Detail Polisher Worker',
         subtitle: '交出去之前，自己先改八遍。',
         description: '你对细节有天然敏感度。别人觉得差不多了，你还想再顺一遍格式、逻辑、措辞和标点。你不是纠结，你是在把作品变得更稳。',
         traits: ['细节控', '反复检查', '质量优先', '认真交付'],
@@ -1878,6 +1923,7 @@
       },
       'plan-rescue': {
         name: '方案急救工',
+        enName: 'Plan Rescue Worker',
         subtitle: '专治“明天就要”。',
         description: '你有很强的临场救火能力。越是突然、越是紧急，你越能迅速搭框架、抓重点、补缺口。你不一定喜欢救火，但你真的能救。',
         traits: ['救火能力', '快速成型', '临场反应', '抓大放小'],
@@ -1891,6 +1937,7 @@
       },
       'happy-fish': {
         name: '快乐摸鱼工',
+        enName: 'Happy Fish Worker',
         subtitle: '摸的是鱼，护的是能量。',
         description: '你对工作节奏有自己的理解。你知道人不能一直满负荷运行，适度摸鱼不是放弃工作，而是为了让自己更稳定地回来。',
         traits: ['能量管理', '轻度放空', '节奏感', '自我恢复'],
@@ -1904,6 +1951,7 @@
       },
       'social-power-save': {
         name: '社交省电工',
+        enName: 'Social Power Save Worker',
         subtitle: '不是冷漠，是电量管理。',
         description: '你不是不会社交，只是对自己的社交电量很诚实。你可以礼貌、配合、在线，但你也需要足够的安静时间恢复自己。',
         traits: ['社交省电', '安静恢复', '礼貌在线', '低耗沟通'],
@@ -1917,6 +1965,7 @@
       },
       'inspiration-party': {
         name: '灵感蹦迪工',
+        enName: 'Inspiration Party Worker',
         subtitle: '安静半天，突然开大。',
         description: '你的工作方式不是线性推进，而是灵感突然上线。你可能沉默很久，但一旦想通，脑子里会同时亮起好几个方案灯牌。',
         traits: ['灵感爆发', '跳跃思维', '突然开大', '创意输出'],
@@ -1930,6 +1979,7 @@
       },
       'allround-substitute': {
         name: '全能补位工',
+        enName: 'All-round Substitute Worker',
         subtitle: '哪里需要哪里搬，搬完还要微笑。',
         description: '你是团队里的万能接口。缺人时你能顶上，混乱时你能接住，别人不知道找谁时也常常会想到你。你很可靠，但也要记得给自己留一点空间。',
         traits: ['万能补位', '稳定接住', '临场配合', '团队接口'],
@@ -2173,6 +2223,8 @@
       document.getElementById('result-type').textContent = result.name;
       document.getElementById('poster-mini-type').textContent = result.name;
       document.getElementById('result-subtitle').textContent = result.subtitle;
+      document.getElementById('result-en-name').textContent = result.enName || typeId;
+      document.getElementById('poster-mini-en').textContent = result.enName || typeId;
       document.getElementById('poster-mini-line').textContent = status.replace('今日状态：', '');
       document.getElementById('result-desc').textContent = result.description;
       document.getElementById('manifesto-text').textContent = '“' + result.declaration + '”';
@@ -2219,6 +2271,7 @@
       document.getElementById('idcard-status').textContent = status;
       document.getElementById('idcard-avatar').textContent = visual.emoji;
       document.getElementById('idcard-type-name').textContent = result.name;
+      document.getElementById('idcard-type-en').textContent = result.enName || typeId;
       document.getElementById('idcard-subtitle').textContent = result.subtitle;
       document.getElementById('idcard-dept').textContent = visual.dept;
       document.getElementById('idcard-manifesto').textContent = '“' + result.declaration + '”';
