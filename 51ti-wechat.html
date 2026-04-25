@@ -1,412 +1,2123 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>51TI · 劳动者人格测试</title>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #0a0a0f; color: #fff; min-height: 100vh; overflow-x: hidden; }
-    .page { display: none; min-height: 100vh; padding: 20px; }
-    .page.active { display: flex; flex-direction: column; }
-    #page-start { justify-content: center; align-items: center; text-align: center; background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 50%, #0f1a3a 100%); }
-    .logo-badge { background: linear-gradient(135deg, #ff6b35, #f7c948); color: #0a0a0f; font-size: 11px; font-weight: 700; letter-spacing: 3px; padding: 4px 14px; border-radius: 20px; margin-bottom: 24px; display: inline-block; }
-    #page-start h1 { font-size: 48px; font-weight: 900; background: linear-gradient(135deg, #ff6b35, #f7c948, #ff6b35); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; letter-spacing: 4px; }
-    @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
-    #page-start .subtitle { font-size: 14px; color: #8888aa; margin-bottom: 30px; line-height: 1.8; }
-    .btn-primary { background: linear-gradient(135deg, #ff6b35, #f7c948); color: #0a0a0f; border: none; padding: 14px 40px; font-size: 16px; font-weight: 700; border-radius: 50px; cursor: pointer; letter-spacing: 3px; }
-    .countdown-badge { margin-top: 24px; font-size: 12px; color: #666688; }
-    .countdown-badge span { color: #f7c948; font-weight: 700; }
-    #page-test { padding-top: 16px; background: #0a0a0f; }
-    .progress-wrap { margin-bottom: 16px; }
-    .progress-text { font-size: 12px; color: #666688; margin-bottom: 8px; }
-    .progress-bar { width: 100%; height: 4px; background: #1a1a2e; border-radius: 4px; overflow: hidden; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, #ff6b35, #f7c948); border-radius: 4px; transition: width 0.4s ease; }
-    .progress-dots { display: flex; gap: 4px; margin-top: 8px; justify-content: center; flex-wrap: wrap; }
-    .dot { width: 5px; height: 5px; border-radius: 50%; background: #2a2a50; }
-    .dot.done { background: #ff6b35; }
-    .dot.current { background: #f7c948; width: 14px; border-radius: 3px; }
-    .question-card { background: #12122a; border: 1px solid #1e1e40; border-radius: 16px; padding: 20px; flex: 1; display: flex; flex-direction: column; }
-    .q-emoji { font-size: 32px; margin-bottom: 12px; }
-    .q-number { font-size: 11px; color: #ff6b35; font-weight: 700; margin-bottom: 8px; }
-    .q-text { font-size: 18px; font-weight: 600; line-height: 1.5; margin-bottom: 20px; color: #e0e0f0; }
-    .options { display: flex; flex-direction: column; gap: 10px; flex: 1; }
-    .option-btn { background: #1a1a2e; border: 1.5px solid #2a2a50; border-radius: 12px; padding: 14px 16px; color: #c0c0d8; font-size: 14px; text-align: left; cursor: pointer; transition: all 0.2s; line-height: 1.4; }
-    .option-btn:hover { border-color: #ff6b35; color: #fff; }
-    .option-btn.selected { border-color: #ff6b35; background: #1e1838; color: #fff; }
-    #page-result { align-items: center; background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 50%, #0a0a0f 100%); padding-top: 16px; }
-    .result-badge { font-size: 11px; letter-spacing: 3px; color: #f7c948; margin-bottom: 12px; }
-    .result-type-display { font-size: 36px; font-weight: 900; letter-spacing: 4px; margin-bottom: 4px; background: linear-gradient(135deg, #ff6b35, #f7c948); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .result-cn { font-size: 12px; color: #8888aa; margin-bottom: 16px; font-style: italic; }
-    .result-card { background: #12122a; border: 1px solid #1e1e40; border-radius: 16px; padding: 18px; width: 100%; max-width: 340px; margin-bottom: 14px; }
-    .result-desc { font-size: 13px; color: #c0c0d8; line-height: 1.7; margin-bottom: 14px; }
-    .result-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .tag { background: #1e1838; border: 1px solid #ff6b35; color: #ff6b35; font-size: 10px; padding: 3px 10px; border-radius: 20px; }
-    .manifesto { background: linear-gradient(135deg, #1a0a2e, #0f1a3a); border: 1px solid #2a2a50; border-radius: 14px; padding: 16px; width: 100%; max-width: 340px; margin-bottom: 18px; }
-    .manifesto-title { font-size: 10px; color: #f7c948; letter-spacing: 2px; margin-bottom: 10px; text-align: center; }
-    .manifesto-text { font-size: 12px; color: #9999bb; line-height: 1.8; text-align: center; }
-    .manifesto-highlight { color: #f7c948; font-weight: 600; }
-    .btn-share { background: transparent; border: 2px solid #ff6b35; color: #ff6b35; padding: 12px 32px; font-size: 14px; font-weight: 700; border-radius: 50px; cursor: pointer; letter-spacing: 2px; margin-bottom: 8px; }
-    .btn-retry { background: transparent; border: none; color: #666688; font-size: 12px; cursor: pointer; text-decoration: underline; margin-bottom: 30px; }
-    .share-tip { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 999; flex-direction: column; text-align: center; padding: 30px; }
-    .share-tip.active { display: flex; }
-    .share-tip-icon { font-size: 48px; margin-bottom: 16px; }
-    .share-tip-text { font-size: 16px; color: #fff; margin-bottom: 6px; }
-    .share-tip-sub { font-size: 12px; color: #8888aa; }
-    .share-tip-close { margin-top: 24px; background: #ff6b35; color: #0a0a0f; border: none; padding: 10px 28px; border-radius: 50px; font-size: 14px; font-weight: 700; cursor: pointer; }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-    .fade-in { animation: fadeInUp 0.4s ease forwards; }
-    .fade-in-delay { animation: fadeInUp 0.4s 0.15s ease forwards; opacity: 0; }
-    .fade-in-delay2 { animation: fadeInUp 0.4s 0.3s ease forwards; opacity: 0; }
-    /* 工牌生成器样式 */
-    .idcard-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; flex-direction: column; }
-    .idcard-modal.active { display: flex; }
-    .idcard-wrapper { position: relative; width: 320px; height: 200px; background: linear-gradient(135deg, #1a1a2e 0%, #12122a 50%, #0f1a3a 100%); border-radius: 12px; border: 2px solid #ff6b35; padding: 16px; box-shadow: 0 10px 40px rgba(255,107,53,0.3); }
-    .idcard-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-    .idcard-title { font-size: 11px; color: #f7c948; letter-spacing: 2px; }
-    .idcard-节日 { position: absolute; bottom: 16px; left: 16px; font-size: 10px; color: #f7c948; }
-    .idcard-type { text-align: center; margin: 8px 0; }
-    .idcard-type-name { font-size: 22px; font-weight: 900; background: linear-gradient(135deg, #ff6b35, #f7c948); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; }
-    .idcard-slogan { font-size: 10px; color: #8888aa; text-align: right; max-width: 120px; line-height: 1.4; }
-    .idcard-info { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid #2a2a50; }
-    .idcard-info-left { font-size: 11px; color: #c0c0d8; }
-    .idcard-info-left div { margin-bottom: 2px; }
-    .idcard-info-left .label { color: #666688; font-size: 9px; }
-    .idcard-qr { width: 50px; height: 50px; }
-    .idcard-qr img { width: 100%; height: 100%; border-radius: 4px; }
-    .idcard-close { position: absolute; top: 10px; right: 10px; background: none; border: none; color: #666688; font-size: 20px; cursor: pointer; }
-    .idcard-input-wrap { margin-top: 16px; text-align: center; }
-    .idcard-input { background: #1a1a2e; border: 1px solid #2a2a50; border-radius: 8px; padding: 10px 16px; color: #fff; font-size: 14px; text-align: center; width: 200px; margin-bottom: 12px; }
-    .idcard-input::placeholder { color: #666688; }
-    .idcard-btns { display: flex; gap: 10px; justify-content: center; }
-    .btn-idcard { background: linear-gradient(135deg, #ff6b35, #f7c948); color: #0a0a0f; border: none; padding: 10px 24px; font-size: 14px; font-weight: 700; border-radius: 50px; cursor: pointer; }
-    .btn-idcard-outline { background: transparent; border: 2px solid #ff6b35; color: #ff6b35; padding: 10px 24px; font-size: 14px; font-weight: 700; border-radius: 50px; cursor: pointer; }
-    .btn-save { background: linear-gradient(135deg, #ff6b35, #f7c948); color: #0a0a0f; border: none; padding: 12px 32px; font-size: 14px; font-weight: 700; border-radius: 50px; cursor: pointer; margin-top: 16px; }
+    :root {
+      --bg: #0a0a0f;
+      --bg-soft: #12122a;
+      --card: rgba(18, 18, 42, 0.92);
+      --line: #23234a;
+      --line-strong: #343468;
+      --text: #f3f1ff;
+      --text-soft: #b4b2c9;
+      --text-faint: #7a7892;
+      --orange: #ff6b35;
+      --yellow: #f7c948;
+      --purple: #8f6dff;
+      --green: #42d392;
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(143,109,255,0.15), transparent 36%),
+        linear-gradient(145deg, #08080d 0%, #111128 48%, #0a0a0f 100%);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding: 18px 16px 28px;
+    }
+    .page.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: calc(100vh - 46px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      gap: 18px;
+    }
+
+    .logo-badge,
+    .mini-badge {
+      align-self: center;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .hero h1 {
+      font-size: 40px;
+      line-height: 1.06;
+      font-weight: 900;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #fff 0%, var(--yellow) 30%, var(--orange) 65%, #fff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 4.5s linear infinite;
+    }
+
+    @keyframes shimmer {
+      from { background-position: 0% center; }
+      to { background-position: 200% center; }
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      line-height: 1.55;
+      color: #f5f2ff;
+      font-weight: 700;
+    }
+
+    .hero-desc {
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .hero-point {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 12px 10px;
+      color: var(--text-soft);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .countdown-badge {
+      color: var(--text-faint);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    .countdown-badge span { color: var(--yellow); font-weight: 800; }
+
+    .btn,
+    .scale-btn,
+    .share-btn {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.16s ease, opacity 0.16s ease, border-color 0.16s ease, background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .btn:active,
+    .scale-btn:active,
+    .share-btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      width: 100%;
+      min-height: 56px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      color: #120d10;
+      font-weight: 900;
+      font-size: 17px;
+      letter-spacing: 1px;
+      box-shadow: 0 12px 24px rgba(255, 107, 53, 0.28);
+      margin-top: 6px;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      min-height: 52px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text);
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .btn-ghost {
+      width: 100%;
+      min-height: 50px;
+      border-radius: 16px;
+      background: transparent;
+      border: 1px solid #353565;
+      color: var(--text-soft);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    #page-test {
+      padding-top: 14px;
+      padding-bottom: 24px;
+    }
+
+    .progress-wrap {
+      position: sticky;
+      top: 8px;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      background: rgba(10,10,15,0.78);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .progress-text {
+      color: var(--text-soft);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .progress-hint {
+      color: var(--yellow);
+      font-size: 12px;
+      text-align: right;
+      line-height: 1.35;
+      min-height: 16px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #191932;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--orange), var(--yellow));
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-dots {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #2b2b50;
+    }
+
+    .dot.done { background: var(--orange); }
+    .dot.current {
+      width: 18px;
+      background: var(--yellow);
+    }
+
+    .question-card,
+    .result-card,
+    .metrics-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .question-card {
+      padding: 20px 16px 18px;
+    }
+
+    .q-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .q-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .q-number {
+      color: var(--orange);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+    }
+
+    .q-axis {
+      color: var(--text-faint);
+      font-size: 12px;
+    }
+
+    .q-emoji {
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .q-text {
+      font-size: 21px;
+      line-height: 1.45;
+      font-weight: 800;
+      margin-bottom: 18px;
+      color: #f7f4ff;
+    }
+
+    .compare-card {
+      border: 1px solid #2a2a4f;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));
+      padding: 14px;
+    }
+
+    .compare-labels {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .side-card {
+      min-height: 96px;
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .side-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--yellow);
+      margin-bottom: 8px;
+    }
+
+    .side-card.right .side-title { color: #a9a6ff; }
+
+    .side-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text);
+      font-weight: 650;
+    }
+
+    .vs-badge {
+      font-size: 11px;
+      color: var(--text-faint);
+      letter-spacing: 1px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .scale-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .scale-btn {
+      min-height: 74px;
+      border-radius: 16px;
+      background: #171730;
+      border: 1px solid #2d2d56;
+      color: var(--text-soft);
+      padding: 10px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      text-align: center;
+      font-size: 11px;
+      line-height: 1.3;
+      font-weight: 800;
+    }
+
+    .scale-btn em {
+      font-style: normal;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .scale-btn.left-strong.selected,
+    .scale-btn.left-weak.selected {
+      background: rgba(247, 201, 72, 0.16);
+      border-color: var(--yellow);
+      color: #fff7d4;
+      box-shadow: 0 0 0 2px rgba(247, 201, 72, 0.12) inset;
+    }
+
+    .scale-btn.neutral.selected {
+      background: rgba(143, 109, 255, 0.18);
+      border-color: #9f89ff;
+      color: #f3efff;
+      box-shadow: 0 0 0 2px rgba(159, 137, 255, 0.14) inset;
+    }
+
+    .scale-btn.right-weak.selected,
+    .scale-btn.right-strong.selected {
+      background: rgba(255, 107, 53, 0.18);
+      border-color: var(--orange);
+      color: #fff1ea;
+      box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.12) inset;
+    }
+
+    .scale-tip {
+      margin-top: 12px;
+      text-align: center;
+      color: var(--text-faint);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    #page-result {
+      padding-top: 14px;
+      padding-bottom: 30px;
+    }
+
+    .result-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .result-hero {
+      position: relative;
+      overflow: hidden;
+      padding: 20px 18px 18px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at top right, rgba(247,201,72,0.22), transparent 32%),
+        radial-gradient(circle at left bottom, rgba(143,109,255,0.20), transparent 30%),
+        linear-gradient(145deg, rgba(255,107,53,0.14), rgba(143,109,255,0.12)),
+        rgba(18,18,42,0.96);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow);
+    }
+
+    .result-hero::after {
+      content: '';
+      position: absolute;
+      inset: auto -24px -28px auto;
+      width: 132px;
+      height: 132px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255,255,255,0.12), transparent 68%);
+      pointer-events: none;
+    }
+
+    .result-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .result-kicker {
+      color: var(--yellow);
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-weight: 900;
+    }
+
+    .result-code {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #f7f4ff;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .result-poster-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 118px;
+      gap: 14px;
+      align-items: stretch;
+      margin-bottom: 14px;
+    }
+
+    .result-visual {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 0;
+    }
+
+    .result-poster-mini {
+      position: relative;
+      padding: 14px 12px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 152px;
+      overflow: hidden;
+    }
+
+    .result-poster-mini::after {
+      content: '';
+      position: absolute;
+      inset: auto -22px -30px auto;
+      width: 90px;
+      height: 90px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(247,201,72,0.20), transparent 70%);
+      pointer-events: none;
+    }
+
+    .poster-mini-top {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1.6px;
+      color: rgba(255,255,255,0.76);
+      text-transform: uppercase;
+    }
+
+    .poster-mini-emoji {
+      font-size: 36px;
+      line-height: 1;
+      margin: 10px 0 8px;
+    }
+
+    .poster-mini-type {
+      font-size: 17px;
+      line-height: 1.25;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .poster-mini-line {
+      font-size: 12px;
+      line-height: 1.45;
+      color: #ffe9d1;
+      font-weight: 700;
+    }
+
+    .result-avatar {
+      width: 86px;
+      height: 86px;
+      border-radius: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .result-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .result-badge {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #f3f1ff;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .result-type-display {
+      font-size: 36px;
+      line-height: 1.16;
+      font-weight: 950;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .result-subtitle {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #ffe9d1;
+      font-weight: 750;
+      margin-bottom: 2px;
+    }
+
+    .result-summary {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .summary-pill {
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-soft);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .result-card {
+      padding: 18px;
+    }
+
+    .card-title {
+      color: var(--yellow);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+    }
+
+    .result-desc {
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    .manifesto-box {
+      padding: 18px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(255,107,53,0.16), rgba(247,201,72,0.14));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow);
+    }
+
+    .manifesto-box .card-title { color: #fff7cf; }
+
+    .manifesto-text {
+      color: #fff;
+      font-size: 22px;
+      line-height: 1.6;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+    }
+
+    .metrics-card {
+      padding: 16px;
+    }
+
+    .metric-item + .metric-item {
+      margin-top: 12px;
+    }
+
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    .metric-row strong {
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .metric-bar {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: #1a1a33;
+      overflow: hidden;
+    }
+
+    .metric-bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--orange), var(--yellow));
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .share-btn {
+      width: 100%;
+      min-height: 54px;
+      border-radius: 16px;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .share-primary {
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      color: #140f12;
+      box-shadow: 0 12px 24px rgba(255,107,53,0.22);
+    }
+
+    .share-secondary {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    .share-ghost {
+      background: transparent;
+      border: 1px solid #38386b;
+      color: var(--text-soft);
+    }
+
+    .result-footer-tip {
+      text-align: center;
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 4px 12px 0;
+    }
+
+    .share-suite {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .share-suite .card-title {
+      margin-bottom: 12px;
+    }
+
+    .share-preview-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .share-preview-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      color: var(--text-soft);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .share-preview-top strong {
+      color: #fff;
+      font-size: 12px;
+      letter-spacing: 0.4px;
+    }
+
+    .share-copy-text {
+      white-space: pre-wrap;
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .share-scene-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .share-scene-card {
+      min-height: 112px;
+      border-radius: 18px;
+      padding: 14px 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .share-scene-label {
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .share-scene-card p {
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .share-helper-text {
+      margin-top: 10px;
+      color: var(--text-soft);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .share-sheet-card {
+      text-align: left;
+      max-width: 380px;
+      padding: 18px;
+    }
+
+    .share-sheet-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .share-sheet-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .share-sheet-subtitle {
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .share-sheet-chip {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .share-sheet-preview {
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      padding: 14px;
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.75;
+      white-space: pre-wrap;
+      margin-bottom: 12px;
+    }
+
+    .share-sheet-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .share-sheet-note {
+      margin-top: 12px;
+      color: var(--text-soft);
+      font-size: 12px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .idcard-overlay {
+      align-items: flex-start;
+      overflow-y: auto;
+      padding: 20px 16px 34px;
+    }
+
+    .overlay-card.idcard-sheet {
+      max-width: 390px;
+      margin: 0 auto;
+      text-align: left;
+      padding: 16px;
+    }
+
+    .idcard-sheet .share-sheet-head {
+      margin-bottom: 14px;
+    }
+
+    .idcard-stage {
+      position: relative;
+      padding: 16px;
+      border-radius: 24px;
+      background: linear-gradient(160deg, rgba(255,107,53,0.10), rgba(143,109,255,0.12)), rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .idcard-stage::after {
+      content: '';
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 999px;
+      right: -70px;
+      bottom: -80px;
+      background: radial-gradient(circle, rgba(247,201,72,0.18), transparent 72%);
+      pointer-events: none;
+    }
+
+    .worker-idcard {
+      position: relative;
+      width: 100%;
+      border-radius: 28px;
+      padding: 18px;
+      background:
+        radial-gradient(circle at top right, rgba(247,201,72,0.18), transparent 36%),
+        radial-gradient(circle at left bottom, rgba(143,109,255,0.18), transparent 34%),
+        linear-gradient(145deg, #15152d 0%, #0f1023 100%);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 18px 42px rgba(0,0,0,0.34);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .worker-idcard::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 38%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .worker-idcard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .worker-idcard-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .worker-idcard-brand strong {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 950;
+      letter-spacing: 1px;
+    }
+
+    .worker-idcard-brand span {
+      color: var(--yellow);
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      font-weight: 900;
+    }
+
+    .worker-idcard-badge {
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .worker-idcard-main {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: 14px;
+      align-items: stretch;
+      margin-bottom: 14px;
+    }
+
+    .worker-id-avatar {
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      min-height: 118px;
+    }
+
+    .worker-id-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .worker-id-label {
+      color: rgba(255,255,255,0.72);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+    }
+
+    .worker-id-type {
+      color: #fff;
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 950;
+    }
+
+    .worker-id-subtitle {
+      color: #ffe9d1;
+      font-size: 14px;
+      line-height: 1.55;
+      font-weight: 700;
+    }
+
+    .worker-id-dept {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #f6f4ff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .worker-id-manifesto {
+      border-radius: 20px;
+      padding: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+      font-size: 15px;
+      line-height: 1.75;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .worker-id-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .worker-id-tags span {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .worker-id-footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .worker-id-footer-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .worker-id-footer-copy strong {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+    }
+
+    .worker-id-footer-copy span {
+      color: var(--text-soft);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .worker-id-qr {
+      width: 78px;
+      height: 78px;
+      border-radius: 16px;
+      background: #fff;
+      padding: 6px;
+      flex-shrink: 0;
+    }
+
+    .worker-id-qr img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .idcard-helper-text {
+      color: var(--text-soft);
+      font-size: 12px;
+      line-height: 1.7;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5,5,10,0.88);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 99;
+    }
+    .overlay.active { display: flex; }
+
+    .overlay-card {
+      width: 100%;
+      max-width: 360px;
+      background: #12122a;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 22px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .overlay-emoji {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    .overlay-title {
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .overlay-text {
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 26px;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(10,10,15,0.95);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 13px;
+      line-height: 1.4;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 110;
+      max-width: calc(100vw - 36px);
+      text-align: center;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 360px) {
+      .hero h1 { font-size: 34px; }
+      .q-text { font-size: 19px; }
+      .result-topline { align-items: flex-start; flex-direction: column; }
+      .result-poster-grid { grid-template-columns: 1fr; }
+      .result-visual { grid-template-columns: 1fr; }
+      .result-poster-mini { min-height: auto; }
+      .result-avatar { width: 78px; height: 78px; border-radius: 22px; font-size: 38px; }
+      .result-type-display { font-size: 30px; }
+      .manifesto-text { font-size: 20px; }
+      .scale-btn { min-height: 70px; font-size: 10px; }
+      .compare-labels { gap: 6px; }
+      .side-text { font-size: 13px; }
+      .worker-idcard-main { grid-template-columns: 1fr; }
+      .worker-id-avatar { min-height: 92px; }
+      .worker-id-type { font-size: 24px; }
+      .worker-id-footer { align-items: flex-start; flex-direction: column; }
+    }
   </style>
 </head>
 <body>
-<div class="page active" id="page-start">
-  <div class="logo-badge">WORK PERSONA</div>
-  <h1>51TI</h1>
-  <div class="subtitle">30道题 · 测出你的劳动者人格<br>16种类型 · 总有一款属于你</div>
-  <button class="btn-primary" onclick="startTest()">开始测试</button>
-  <div class="countdown-badge">👷 还有 <span id="days-to-51">?</span> 天五一劳动节</div>
-</div>
-
-<div class="page" id="page-test">
-  <div class="progress-wrap">
-    <div class="progress-text" id="progress-text">第 1 / 30 题</div>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:3.3%"></div></div>
-    <div class="progress-dots" id="progress-dots"></div>
-  </div>
-  <div class="question-card">
-    <div class="q-emoji" id="q-emoji"></div>
-    <div class="q-number" id="q-number">Q1</div>
-    <div class="q-text" id="q-text"></div>
-    <div class="options" id="options"></div>
-  </div>
-</div>
-
-<div class="page" id="page-result">
-  <div class="result-badge fade-in">YOUR WORK PERSONA</div>
-  <div class="result-type-display fade-in" id="result-type"></div>
-  <div class="result-cn fade-in-delay" id="result-cn"></div>
-  <div class="result-card fade-in-delay">
-    <div class="result-desc" id="result-desc"></div>
-    <div class="result-tags" id="result-tags"></div>
-  </div>
-  <div class="manifesto fade-in-delay2">
-    <div class="manifesto-title">51TI 劳动者宣言</div>
-    <div class="manifesto-text">无论你是<span class="manifesto-highlight">卷王牛马</span>还是<span class="manifesto-highlight">摸鱼王</span>，认真劳动的人，都值得被尊重。<br><br><strong style="color:#f7c948">五一劳动节，致敬每一位认真工作的你。</strong></div>
-  </div>
-  <button class="btn-share fade-in-delay2" onclick="showShareTip()">分享到朋友圈</button><br>
-  <button class="btn-share fade-in-delay2" style="margin-top:8px;background:transparent;border:2px solid #f7c948;color:#f7c948;" onclick="openIdCard()">生成工牌</button><br>
-  <button class="btn-retry" onclick="restartTest()">重新测试</button>
-</div>
-
-<div class="share-tip" id="share-tip">
-  <div class="share-tip-icon">👆</div>
-  <div class="share-tip-text">点击右上角「···」分享</div>
-  <div class="share-tip-sub">让朋友们也来测测自己的劳动者人格</div>
-  <button class="share-tip-close" onclick="hideShareTip()">知道了</button>
-</div>
-
-<!-- 工牌生成器 -->
-<div class="idcard-modal" id="idcard-modal">
-  <div class="idcard-wrapper" id="idcard-wrapper">
-    <button class="idcard-close" onclick="closeIdCard()">×</button>
-    <div class="idcard-header">
-      <div class="idcard-title">51TI</div>
-      <div class="idcard-slogan" id="idcard-slogan">瓜田猹本猹，闰土看了都摇头</div>
-    </div>
-    <div class="idcard-type">
-      <div class="idcard-type-name" id="idcard-type-name">职场猹猹</div>
-    </div>
-    <div class="idcard-info">
-      <div class="idcard-info-left">
-        <div><span class="label">姓名</span> <span id="idcard-name-display">打工人</span></div>
-        <div><span class="label">部门</span> <span id="idcard-dept">八卦部</span></div>
-        <div><span class="label">工号</span> <span id="idcard-id">8866</span></div>
+  <div class="page active" id="page-start">
+    <div class="shell hero">
+      <div class="logo-badge">WORK PERSONA TEST</div>
+      <h1>51TI 劳动者人格测试</h1>
+      <div class="hero-subtitle">30道题，测测你到底是哪一种工</div>
+      <div class="hero-desc">
+        不是普通问卷，是更像 MBTI 的上班状态认领测试。<br />
+        左右偏一点，更容易测出你平时到底怎么上工。
       </div>
-      <div class="idcard-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://lincolnsama.github.io/51ti/51ti-wechat.html" crossorigin="anonymous"></div>
+      <div class="hero-points">
+        <div class="hero-point">左右偏向 5 档作答<br />更像真实上班状态</div>
+        <div class="hero-point">16 种工型结果<br />更容易认领自己的那一型</div>
+        <div class="hero-point">有工感宣言<br />一句话就很像你本人</div>
+        <div class="hero-point">复制文案即发<br />微信内传播更顺手</div>
+      </div>
+      <button class="btn btn-primary" onclick="startTest()">开始测工</button>
+      <div class="countdown-badge">👷 距离下一个五一还有 <span id="days-to-51">--</span></div>
     </div>
-    <div class="idcard-节日">🎉 五一劳动节快乐！扫码测你的劳动者人格</div>
   </div>
-  <div class="idcard-input-wrap" id="idcard-input-wrap">
-    <input type="text" class="idcard-input" id="idcard-name-input" placeholder="输入你的名字（选填）" maxlength="6">
-    <div class="idcard-btns">
-      <button class="btn-idcard" onclick="generateIdCard()">生成工牌</button>
-      <button class="btn-idcard-outline" onclick="saveIdCard()">保存图片</button>
+
+  <div class="page" id="page-test">
+    <div class="shell">
+      <div class="progress-wrap">
+        <div class="progress-top">
+          <div class="progress-text" id="progress-text">第 1 / 30 题</div>
+          <div class="progress-hint" id="progress-hint">你的工感快藏不住了</div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="progress-dots" id="progress-dots"></div>
+      </div>
+
+      <div class="question-card">
+        <div class="q-head">
+          <div class="q-meta">
+            <div class="q-number" id="q-number">Q1</div>
+            <div class="q-axis" id="q-axis">更偏哪边一点？</div>
+          </div>
+          <div class="q-emoji" id="q-emoji">⏰</div>
+        </div>
+        <div class="q-text" id="q-text"></div>
+
+        <div class="compare-card">
+          <div class="compare-labels">
+            <div class="side-card left">
+              <div class="side-title">左边更像我</div>
+              <div class="side-text" id="left-text"></div>
+            </div>
+            <div class="vs-badge">偏向一点</div>
+            <div class="side-card right">
+              <div class="side-title">右边更像我</div>
+              <div class="side-text" id="right-text"></div>
+            </div>
+          </div>
+
+          <div class="scale-grid" id="options"></div>
+          <div class="scale-tip">不用太绝对，选更偏哪边一点就行。</div>
+        </div>
+      </div>
     </div>
   </div>
-  <div id="idcard-save-wrap" style="display:none; text-align:center;">
-    <button class="btn-save" onclick="saveIdCard()">保存到相册</button>
+
+  <div class="page" id="page-result">
+    <div class="shell result-stack">
+      <div class="result-hero">
+        <div class="result-topline">
+          <div class="result-kicker">51TI LABOR PROFILE</div>
+          <div class="result-code" id="result-code">TYPE XXXX</div>
+        </div>
+        <div class="result-poster-grid">
+          <div class="result-visual">
+            <div class="result-avatar" id="result-avatar">🛠️</div>
+            <div>
+              <div class="result-type-display" id="result-type">工型结果</div>
+              <div class="result-subtitle" id="result-subtitle">副标题</div>
+              <div class="result-badges" id="result-badges"></div>
+            </div>
+          </div>
+          <div class="result-poster-mini">
+            <div class="poster-mini-top">今日工牌</div>
+            <div class="poster-mini-emoji" id="poster-mini-emoji">🛠️</div>
+            <div class="poster-mini-type" id="poster-mini-type">工型结果</div>
+            <div class="poster-mini-line" id="poster-mini-line">副标题</div>
+          </div>
+        </div>
+        <div class="result-summary" id="result-summary"></div>
+      </div>
+
+      <div class="result-card">
+        <div class="card-title">结果解读</div>
+        <div class="result-desc" id="result-desc"></div>
+      </div>
+
+      <div class="manifesto-box">
+        <div class="card-title">你的工感宣言</div>
+        <div class="manifesto-text" id="manifesto-text"></div>
+      </div>
+
+      <div class="metrics-card">
+        <div class="card-title">你的工感偏向</div>
+        <div id="result-metrics"></div>
+      </div>
+
+      <div class="share-suite">
+        <div class="card-title">最后一步：把结果发出去</div>
+        <div class="share-preview-card">
+          <div class="share-preview-top">
+            <strong>朋友圈文案预览</strong>
+            <span id="share-copy-length">0 字</span>
+          </div>
+          <div class="share-copy-text" id="share-copy-preview"></div>
+        </div>
+        <div class="share-scene-grid">
+          <div class="share-scene-card">
+            <div class="share-scene-label">发朋友圈</div>
+            <p id="share-scene-feed"></p>
+          </div>
+          <div class="share-scene-card">
+            <div class="share-scene-label">发朋友 / 群聊</div>
+            <p id="share-scene-friend"></p>
+          </div>
+        </div>
+        <div class="share-helper-text">你不用再自己想怎么发了，下面按钮会直接帮你复制文案。整个结果页我已经改成“看完就想转”的分享型结构。</div>
+      </div>
+
+      <div class="actions">
+        <button class="share-btn share-primary" onclick="shareResult()">晒晒我的劳动者人格</button>
+        <button class="share-btn share-secondary" onclick="openIdCard()">生成我的工牌</button>
+        <button class="share-btn share-secondary" onclick="copyResultText()">复制朋友圈文案</button>
+        <button class="share-btn share-ghost" onclick="restartTest()">再测一次</button>
+      </div>
+
+      <div class="result-footer-tip">发给朋友测测，看你们根本是不是一种工。</div>
+    </div>
   </div>
-</div>
 
-<script>
-var questions = [
-  { dim: 'P', emoji: '⏰', q: '周一闹钟响了，你的第一反应是？', opts: ['秒醒，立刻弹起来', '按掉，再睡三分钟'] },
-  { dim: 'P', emoji: '📱', q: '收到领导发来的加班通知，你？', opts: ['秒回"没问题！"', '假装没看见，等五分钟再回'] },
-  { dim: 'P', emoji: '⏳', q: 'Deadline就在今天，你？', opts: ['肾上腺素飙升，立刻开干', '明天再说，反正没人知道'] },
-  { dim: 'P', emoji: '👀', q: '看到同事在加班，你？', opts: ['我也不能走，陪着', '关我什么事，到点下班'] },
-  { dim: 'P', emoji: '💬', q: '工作群突然弹出领导消息，你？', opts: ['秒回"收到"', '意念回复，等下班再看'] },
-  { dim: 'P', emoji: '🌙', q: '周末双休，但工作群有消息，你？', opts: ['立刻回复，处理完再说', '周六谁看工作消息？'] },
-  { dim: 'P', emoji: '💰', q: '发工资那天，你？', opts: ['立刻打开银行App算清楚', '懒得看，反正月光'] },
-  { dim: 'P', emoji: '🚪', q: '下班前领导突然找你，你？', opts: ['停下所有事，立刻响应', '明天再回，反正也下班了'] },
-  { dim: 'T', emoji: '🤔', q: '工作中遇到一个棘手问题，你？', opts: ['拉群讨论，集思广益', '自己研究，自己搞定'] },
-  { dim: 'T', emoji: '📚', q: '同事来请教你，你？', opts: ['倾囊相授，一起进步', '留一手，教会徒弟饿死师傅'] },
-  { dim: 'T', emoji: '🎤', q: '项目汇报的时候，你？', opts: ['团队一起讲，功劳是大家的', '自己做主角，展现我的贡献'] },
-  { dim: 'T', emoji: '🎉', q: '公司组织团建活动，你？', opts: ['积极参与，多认识人', '找个角落待着，别来烦我'] },
-  { dim: 'T', emoji: '🔧', q: '项目需要更多资源支持，你？', opts: ['找领导协调，申请支援', '自己想办法克服'] },
-  { dim: 'T', emoji: '🏆', q: '项目获奖了，发表感言时你？', opts: ['感谢团队，没有大家就没有我', '主要是我的功劳，我付出最多'] },
-  { dim: 'T', emoji: '💥', q: '工作出了差错，你？', opts: ['主动认领，一起扛', '谁的问题谁负责'] },
-  { dim: 'T', emoji: '📋', q: '讨论方案的时候，你？', opts: ['开会头脑风暴，热火朝天', '写完文档发群里，各看各的'] },
-  { dim: 'B', emoji: '🔄', q: '方案被领导否了，你？', opts: ['继续改，改到第三版', '爱咋咋地，随便吧'] },
-  { dim: 'B', emoji: '📝', q: '客户临时改需求，你？', opts: ['好的没问题，马上改', '加钱，不加不做'] },
-  { dim: 'B', emoji: '🍕', q: '领导又开始画饼了，你？', opts: ['默默听完，点头表示理解', '心里翻白眼，面上笑嘻嘻'] },
-  { dim: 'B', emoji: '🥺', q: '同事甩锅给你，你？', opts: ['忍了，多一事不如少一事', '当场反驳，我不背这个锅'] },
-  { dim: 'B', emoji: '😵', q: '已经连续加班一周了，你？', opts: ['还能扛，咬咬牙就过去了', '提离职，现在，立刻，马上'] },
-  { dim: 'B', emoji: '🎊', q: '得知同事升职了，你？', opts: ['真不错，真心恭喜他', '为什么不是我？凭什么是他？'] },
-  { dim: 'B', emoji: '📉', q: '公司开始"降本增效"传遍全网，你？', opts: ['继续努力，稳住心态', '简历悄悄更新，随时准备跑'] },
-  { dim: 'S', emoji: '😴', q: '下午三点开始犯困，你？', opts: ['硬撑，喝咖啡熬过去', '借口去茶水间，溜达一下'] },
-  { dim: 'S', emoji: '📦', q: '快递到了，你？', opts: ['必须亲自去拿，顺便活动', '让同事带，懒得动'] },
-  { dim: 'S', emoji: '🚽', q: '厕所时间，你？', opts: ['速战速决，赶紧回去', '带手机进去蹲十五分钟'] },
-  { dim: 'S', emoji: '🚶', q: '需要外出办事，你？', opts: ['能线上就不线下，省事', '正好借机出去透透气'] },
-  { dim: 'S', emoji: '🍱', q: '午饭时间，你？', opts: ['电脑前解决，边吃边看', '必须出门走走，换换空气'] },
-  { dim: 'S', emoji: '📹', q: '开线上会议，你？', opts: ['必须开摄像头，精神面貌很重要', '能不开就不开，省心'] },
-  { dim: 'S', emoji: '🏃', q: '下班时间到了，你？', opts: ['等领导先走我再走', '准点消失，绝不多待一秒'] }
-];
+  <div class="overlay" id="share-overlay">
+    <div class="overlay-card share-sheet-card">
+      <div class="share-sheet-head">
+        <div>
+          <div class="share-sheet-title">你的分享页已经备好</div>
+          <div class="share-sheet-subtitle">直接复制朋友圈文案，或者调起系统分享。微信里发朋友、发群、发朋友圈都顺手。</div>
+        </div>
+        <div class="share-sheet-chip" id="share-sheet-chip">TYPE XXXX</div>
+      </div>
+      <div class="share-sheet-preview" id="share-sheet-preview"></div>
+      <div class="share-sheet-actions">
+        <button class="btn btn-primary" onclick="copyResultText()">复制朋友圈文案</button>
+        <button class="btn btn-secondary" onclick="copyShortResultText()">复制短版结果</button>
+        <button class="btn btn-ghost" onclick="nativeShareResult()">调用系统分享</button>
+        <button class="btn btn-ghost" onclick="closeShareOverlay()">先不发了</button>
+      </div>
+      <div class="share-sheet-note">如果系统分享没反应，也没关系，文案已经在这里，复制就能发。</div>
+    </div>
+  </div>
 
-var personas = {
-  'PTBS': { cn: '职场NPC', en: 'Office NPC', desc: '我就是一打工的，别cue我。领导画饼我听着，同事内卷我看着，到点下班我跑着。你问我在想什么？我在想今晚吃啥。', tags: ['麻木但清醒', '到点跑路', '无差别路过'] },
-  'PTBO': { cn: '拼命三郎', en: '996 Survivor', desc: '你是那个连续加班一周还笑着说"没事"的狠人。别人在抱怨，你已经在改了。别人在摸鱼，你在写方案。你不是不累，是不敢累。', tags: ['抗压王者', 'Deadline Fighter', '铁打的'] },
-  'PTRS': { cn: '时间管理大师', en: 'Time Lord', desc: '上班是为了更好的摸鱼。你能在开会时写周报，在周报时刷微博，在刷微博时回微信。每一分钟都精准计算，每一秒都花在刀刃上。', tags: ['效率天花板', '摸鱼带师', '时间刺客'] },
-  'PTRO': { cn: '节奏大师', en: 'Chaos Coordinator', desc: '你永远在救火的路上，同时还在组织下一场火。混乱是你最熟悉的战场，先干了再说。你是团队的多线程处理器。', tags: ['多线程战士', '救火队长', '边干边想'] },
-  'PGBS': { cn: '职场猹猹', en: '瓜田猹', desc: '瓜田猹本猹，闰土看了都摇头。谁要离职、谁和谁有矛盾、哪个部门要合并、你第一个知道。活是干的，瓜也不能落下。', tags: ['情报大师', '社交润滑剂', '消息灵通'] },
-  'PGBO': { cn: '社交蝴蝶', en: 'Social Butterfly', desc: '你的工作就是维持办公室的人际关系。群消息你秒回，会议你捧场，聚餐你组织。你的社交能力让你在职场如鱼得水。', tags: ['社交高手', '气氛组', '人脉王'] },
-  'PGRS': { cn: '独行侠', en: 'The Closer', desc: '你不需要团队，你一个人就是一支队伍。遇到问题自己解决，扛着压力往前冲。高冷的能力者，孤独是你的常态。', tags: ['独立能力', '单兵作战', '高冷大佬'] },
-  'PGRO': { cn: '独处大佬', en: 'Lone Wolf', desc: '你喜欢独立思考，不喜欢被人打扰。工作是工作，生活是生活，你把界限划得很清楚。不是不合群，是更喜欢独处。', tags: ['独立思考', '边界感强', '专注力强'] },
-  'LTBS': { cn: '躺平专业户', en: 'Quiet Quitter', desc: '你是那个"不卷、不争、不站队"的三不员工。活能少就少，事能推就推。你不是没能力，你是看透了：卷来卷去，不如躺平。', tags: ['精神解脱', '不争不抢', '岁月静好'] },
-  'LTBO': { cn: '职场摸鱼王', en: 'Professional Slacker', desc: '你的工作状态：人在工位上，魂在摸鱼中。领导来了马上敲键盘，领导走了马上玩手机。你是办公室的太极高手。', tags: ['摸鱼大师', '时间管理大师', '演技派'] },
-  'LTRS': { cn: '反向画饼', en: 'Anti-Pie Eater', desc: '领导画的饼太大，噎到了。你不奢望升职加薪，只求准时下班。饼是什么？能吃吗？你的职场信条：别跟我谈理想，我的理想是不上班。', tags: ['人间清醒', '务实派', '拒绝PUA'] },
-  'LTRO': { cn: '职场老油条', en: 'Office Veteran', desc: '你什么世面没见过？加班、甩锅、站队、画饼，你都经历过。现在你的策略是：少说多做，少做少错，不做不错。', tags: ['职场老鸟', '人精', '不粘锅'] },
-  'LGBS': { cn: '低调做事', en: 'Quiet Professional', desc: '你默默干活，从不邀功。团队的事你能帮则帮，但你更喜欢独立完成工作。你是那种让领导放心、让同事依赖的存在。', tags: ['任劳任怨', '团队基石', '靠谱担当'] },
-  'LGBO': { cn: '和事佬', en: 'Office Peacekeeper', desc: '你总是在冲突爆发之前就悄悄化解了。你不站队、不冒尖、不出头，但你是团队运转的隐形润滑油。没有你，办公室早就吵翻天了。', tags: ['调和高手', '隐形润滑', '和平使者'] },
-  'LGRS': { cn: '淡人', en: 'Chill Vibes Only', desc: '你的人生字典里没有"焦虑"两个字。工资够了就行，职位不强求，快乐最重要。你是那种活得最通透的人。', tags: ['人间清醒', '无欲则刚', '内心平静'] },
-  'LGRO': { cn: '职场丧尸', en: 'The Working Dead', desc: '周一等周五，周五等下一个周一。你的灵魂已经下班，但你的身体还在工位上。你不是没有梦想，你的梦想就是不上班。', tags: ['灵魂已下班', '人形工位', '周一快乐'] }
-};
+  <div class="overlay idcard-overlay" id="idcard-overlay">
+    <div class="overlay-card idcard-sheet">
+      <div class="share-sheet-head">
+        <div>
+          <div class="share-sheet-title">你的工牌已经生成</div>
+          <div class="share-sheet-subtitle">这张更适合截图发朋友圈，或者直接保存图片发群。它比纯文案更容易让人停下来点进去测。</div>
+        </div>
+        <div class="share-sheet-chip" id="idcard-type-code">TYPE XXXX</div>
+      </div>
+      <div class="idcard-stage">
+        <div class="worker-idcard" id="worker-idcard">
+          <div class="worker-idcard-header">
+            <div class="worker-idcard-brand">
+              <strong>51TI 工牌</strong>
+              <span>WORKER IDENTITY CARD</span>
+            </div>
+            <div class="worker-idcard-badge" id="idcard-status">今日在岗</div>
+          </div>
+          <div class="worker-idcard-main">
+            <div class="worker-id-avatar" id="idcard-avatar">🛠️</div>
+            <div class="worker-id-body">
+              <div>
+                <div class="worker-id-label">工型身份</div>
+                <div class="worker-id-type" id="idcard-type-name">工型结果</div>
+                <div class="worker-id-subtitle" id="idcard-subtitle">副标题</div>
+              </div>
+              <div class="worker-id-dept" id="idcard-dept">劳动者人格研究院</div>
+            </div>
+          </div>
+          <div class="worker-id-manifesto" id="idcard-manifesto">“今天的工感已上线。”</div>
+          <div class="worker-id-tags" id="idcard-tags"></div>
+          <div class="worker-id-footer">
+            <div class="worker-id-footer-copy">
+              <strong id="idcard-footer-title">扫我测同款工型</strong>
+              <span>测一测你是哪一种工，然后也来领工牌。</span>
+            </div>
+            <div class="worker-id-qr">
+              <img id="idcard-qr" src="" alt="51TI 测试二维码" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="idcard-helper-text">如果在微信里长按不好保存，就点“保存工牌图片”下载，再去朋友圈发图。</div>
+      <div class="share-sheet-actions">
+        <button class="btn btn-primary" onclick="saveIdCard()">保存工牌图片</button>
+        <button class="btn btn-secondary" onclick="copyResultText()">复制配套文案</button>
+        <button class="btn btn-ghost" onclick="closeIdCard()">返回结果页</button>
+      </div>
+    </div>
+  </div>
 
-var currentQ = 0;
-var answers = [];
-var opposite = { P: 'L', L: 'P', T: 'G', G: 'T', B: 'R', R: 'B', S: 'O', O: 'S' };
+  <div class="toast" id="toast"></div>
 
-function startTest() {
-  currentQ = 0;
-  answers = [];
-  showPage('page-test');
-  renderProgressDots();
-  renderQuestion();
-}
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    var siteUrl = 'https://lincolnsama.github.io/51ti/51ti-wechat.html';
+    var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=' + encodeURIComponent(siteUrl);
+    var currentQ = 0;
+    var answers = [];
+    var currentTypeKey = '';
+    var currentProfileName = '';
+    var currentMetrics = [];
+    var currentShareCopies = { full: '', short: '', friend: '' };
+    var currentIdCardData = null;
+    var idCardQrReady = false;
 
-function renderProgressDots() {
-  var container = document.getElementById('progress-dots');
-  container.innerHTML = '';
-  for (var i = 0; i < questions.length; i++) {
-    var d = document.createElement('div');
-    d.className = 'dot' + (i < currentQ ? ' done' : (i === currentQ ? ' current' : ''));
-    container.appendChild(d);
-  }
-}
+    var progressHints = [
+      '你的工感快藏不住了',
+      '再答几题，就知道你到底是哪一种工',
+      '你已经逐渐暴露真实的上班状态了'
+    ];
 
-function renderQuestion() {
-  var q = questions[currentQ];
-  document.getElementById('q-emoji').textContent = q.emoji;
-  document.getElementById('q-number').textContent = 'Q' + (currentQ + 1);
-  document.getElementById('q-text').textContent = q.q;
-  document.getElementById('progress-text').textContent = '第 ' + (currentQ + 1) + ' / ' + questions.length + ' 题';
-  document.getElementById('progress-fill').style.width = (((currentQ + 1) / questions.length) * 100).toFixed(1) + '%';
-  var opts = document.getElementById('options');
-  opts.innerHTML = '';
-  for (var i = 0; i < q.opts.length; i++) {
-    var winDim = i === 0 ? q.dim : opposite[q.dim];
-    var btn = document.createElement('button');
-    btn.className = 'option-btn';
-    btn.textContent = q.opts[i];
-    (function(wd, b) {
-      b.onclick = function() { answer(wd, b); };
-    })(winDim, btn);
-    opts.appendChild(btn);
-  }
-  renderProgressDots();
-}
+    var scales = [
+      { value: -2, label: '很像左边', icon: '«', className: 'left-strong' },
+      { value: -1, label: '比较像左边', icon: '‹', className: 'left-weak' },
+      { value: 0, label: '都有点像', icon: '·', className: 'neutral' },
+      { value: 1, label: '比较像右边', icon: '›', className: 'right-weak' },
+      { value: 2, label: '很像右边', icon: '»', className: 'right-strong' }
+    ];
 
-function answer(winDim, btn) {
-  answers[currentQ] = winDim;
-  var allBtns = document.querySelectorAll('.option-btn');
-  for (var i = 0; i < allBtns.length; i++) {
-    allBtns[i].style.pointerEvents = 'none';
-    allBtns[i].style.opacity = '0.5';
-  }
-  btn.style.opacity = '1';
-  btn.style.borderColor = '#ff6b35';
-  btn.classList.add('selected');
-  setTimeout(function() {
-    currentQ++;
-    if (currentQ < questions.length) {
+    var resultProfiles = {
+      '已读不回工': {
+        subtitle: '群里像失踪，交付没失手',
+        description: '你不是爱解释的人。消息能少回就少回，会也能不开就不开，但真轮到你交东西的时候，基本不会掉链子。别人以为你在摸，其实你只是不想把力气浪费在无效社交上。你不是不在线，你只是把在线时间都换成了完成度。',
+        shareText: '已读不回是表象，按时交付才是信仰。'
+      },
+      '临门一脚工': {
+        subtitle: '不催不动，一催封神',
+        description: '你平时像没开机，催之前安安静静，催之后突然开大。你不是完全不做，你是在等那个“非做不可”的瞬间。一旦死线逼近，你会迅速进入战斗状态，甚至爆发出自己都意外的效率。前面有多安静，后面就有多吓人。',
+        shareText: '别太早叫醒我，我适合在最后一刻封神。'
+      },
+      '越骂越干工': {
+        subtitle: '嘴上全是脏话，手上全是成果',
+        description: '你对工作有意见，这很正常；但你有意见归有意见，活还是会干，而且经常干得不差。你属于典型的“情绪归情绪，执行归执行”，嘴上说着不想搞了，手上已经在收尾。你不是消极，你只是把真实情绪说出来了。',
+        shareText: '我可以一边骂，一边把事做完。'
+      },
+      '一键开摆工': {
+        subtitle: '先歇会儿，但真到点也能顶上',
+        description: '你很懂得给自己留白。别人看你像在摆，其实你只是在避免无意义耗电。你不追求时时在线，也不表演努力，但关键节点真来了，你又总能把状态拉回来。你不是躺平，你是有节制地省电。',
+        shareText: '平时先摆一下，关键时刻照样顶上。'
+      },
+      '突然发狠工': {
+        subtitle: '平时看着佛，关键时刻像开挂',
+        description: '大多数时候你都不抢、不躁、不显山露水。但真正到关键节点，你会突然切换模式，效率、判断、推进力一起上线，让周围人意识到：原来你不是没能力，你只是平时懒得发功。你不常出手，但一出手就很像回事。',
+        shareText: '平时佛系，关键时刻突然发狠。'
+      },
+      '工位潜伏工': {
+        subtitle: '存在感不高，完成度很高',
+        description: '你是办公室里的低调狠人。不争镜头，不抢表达，不主动制造存在感，但事情交给你，通常就会安安稳稳落地。你不一定是最热闹的那个，却往往是最省心的那个。真正懂你的人，会知道你这种人最难得。',
+        shareText: '我不一定最显眼，但通常最稳。'
+      },
+      '热心代劳工': {
+        subtitle: '别人的活，也总能落你手里',
+        description: '你是那种很难彻底袖手旁观的人。看见事情悬着，你会忍不住接；看见别人搞不定，你会顺手帮。久而久之，你常常变成团队里的“默认补位位”。你不是闲，你只是责任感太容易被触发。',
+        shareText: '我本来没想接，最后还是接了。'
+      },
+      '下班复活工': {
+        subtitle: '白天没精神，晚上像觉醒',
+        description: '白天的你像系统待机，到了晚上才像真正上线。别人上午开会你发懵，夜里一安静下来你反而脑子清了、效率高了、灵感也来了。你的节奏和大众作息不完全同步，但这不代表你不行。你只是属于夜间觉醒型劳动者。',
+        shareText: '白天像关机，晚上像开挂。'
+      },
+      '情绪免疫工': {
+        subtitle: '外面再吵，你也照做不误',
+        description: '你不是没有情绪，而是情绪不太容易把你带跑。环境乱、声音杂、意见多，你也能维持自己的节奏，不轻易被裹挟。很多人靠热血做事，你更多靠稳定做事。你身上最强的不是爆发力，而是抗干扰。',
+        shareText: '外面再吵，我也能把活做完。'
+      },
+      '看心情上工': {
+        subtitle: '状态玄学，但灵感来了真能打',
+        description: '你的工作表现很吃状态。不在感觉里的时候，怎么催都别扭；一旦进入感觉，思路、效率、表达全都在线，甚至会做出让人眼前一亮的东西。你不是不稳定，你是典型的灵感驱动型选手。',
+        shareText: '状态不一定稳定，但一来感觉就很能打。'
+      },
+      '收拾残局工': {
+        subtitle: '项目烂了，但你还在',
+        description: '很多人擅长开头，你更擅长收尾。事情一乱、流程一崩、责任一散，最后总有人还得留下来兜底，而这个人往往是你。你可能不是最先冲的，但你经常是最后还在的。你是那种让烂摊子还能勉强变体面的存在。',
+        shareText: '项目可以乱，但我还在。'
+      },
+      '少聊多做工': {
+        subtitle: '不爱解释，直接出活',
+        description: '你不是喜欢反复沟通的人。很多话你懒得说，很多情绪你懒得表，很多过程你也不想展示。你更习惯直接把结果放出来，让别人自己看。你对工作的最大表达方式，不是态度，是产出。',
+        shareText: '解释太累了，直接出活吧。'
+      },
+      '越忙越爽工': {
+        subtitle: '任务一多，反而来劲',
+        description: '你很奇怪，越清闲越提不起劲，越忙反而越清醒。任务多、节奏快、要求高的时候，你会迅速兴奋起来，像进入一个专属你的游戏场。别人觉得窒息，你觉得终于有感觉了。你的能量不是被压力压垮的，而是被压力激活的。',
+        shareText: '越忙越来劲，太闲反而没状态。'
+      },
+      '别人先上工': {
+        subtitle: '观察半天，最后精准出手',
+        description: '你不是那种一上来就冲的人。你更喜欢先看局势、看人、看节奏，等摸清楚以后再出手。你不追求第一时间表达自己，但一旦出手，通常都比较准。你属于慢热型，但不是低效型。',
+        shareText: '我不是不上，我只是先看一轮。'
+      },
+      '催一下就工': {
+        subtitle: '平时静音，提醒即上线',
+        description: '你需要一点外部唤醒。不是完全没动力，只是经常差一个提醒、一个节点、一个人推你一把。一旦被点到名，你就能迅速切换状态，该接活接活，该推进推进。你不是拖，你只是启动条件比较具体。',
+        shareText: '平时静音，一催就上线。'
+      },
+      '能拖也能成交工': {
+        subtitle: '拖归拖，结果归结果',
+        description: '你对过程没那么执着，但对结果其实有数。很多时候你会拖，会放，会晚一点进入状态，可你心里并不是完全没谱。你知道什么时候必须动，什么时候可以缓，最后也常能把事做成。你最厉害的地方不是自律，而是对临界点的把握。',
+        shareText: '拖可以拖，结果不能丢。'
+      }
+    };
+
+    var resultVisuals = {
+      '已读不回工': { emoji: '📵', tags: ['低耗社交', '交付在线'] },
+      '临门一脚工': { emoji: '⏱️', tags: ['压线爆发', '最后封神'] },
+      '越骂越干工': { emoji: '😤', tags: ['嘴硬手稳', '边骂边收尾'] },
+      '一键开摆工': { emoji: '🛋️', tags: ['节制省电', '关键能顶'] },
+      '突然发狠工': { emoji: '⚔️', tags: ['平时佛系', '关键开挂'] },
+      '工位潜伏工': { emoji: '🪑', tags: ['低调狠人', '稳定落地'] },
+      '热心代劳工': { emoji: '🧰', tags: ['责任感强', '团队补位'] },
+      '下班复活工': { emoji: '🌙', tags: ['夜间觉醒', '晚间高能'] },
+      '情绪免疫工': { emoji: '🧊', tags: ['抗干扰强', '稳住推进'] },
+      '看心情上工': { emoji: '🎭', tags: ['状态驱动', '灵感上线'] },
+      '收拾残局工': { emoji: '🧹', tags: ['兜底选手', '最后还在'] },
+      '少聊多做工': { emoji: '🔧', tags: ['少说多做', '结果表达'] },
+      '越忙越爽工': { emoji: '🔥', tags: ['任务激活', '忙起来爽'] },
+      '别人先上工': { emoji: '👀', tags: ['先看局势', '出手很准'] },
+      '催一下就工': { emoji: '🔔', tags: ['提醒启动', '点名上线'] },
+      '能拖也能成交工': { emoji: '🎯', tags: ['节奏自控', '结果不丢'] }
+    };
+
+    var personaDepts = {
+      '已读不回工': '静音交付部',
+      '临门一脚工': '压线封神部',
+      '越骂越干工': '嘴硬执行部',
+      '一键开摆工': '省电续航部',
+      '突然发狠工': '关键开挂部',
+      '工位潜伏工': '低调落地部',
+      '热心代劳工': '补位支援部',
+      '下班复活工': '夜间觉醒部',
+      '情绪免疫工': '稳定推进部',
+      '看心情上工': '灵感驱动部',
+      '收拾残局工': '兜底回收部',
+      '少聊多做工': '结果交付部',
+      '越忙越爽工': '高压兴奋部',
+      '别人先上工': '观察出手部',
+      '催一下就工': '提醒启动部',
+      '能拖也能成交工': '临界把控部'
+    };
+
+    var personaStatuses = {
+      '已读不回工': '消息免打扰',
+      '临门一脚工': '压线处理中',
+      '越骂越干工': '边骂边推进',
+      '一键开摆工': '省电运行中',
+      '突然发狠工': '关键节点在线',
+      '工位潜伏工': '稳定在岗中',
+      '热心代劳工': '补位响应中',
+      '下班复活工': '夜间高能中',
+      '情绪免疫工': '抗干扰在线',
+      '看心情上工': '灵感等待中',
+      '收拾残局工': '兜底处理中',
+      '少聊多做工': '直接出活中',
+      '越忙越爽工': '高压兴奋中',
+      '别人先上工': '观察局势中',
+      '催一下就工': '提醒已接收',
+      '能拖也能成交工': '结果可交付'
+    };
+
+    var typeKeyMap = {
+      PTBS: '热心代劳工',
+      PTBO: '越忙越爽工',
+      PTRS: '越骂越干工',
+      PTRO: '收拾残局工',
+      PGBS: '工位潜伏工',
+      PGBO: '少聊多做工',
+      PGRS: '已读不回工',
+      PGRO: '突然发狠工',
+      LTBS: '催一下就工',
+      LTBO: '别人先上工',
+      LTRS: '一键开摆工',
+      LTRO: '看心情上工',
+      LGBS: '情绪免疫工',
+      LGBO: '临门一脚工',
+      LGRS: '下班复活工',
+      LGRO: '能拖也能成交工'
+    };
+
+    var questions = [
+      { axis: 'PL', leftKey: 'P', rightKey: 'L', emoji: '⏰', title: '周一刚响第一遍闹钟时，你更像哪边？', left: '醒了就醒了，直接起，不想和自己拉扯。', right: '先缓一下，能多赖两分钟也是赚到。' },
+      { axis: 'PL', leftKey: 'P', rightKey: 'L', emoji: '📩', title: '工作群里突然@你，你更像哪边？', left: '先回个“收到”，心里比较踏实。', right: '看到了，但想等会儿再处理也不迟。' },
+      { axis: 'PL', leftKey: 'P', rightKey: 'L', emoji: '🧯', title: '任务突然压下来时，你通常更像哪边？', left: '先动起来再说，边做边找感觉。', right: '先放脑子里转一会儿，逼近了再集中发力。' },
+      { axis: 'PL', leftKey: 'P', rightKey: 'L', emoji: '🚪', title: '下班前临时来活，你更接近哪种反应？', left: '先顶上，别让事情卡在那里。', right: '如果不是非今天不可，我想明天再接。' },
+      { axis: 'PL', leftKey: 'P', rightKey: 'L', emoji: '📅', title: '面对一项一周后的任务，你更像哪边？', left: '早点起个头，后面会轻松很多。', right: '先记着，真快到了我自然会动。' },
+      { axis: 'PL', leftKey: 'P', rightKey: 'L', emoji: '🔔', title: '别人催进度这件事，对你来说更像哪边？', left: '最好别等别人催，我自己会先推进。', right: '被提醒一下，反而更容易正式开机。' },
+      { axis: 'PL', leftKey: 'P', rightKey: 'L', emoji: '⚡', title: '关于效率节奏，你更像哪边？', left: '我习惯提早进入状态，省得后面手忙脚乱。', right: '我常常是最后时刻一下冲出来。' },
+      { axis: 'PL', leftKey: 'P', rightKey: 'L', emoji: '🧾', title: '看到待办越堆越多时，你更像哪边？', left: '先清掉几项，心理负担会小很多。', right: '先放着，等状态到了再一口气收。' },
+
+      { axis: 'TG', leftKey: 'T', rightKey: 'G', emoji: '🗣️', title: '遇到棘手问题时，你更偏哪边？', left: '拉人聊一聊，很多事说着说着就顺了。', right: '我更想自己先捋清楚，再决定要不要说。' },
+      { axis: 'TG', leftKey: 'T', rightKey: 'G', emoji: '🤝', title: '看到别人快搞不定了，你更像哪边？', left: '顺手搭一把，我会比较坐得住。', right: '除非别人明确开口，不然我先不接。' },
+      { axis: 'TG', leftKey: 'T', rightKey: 'G', emoji: '📣', title: '项目汇报时，你更自然的是哪边？', left: '一起讲、一起扛，气氛会更顺。', right: '谁做的谁讲清楚，效率更高。' },
+      { axis: 'TG', leftKey: 'T', rightKey: 'G', emoji: '🎯', title: '任务协作方式上，你更接近哪边？', left: '有人一起推进，我会更有劲。', right: '给我独立空间，我反而更稳。' },
+      { axis: 'TG', leftKey: 'T', rightKey: 'G', emoji: '🧩', title: '方案讨论卡住时，你更像哪边？', left: '先碰一下意见，说不定就冒出新路子。', right: '让我自己想清楚，再拿成型版本出来。' },
+      { axis: 'TG', leftKey: 'T', rightKey: 'G', emoji: '🎉', title: '公司组织团建时，你更像哪边？', left: '去就去，热闹一下也挺好。', right: '能不去最好，我更想安静待会儿。' },
+      { axis: 'TG', leftKey: 'T', rightKey: 'G', emoji: '🛠️', title: '资源不够的时候，你更像哪边？', left: '先找人协调，一起把事抬过去。', right: '能自己补的我就自己补，不想来回说。' },
+      { axis: 'TG', leftKey: 'T', rightKey: 'G', emoji: '📚', title: '同事来问你经验时，你更接近哪边？', left: '知道的就讲，省得大家反复踩坑。', right: '我会讲重点，但不会讲得太满。' },
+
+      { axis: 'BR', leftKey: 'B', rightKey: 'R', emoji: '😮‍💨', title: '方案被打回来时，你更像哪边？', left: '先改吧，先把事过了再说。', right: '我会先想清楚，这锅到底该不该我背。' },
+      { axis: 'BR', leftKey: 'B', rightKey: 'R', emoji: '🍵', title: '领导又开始画大饼时，你更像哪边？', left: '先听着，表面流程还是要走完。', right: '嘴上不一定说，但心里会立刻翻白眼。' },
+      { axis: 'BR', leftKey: 'B', rightKey: 'R', emoji: '🧱', title: '项目一乱套，你更像哪边？', left: '先稳住情绪，把事情捡回来。', right: '我会先表达不爽，不然憋着更难受。' },
+      { axis: 'BR', leftKey: 'B', rightKey: 'R', emoji: '🥲', title: '同事把麻烦丢过来时，你更像哪边？', left: '先接住再说，别让现场更难看。', right: '该说不就说不，我不想默认兜底。' },
+      { axis: 'BR', leftKey: 'B', rightKey: 'R', emoji: '📉', title: '公司风向不太妙时，你更像哪边？', left: '先稳住，把自己该做的做好。', right: '简历我会先更新，边看边准备。' },
+      { axis: 'BR', leftKey: 'B', rightKey: 'R', emoji: '🔥', title: '连续高压工作一段时间后，你更像哪边？', left: '还能再扛一下，先把这一波顶过去。', right: '我会明显变暴躁，骂两句才能继续。' },
+      { axis: 'BR', leftKey: 'B', rightKey: 'R', emoji: '🧊', title: '外部声音很杂的时候，你更像哪边？', left: '外面吵归吵，我还是先把活做掉。', right: '谁一直吵我就会很想当场回过去。' },
+
+      { axis: 'SO', leftKey: 'S', rightKey: 'O', emoji: '💺', title: '下午开始犯困时，你更像哪边？', left: '坐住，咖啡续上，别让节奏断。', right: '我要找个由头起来走走，换口气。' },
+      { axis: 'SO', leftKey: 'S', rightKey: 'O', emoji: '🍱', title: '午饭时间你更像哪边？', left: '快点吃完，省点时间继续做自己的事。', right: '我更想出去转转，哪怕多走几步。' },
+      { axis: 'SO', leftKey: 'S', rightKey: 'O', emoji: '🚶', title: '有个能出门办的小事时，你更像哪边？', left: '能线上解决最好，少折腾。', right: '正好，出去透个气也不错。' },
+      { axis: 'SO', leftKey: 'S', rightKey: 'O', emoji: '🕶️', title: '开线上会时，你更像哪边？', left: '我会尽量坐定在线，把会完整过完。', right: '能不开摄像头就不开，想轻一点。' },
+      { axis: 'SO', leftKey: 'S', rightKey: 'O', emoji: '🌃', title: '一天真正有感觉的时段，你更像哪边？', left: '白天坐在工位上，我更容易进入状态。', right: '一到晚上或下班后，我反而更像活过来。' },
+      { axis: 'SO', leftKey: 'S', rightKey: 'O', emoji: '📦', title: '有快递或小事能当借口离开工位时，你更像哪边？', left: '让它晚点再说，我先把手上的事做完。', right: '这正好给了我出去缓一口气的理由。' },
+      { axis: 'SO', leftKey: 'S', rightKey: 'O', emoji: '⏳', title: '到了下班点以后，你更像哪边？', left: '如果状态正顺，我能继续坐一会儿。', right: '我需要切出场景，离开工位才算真的换气。' }
+    ];
+
+    var dimensionLabels = {
+      PL: { left: '先动手先安心', right: '压线爆发更来电' },
+      TG: { left: '一起推进更顺手', right: '自己消化更高效' },
+      BR: { left: '稳住把活做完', right: '情绪出来再继续' },
+      SO: { left: '坐定推进型', right: '切场换气型' }
+    };
+
+    function startTest() {
+      currentQ = 0;
+      answers = [];
+      showPage('page-test');
+      renderProgressDots();
       renderQuestion();
-    } else {
-      showResult();
     }
-  }, 300);
-}
 
-function showResult() {
-  var scores = { P: 0, L: 0, T: 0, G: 0, B: 0, R: 0, S: 0, O: 0 };
-  var counts = { P: 0, L: 0, T: 0, G: 0, B: 0, R: 0, S: 0, O: 0 };
-  for (var i = 0; i < answers.length; i++) {
-    var dim = answers[i];
-    if (dim) {
-      scores[dim]++;
-      // 统计每个维度的总题数
-      var q = questions[i];
-      counts[q.dim]++;
-      counts[opposite[q.dim]]++;
+    function renderProgressDots() {
+      var container = document.getElementById('progress-dots');
+      container.innerHTML = '';
+      for (var i = 0; i < questions.length; i++) {
+        var dot = document.createElement('div');
+        dot.className = 'dot' + (i < currentQ ? ' done' : (i === currentQ ? ' current' : ''));
+        container.appendChild(dot);
+      }
     }
-  }
-  // 用比例计算，平衡不同维度题数不同的问题
-  var dim1 = (scores.P / (counts.P || 1)) >= (scores.L / (counts.L || 1)) ? 'P' : 'L';
-  var dim2 = (scores.T / (counts.T || 1)) >= (scores.G / (counts.G || 1)) ? 'T' : 'G';
-  var dim3 = (scores.B / (counts.B || 1)) >= (scores.R / (counts.R || 1)) ? 'B' : 'R';
-  var dim4 = (scores.S / (counts.S || 1)) >= (scores.O / (counts.O || 1)) ? 'S' : 'O';
-  var type = dim1 + dim2 + dim3 + dim4;
-  var p = personas[type];
-  if (!p) {
-    document.getElementById('result-type').textContent = '???';
-    document.getElementById('result-cn').textContent = '人格未识别（' + type + '）';
-    showPage('page-result');
-    return;
-  }
-  document.getElementById('result-type').textContent = p.cn;
-  document.getElementById('result-cn').textContent = p.en;
-  currentResultType = type; // 保存当前人格类型key
-  document.getElementById('result-desc').textContent = p.desc;
-  var tagsEl = document.getElementById('result-tags');
-  tagsEl.innerHTML = '';
-  for (var i = 0; i < p.tags.length; i++) {
-    var span = document.createElement('span');
-    span.className = 'tag';
-    span.textContent = p.tags[i];
-    tagsEl.appendChild(span);
-  }
-  showPage('page-result');
-}
 
-function showPage(id) {
-  var pages = document.querySelectorAll('.page');
-  for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active'); }
-  document.getElementById(id).classList.add('active');
-}
+    function renderQuestion() {
+      var q = questions[currentQ];
+      var progress = ((currentQ + 1) / questions.length) * 100;
+      document.getElementById('progress-text').textContent = '第 ' + (currentQ + 1) + ' / ' + questions.length + ' 题';
+      document.getElementById('progress-hint').textContent = progressHints[currentQ % progressHints.length];
+      document.getElementById('progress-fill').style.width = progress.toFixed(1) + '%';
+      document.getElementById('q-number').textContent = 'Q' + (currentQ + 1);
+      document.getElementById('q-axis').textContent = '更偏哪边一点？';
+      document.getElementById('q-emoji').textContent = q.emoji;
+      document.getElementById('q-text').textContent = q.title;
+      document.getElementById('left-text').textContent = q.left;
+      document.getElementById('right-text').textContent = q.right;
 
-function restartTest() { startTest(); }
-function showShareTip() { document.getElementById('share-tip').classList.add('active'); }
-function hideShareTip() { document.getElementById('share-tip').classList.remove('active'); }
+      var options = document.getElementById('options');
+      options.innerHTML = '';
+      for (var i = 0; i < scales.length; i++) {
+        var item = scales[i];
+        var btn = document.createElement('button');
+        btn.className = 'scale-btn ' + item.className;
+        btn.innerHTML = '<em>' + item.icon + '</em><span>' + item.label + '</span>';
+        btn.onclick = createAnswerHandler(item.value, btn);
+        options.appendChild(btn);
+      }
+      renderProgressDots();
+    }
 
-function updateCountdown() {
-  var wuyi = new Date('2026-05-01');
-  var now = new Date();
-  var diff = Math.ceil((wuyi - now) / (1000 * 60 * 60 * 24));
-  document.getElementById('days-to-51').textContent = diff > 0 ? diff : '今天！';
-}
+    function createAnswerHandler(value, btn) {
+      return function () {
+        var buttons = document.querySelectorAll('.scale-btn');
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].disabled = true;
+          buttons[i].style.opacity = '0.55';
+        }
+        btn.style.opacity = '1';
+        btn.classList.add('selected');
+        answers[currentQ] = value;
+        setTimeout(function () {
+          currentQ += 1;
+          if (currentQ < questions.length) {
+            renderQuestion();
+          } else {
+            showResult();
+          }
+        }, 180);
+      };
+    }
 
-updateCountdown();
-var currentResultType = '';
-var personaSlogans = {
-  'PTBS': '我就是一打工的，别cue我',
-  'PTBO': '加班是我的宿命',
-  'PTRS': '上班是为了更好的摸鱼',
-  'PTRO': '在混乱中寻找意义',
-  'PGBS': '瓜田猹本猹，闰土看了都摇头',
-  'PGBO': '没有我聊不开的天',
-  'PGRS': '一个人就是一支队伍',
-  'PGRO': '独处是我的充电方式',
-  'LTBS': '躺平才是终极目标',
-  'LTBO': '摸鱼才是人生真谛',
-  'LTRS': '饼太大，噎到了',
-  'LTRO': '老油条，永不翻车',
-  'LGBS': '低调做事，高调做人',
-  'LGBO': '和气生财，peace&love',
-  'LGRS': '无欲则刚，淡是最浓的味',
-  'LGRO': '我的灵魂已经下班了'
-};
+    function showResult() {
+      var axisScores = { PL: 0, TG: 0, BR: 0, SO: 0 };
+      var axisCounts = { PL: 0, TG: 0, BR: 0, SO: 0 };
 
-var currentPersona = null;
+      for (var i = 0; i < questions.length; i++) {
+        var q = questions[i];
+        var value = typeof answers[i] === 'number' ? answers[i] : 0;
+        axisScores[q.axis] += value;
+        axisCounts[q.axis] += 1;
+      }
 
-var personaDepts = {
-  'PTBS': '摸鱼部', 'PTBO': '加班部', 'PTRS': '效率部', 'PTRO': '救火部',
-  'PGBS': '八卦部', 'PGBO': '社交部', 'PGRS': '独狼部', 'PGRO': '独处部',
-  'LTBS': '躺平部', 'LTBO': '摸鱼部', 'LTRS': '反饼部', 'LTRO': '老油条部',
-  'LGBS': '低调部', 'LGBO': '和事部', 'LGRS': '淡人部', 'LGRO': '战损部'
-};
+      var typeKey = '';
+      typeKey += axisScores.PL <= 0 ? 'P' : 'L';
+      typeKey += axisScores.TG <= 0 ? 'T' : 'G';
+      typeKey += axisScores.BR <= 0 ? 'B' : 'R';
+      typeKey += axisScores.SO <= 0 ? 'S' : 'O';
 
-function openIdCard() {
-  var type = currentResultType;
-  var cn = document.getElementById('result-type').textContent;
-  currentPersona = personas[type] || { cn: cn, en: '', desc: '', tags: [] };
-  
-  document.getElementById('idcard-type-name').textContent = currentPersona.cn;
-  document.getElementById('idcard-name-display').textContent = '打工人';
-  document.getElementById('idcard-id').textContent = Math.floor(Math.random() * 9000 + 1000);
-  document.getElementById('idcard-slogan').textContent = personaSlogans[type] || '打工魂永不灭';
-  document.getElementById('idcard-dept').textContent = personaDepts[type] || '打工人部';
-  document.getElementById('idcard-input-wrap').style.display = 'block';
-  document.getElementById('idcard-save-wrap').style.display = 'none';
-  document.getElementById('idcard-modal').classList.add('active');
-}
+      currentTypeKey = typeKey;
+      currentProfileName = typeKeyMap[typeKey] || '工位潜伏工';
+      var profile = resultProfiles[currentProfileName];
 
-function closeIdCard() {
-  document.getElementById('idcard-modal').classList.remove('active');
-}
+      document.getElementById('result-code').textContent = 'TYPE ' + typeKey;
+      document.getElementById('result-type').textContent = currentProfileName;
+      document.getElementById('result-subtitle').textContent = profile.subtitle;
+      document.getElementById('result-desc').textContent = profile.description;
+      document.getElementById('manifesto-text').textContent = '“' + profile.shareText + '”';
 
-function generateIdCard() {
-  var name = document.getElementById('idcard-name-input').value.trim() || '打工人';
-  document.getElementById('idcard-name-display').textContent = name;
-  document.getElementById('idcard-input-wrap').style.display = 'none';
-  document.getElementById('idcard-save-wrap').style.display = 'block';
-}
+      renderResultVisual(currentProfileName);
+      renderResultSummary(typeKey);
+      currentMetrics = buildMetrics(axisScores, axisCounts);
+      renderMetrics(currentMetrics);
+      currentShareCopies = buildShareCopies();
+      renderShareSection(currentShareCopies);
 
-function saveIdCard() {
-  var wrapper = document.getElementById('idcard-wrapper');
-  html2canvas(wrapper, { backgroundColor: null, scale: 2 }).then(function(canvas) {
-    var link = document.createElement('a');
-    link.download = '51TI工牌.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  }).catch(function(err) {
-    alert('保存失败，请长按工牌截图保存');
-  });
-}
-</script>
+      showPage('page-result');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderResultVisual(profileName) {
+      var visual = resultVisuals[profileName] || { emoji: '🛠️', tags: ['工感在线', '风格明确'] };
+      document.getElementById('result-avatar').textContent = visual.emoji;
+      document.getElementById('poster-mini-emoji').textContent = visual.emoji;
+      document.getElementById('poster-mini-type').textContent = profileName;
+      document.getElementById('poster-mini-line').textContent = (resultProfiles[profileName] || {}).subtitle || '你的工感代号已生成';
+      var wrap = document.getElementById('result-badges');
+      wrap.innerHTML = '';
+      for (var i = 0; i < visual.tags.length; i++) {
+        var tag = document.createElement('span');
+        tag.className = 'result-badge';
+        tag.textContent = visual.tags[i];
+        wrap.appendChild(tag);
+      }
+    }
+
+    function renderResultSummary(typeKey) {
+      var labels = ['你的工感已出炉', '这句最像你本人', '类型码 ' + typeKey];
+      var wrap = document.getElementById('result-summary');
+      wrap.innerHTML = '';
+      for (var i = 0; i < labels.length; i++) {
+        var pill = document.createElement('span');
+        pill.className = 'summary-pill';
+        pill.textContent = labels[i];
+        wrap.appendChild(pill);
+      }
+    }
+
+    function buildMetrics(axisScores, axisCounts) {
+      var metrics = [];
+      var axes = ['PL', 'TG', 'BR', 'SO'];
+      for (var i = 0; i < axes.length; i++) {
+        var axis = axes[i];
+        var score = axisScores[axis];
+        var count = axisCounts[axis] || 1;
+        var maxAbs = count * 2;
+        var leaningPercent = Math.round(50 + (Math.abs(score) / maxAbs) * 50);
+        var towardLeft = score <= 0;
+        var label = towardLeft ? dimensionLabels[axis].left : dimensionLabels[axis].right;
+        metrics.push({
+          axis: axis,
+          label: label,
+          percent: leaningPercent
+        });
+      }
+      return metrics;
+    }
+
+    function renderMetrics(metrics) {
+      var container = document.getElementById('result-metrics');
+      container.innerHTML = '';
+      for (var i = 0; i < metrics.length; i++) {
+        var metric = metrics[i];
+        var item = document.createElement('div');
+        item.className = 'metric-item';
+        item.innerHTML =
+          '<div class="metric-row"><span>更偏</span><strong>' + escapeHtml(metric.label) + '</strong><span>' + metric.percent + '%</span></div>' +
+          '<div class="metric-bar"><span style="width:' + metric.percent + '%"></span></div>';
+        container.appendChild(item);
+      }
+    }
+
+    function buildShareCopies() {
+      var profile = resultProfiles[currentProfileName];
+      return {
+        full: '我刚测了下 51TI，结果是「' + currentProfileName + '」。\n' +
+          profile.subtitle + '。\n' +
+          '最像我的一句是：' + profile.shareText + '\n\n' +
+          '你也来测测自己是哪一种工：\n' + siteUrl,
+        short: '我是「' + currentProfileName + '」｜' + profile.subtitle + '。' + profile.shareText,
+        friend: '我测出来居然是「' + currentProfileName + '」，这句真的很像我：' + profile.shareText + ' 你也去测测：' + siteUrl
+      };
+    }
+
+    function buildShareCopy() {
+      return currentShareCopies.full || buildShareCopies().full;
+    }
+
+    function renderShareSection(copies) {
+      document.getElementById('share-copy-preview').textContent = copies.full;
+      document.getElementById('share-copy-length').textContent = copies.full.length + ' 字';
+      document.getElementById('share-scene-feed').textContent = '适合直接发圈，像在自然认领你的工型，不像在硬转发。';
+      document.getElementById('share-scene-friend').textContent = '适合甩给同事朋友，让对方也去测，容易带二次传播。';
+      document.getElementById('share-sheet-preview').textContent = copies.full;
+      document.getElementById('share-sheet-chip').textContent = 'TYPE ' + currentTypeKey;
+    }
+
+    function buildIdCardData() {
+      var profile = resultProfiles[currentProfileName] || { subtitle: '你的工感已生成', shareText: '今天也在认真上工。' };
+      var visual = resultVisuals[currentProfileName] || { emoji: '🛠️', tags: ['工感在线', '风格明确'] };
+      return {
+        code: 'TYPE ' + currentTypeKey,
+        name: currentProfileName,
+        subtitle: profile.subtitle,
+        manifesto: '“' + profile.shareText + '”',
+        emoji: visual.emoji,
+        tags: visual.tags || [],
+        dept: personaDepts[currentProfileName] || '劳动者人格研究院',
+        status: personaStatuses[currentProfileName] || '今日在岗',
+        footerTitle: '扫我测同款工型'
+      };
+    }
+
+    function renderIdCard(data) {
+      document.getElementById('idcard-type-code').textContent = data.code;
+      document.getElementById('idcard-status').textContent = data.status;
+      document.getElementById('idcard-avatar').textContent = data.emoji;
+      document.getElementById('idcard-type-name').textContent = data.name;
+      document.getElementById('idcard-subtitle').textContent = data.subtitle;
+      document.getElementById('idcard-dept').textContent = data.dept;
+      document.getElementById('idcard-manifesto').textContent = data.manifesto;
+      document.getElementById('idcard-footer-title').textContent = data.footerTitle;
+
+      var qrImg = document.getElementById('idcard-qr');
+      idCardQrReady = false;
+      qrImg.onload = function () { idCardQrReady = true; };
+      qrImg.onerror = function () { idCardQrReady = false; };
+      qrImg.src = qrUrl;
+      if (qrImg.complete && qrImg.naturalWidth > 0) {
+        idCardQrReady = true;
+      }
+
+      var tagsWrap = document.getElementById('idcard-tags');
+      tagsWrap.innerHTML = '';
+      for (var i = 0; i < data.tags.length; i++) {
+        var tag = document.createElement('span');
+        tag.textContent = data.tags[i];
+        tagsWrap.appendChild(tag);
+      }
+    }
+
+    function waitForImageLoad(img, timeoutMs) {
+      return new Promise(function (resolve) {
+        if (!img) {
+          resolve(false);
+          return;
+        }
+        if (img.complete && img.naturalWidth > 0) {
+          resolve(true);
+          return;
+        }
+        var settled = false;
+        var timer = setTimeout(function () {
+          if (settled) return;
+          settled = true;
+          resolve(false);
+        }, timeoutMs || 2500);
+
+        function done(ok) {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timer);
+          img.removeEventListener('load', onLoad);
+          img.removeEventListener('error', onError);
+          resolve(ok);
+        }
+
+        function onLoad() {
+          done(true);
+        }
+
+        function onError() {
+          done(false);
+        }
+
+        img.addEventListener('load', onLoad);
+        img.addEventListener('error', onError);
+      });
+    }
+
+    function showGeneratedImage(canvas) {
+      var imageUrl = canvas.toDataURL('image/png');
+      var opened = window.open('');
+      if (opened && opened.document) {
+        opened.document.write('<title>51TI 工牌</title><body style="margin:0;background:#0b0c12;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px;"><img src="' + imageUrl + '" style="max-width:100%;height:auto;border-radius:18px;box-shadow:0 14px 36px rgba(0,0,0,0.28);" alt="51TI 工牌图片" /></body>');
+        opened.document.close();
+        showToast('已打开工牌图片，长按图片即可保存');
+      } else {
+        showToast('已生成工牌，请长按或截图保存');
+      }
+    }
+
+    function openIdCard() {
+      currentIdCardData = buildIdCardData();
+      renderIdCard(currentIdCardData);
+      document.getElementById('idcard-overlay').classList.add('active');
+      showToast('工牌已生成，适合直接保存发朋友圈');
+    }
+
+    function closeIdCard() {
+      document.getElementById('idcard-overlay').classList.remove('active');
+    }
+
+    async function saveIdCard() {
+      var target = document.getElementById('worker-idcard');
+      var qrImg = document.getElementById('idcard-qr');
+      if (!window.html2canvas) {
+        showToast('当前环境暂不支持生成图片，请先截图保存');
+        return;
+      }
+      try {
+        if (!idCardQrReady) {
+          var loaded = await waitForImageLoad(qrImg, 2800);
+          idCardQrReady = loaded;
+        }
+        var canvas = await html2canvas(target, {
+          backgroundColor: '#101221',
+          scale: Math.min(window.devicePixelRatio || 2, 3),
+          useCORS: true
+        });
+        var imageUrl = canvas.toDataURL('image/png');
+        var link = document.createElement('a');
+        link.download = '51TI-' + currentProfileName + '-工牌.png';
+        link.href = imageUrl;
+        link.click();
+        if (navigator.userAgent && /MicroMessenger|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+          showGeneratedImage(canvas);
+        } else {
+          showToast(idCardQrReady ? '工牌图片已开始保存' : '工牌已保存，二维码若未出现可稍后重试');
+        }
+      } catch (err) {
+        try {
+          var fallbackCanvas = await html2canvas(target, {
+            backgroundColor: '#101221',
+            scale: Math.min(window.devicePixelRatio || 2, 3),
+            useCORS: true
+          });
+          showGeneratedImage(fallbackCanvas);
+        } catch (fallbackErr) {
+          showToast('保存失败，先截图也可以用');
+        }
+      }
+    }
+
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+      var textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', 'readonly');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      textarea.setSelectionRange(0, textarea.value.length);
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      document.body.removeChild(textarea);
+      return ok;
+    }
+
+    async function copyResultText() {
+      try {
+        var text = buildShareCopy();
+        var ok = await copyText(text);
+        if (ok) {
+          showToast('已复制分享文案，直接粘贴到微信/朋友圈就行');
+          closeShareOverlay();
+        } else {
+          showToast('复制失败，请手动长按选择文案');
+        }
+      } catch (err) {
+        showToast('复制失败，请手动长按选择文案');
+      }
+    }
+
+    async function copyShortResultText() {
+      try {
+        var text = currentShareCopies.short || buildShareCopies().short;
+        var ok = await copyText(text);
+        if (ok) {
+          showToast('已复制短版结果，适合直接甩给朋友');
+          closeShareOverlay();
+        } else {
+          showToast('复制失败，请手动长按选择文案');
+        }
+      } catch (err) {
+        showToast('复制失败，请手动长按选择文案');
+      }
+    }
+
+    async function nativeShareResult() {
+      var profile = resultProfiles[currentProfileName];
+      if (!navigator.share) {
+        showToast('当前环境不支持系统分享，已经给你备好复制文案');
+        return;
+      }
+      try {
+        await navigator.share({
+          title: '我测出来是 ' + currentProfileName,
+          text: (currentShareCopies.short || buildShareCopies().short),
+          url: siteUrl
+        });
+        closeShareOverlay();
+        showToast('已调起系统分享');
+      } catch (err) {
+        if (err && err.name === 'AbortError') {
+          showToast('已取消分享，文案还在，随时可以复制');
+          return;
+        }
+        showToast('系统分享失败，建议直接复制文案发送');
+      }
+    }
+
+    async function shareResult() {
+      try {
+        await copyText(buildShareCopy());
+      } catch (err) {}
+      document.getElementById('share-sheet-preview').textContent = buildShareCopy();
+      document.getElementById('share-sheet-chip').textContent = 'TYPE ' + currentTypeKey;
+      document.getElementById('share-overlay').classList.add('active');
+      showToast('分享页已展开，文案也已经帮你备份好了');
+    }
+
+    function closeShareOverlay() {
+      document.getElementById('share-overlay').classList.remove('active');
+    }
+
+    function restartTest() {
+      startTest();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showPage(id) {
+      var pages = document.querySelectorAll('.page');
+      for (var i = 0; i < pages.length; i++) {
+        pages[i].classList.remove('active');
+      }
+      document.getElementById(id).classList.add('active');
+    }
+
+    var toastTimer = null;
+    function showToast(message) {
+      var toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () {
+        toast.classList.remove('show');
+      }, 2200);
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function updateCountdown() {
+      var now = new Date();
+      var year = now.getFullYear();
+      var target = new Date(year, 4, 1, 12, 0, 0);
+      var todayNoon = new Date(year, now.getMonth(), now.getDate(), 12, 0, 0);
+      if (todayNoon > target) {
+        target = new Date(year + 1, 4, 1, 12, 0, 0);
+      }
+      var diffMs = target.getTime() - todayNoon.getTime();
+      var diffDays = Math.round(diffMs / 86400000);
+      document.getElementById('days-to-51').textContent = diffDays === 0 ? '今天！' : diffDays + ' 天';
+    }
+
+    updateCountdown();
+    renderProgressDots();
+    document.getElementById('progress-fill').style.width = (100 / questions.length).toFixed(1) + '%';
+  </script>
 </body>
 </html>
