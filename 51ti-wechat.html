@@ -198,7 +198,7 @@
 
     .progress-top {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
       gap: 12px;
       margin-bottom: 10px;
@@ -211,11 +211,7 @@
     }
 
     .progress-hint {
-      color: var(--yellow);
-      font-size: 12px;
-      text-align: right;
-      line-height: 1.35;
-      min-height: 16px;
+      display: none;
     }
 
     .progress-bar {
@@ -269,16 +265,19 @@
 
     .q-head {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       gap: 12px;
       margin-bottom: 12px;
+      text-align: center;
     }
 
     .q-meta {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
+      align-items: center;
     }
 
     .q-number {
@@ -289,13 +288,27 @@
     }
 
     .q-axis {
-      color: var(--text-faint);
-      font-size: 12px;
+      display: none;
     }
 
     .q-emoji {
-      font-size: 32px;
-      line-height: 1;
+      width: 148px;
+      height: 148px;
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .q-icon-image {
+      width: 140px;
+      height: 140px;
+      display: block;
     }
 
     .q-text {
@@ -307,18 +320,13 @@
     }
 
     .compare-card {
-      border: 1px solid #2a2a4f;
-      border-radius: 18px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));
-      padding: 14px;
+      padding: 0;
+      background: transparent;
+      border: none;
     }
 
     .compare-labels {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 14px;
+      display: none;
     }
 
     .side-card {
@@ -361,55 +369,60 @@
 
     .scale-grid {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 8px;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      width: 100%;
     }
 
-    .scale-btn {
-      min-height: 74px;
-      border-radius: 16px;
+    .choice-card {
+      min-height: 96px;
+      width: 100%;
+      border-radius: 20px;
       background: #171730;
       border: 1px solid #2d2d56;
-      color: var(--text-soft);
-      padding: 10px 6px;
+      color: var(--text);
+      padding: 16px 15px;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      gap: 4px;
-      text-align: center;
-      font-size: 11px;
-      line-height: 1.3;
+      gap: 8px;
+      text-align: left;
       font-weight: 800;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
     }
 
-    .scale-btn em {
-      font-style: normal;
-      font-size: 18px;
-      line-height: 1;
+    .choice-card strong {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #fff;
+      font-weight: 850;
     }
 
-    .scale-btn.left-strong.selected,
-    .scale-btn.left-weak.selected {
+    .choice-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    .choice-left .choice-kicker { color: var(--yellow); }
+    .choice-right .choice-kicker { color: #bcaeff; }
+
+    .choice-card.choice-left.selected {
       background: rgba(247, 201, 72, 0.16);
       border-color: var(--yellow);
-      color: #fff7d4;
-      box-shadow: 0 0 0 2px rgba(247, 201, 72, 0.12) inset;
+      box-shadow: 0 0 0 2px rgba(247, 201, 72, 0.12) inset, 0 12px 28px rgba(247, 201, 72, 0.08);
     }
 
-    .scale-btn.neutral.selected {
-      background: rgba(143, 109, 255, 0.18);
-      border-color: #9f89ff;
-      color: #f3efff;
-      box-shadow: 0 0 0 2px rgba(159, 137, 255, 0.14) inset;
-    }
-
-    .scale-btn.right-weak.selected,
-    .scale-btn.right-strong.selected {
+    .choice-card.choice-right.selected {
       background: rgba(255, 107, 53, 0.18);
       border-color: var(--orange);
-      color: #fff1ea;
-      box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.12) inset;
+      box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.12) inset, 0 12px 28px rgba(255, 107, 53, 0.08);
     }
 
     .scale-tip {
@@ -493,8 +506,8 @@
 
     .result-visual {
       display: grid;
-      grid-template-columns: 86px 1fr;
-      gap: 14px;
+      grid-template-columns: 132px 1fr;
+      gap: 16px;
       align-items: center;
       margin-bottom: 0;
     }
@@ -532,9 +545,19 @@
     }
 
     .poster-mini-emoji {
-      font-size: 36px;
-      line-height: 1;
+      width: 82px;
+      height: 82px;
+      border-radius: 18px;
+      overflow: hidden;
       margin: 10px 0 8px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .poster-mini-emoji svg {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     .poster-mini-type {
@@ -553,16 +576,22 @@
     }
 
     .result-avatar {
-      width: 86px;
-      height: 86px;
-      border-radius: 26px;
+      width: 132px;
+      height: 132px;
+      border-radius: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 42px;
       background: linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
       border: 1px solid rgba(255,255,255,0.12);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+
+    .result-avatar svg {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     .result-badges {
@@ -1010,7 +1039,7 @@
 
     .worker-idcard-main {
       display: grid;
-      grid-template-columns: 88px minmax(0, 1fr);
+      grid-template-columns: 124px minmax(0, 1fr);
       gap: 14px;
       align-items: stretch;
       margin-bottom: 14px;
@@ -1023,8 +1052,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 42px;
-      min-height: 118px;
+      min-height: 136px;
+      overflow: hidden;
+    }
+
+    .worker-id-avatar svg {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     .worker-id-body {
@@ -1226,10 +1261,13 @@
       .result-poster-grid { grid-template-columns: 1fr; }
       .result-visual { grid-template-columns: 1fr; }
       .result-poster-mini { min-height: auto; }
-      .result-avatar { width: 78px; height: 78px; border-radius: 22px; font-size: 38px; }
+      .result-avatar { width: 104px; height: 104px; border-radius: 28px; font-size: 38px; }
+      .q-emoji { width: 136px; height: 136px; }
+      .q-icon-image { width: 128px; height: 128px; }
       .result-type-display { font-size: 30px; }
       .manifesto-text { font-size: 20px; }
-      .scale-btn { min-height: 70px; font-size: 10px; }
+      .choice-card { min-height: 90px; padding: 14px; }
+      .choice-card strong { font-size: 15px; }
       .compare-labels { gap: 6px; }
       .side-text { font-size: 13px; }
       .worker-idcard-main { grid-template-columns: 1fr; }
@@ -1259,26 +1297,17 @@
     }
 
     .question-subhint {
-      color: var(--text-faint);
-      font-size: 12px;
-      line-height: 1.6;
-      margin-bottom: 14px;
-      text-align: center;
+      display: none;
     }
 
     .compare-card {
-      border: 1px solid #2a2a4f;
-      border-radius: 20px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));
-      padding: 14px;
+      padding: 0;
+      background: transparent;
+      border: none;
     }
 
     .compare-labels {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 14px;
+      display: none;
     }
 
     .side-card {
@@ -1323,63 +1352,64 @@
 
     .scale-grid {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 8px;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      width: 100%;
     }
 
-    .scale-btn {
-      min-height: 76px;
-      border-radius: 16px;
+    .choice-card {
+      min-height: 96px;
+      width: 100%;
+      border-radius: 20px;
       background: #171730;
       border: 1px solid #2d2d56;
-      color: var(--text-soft);
-      padding: 10px 6px;
+      color: var(--text);
+      padding: 16px 15px;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      gap: 4px;
-      text-align: center;
-      font-size: 11px;
-      line-height: 1.35;
+      gap: 8px;
+      text-align: left;
       font-weight: 800;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
     }
 
-    .scale-btn em {
-      font-style: normal;
-      font-size: 18px;
-      line-height: 1;
+    .choice-card strong {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #fff;
+      font-weight: 850;
     }
 
-    .scale-btn.left-strong.selected,
-    .scale-btn.left-weak.selected {
+    .choice-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    .choice-left .choice-kicker { color: var(--yellow); }
+    .choice-right .choice-kicker { color: #bcaeff; }
+
+    .choice-card.choice-left.selected {
       background: rgba(247, 201, 72, 0.16);
       border-color: var(--yellow);
-      color: #fff7d4;
-      box-shadow: 0 0 0 2px rgba(247, 201, 72, 0.12) inset;
+      box-shadow: 0 0 0 2px rgba(247, 201, 72, 0.12) inset, 0 12px 28px rgba(247, 201, 72, 0.08);
     }
 
-    .scale-btn.neutral.selected {
-      background: rgba(143, 109, 255, 0.18);
-      border-color: #9f89ff;
-      color: #f3efff;
-      box-shadow: 0 0 0 2px rgba(159, 137, 255, 0.14) inset;
-    }
-
-    .scale-btn.right-weak.selected,
-    .scale-btn.right-strong.selected {
+    .choice-card.choice-right.selected {
       background: rgba(255, 107, 53, 0.18);
       border-color: var(--orange);
-      color: #fff1ea;
-      box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.12) inset;
+      box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.12) inset, 0 12px 28px rgba(255, 107, 53, 0.08);
     }
 
     .question-footer-tip {
-      margin-top: 12px;
-      text-align: center;
-      color: var(--text-faint);
-      font-size: 12px;
-      line-height: 1.6;
+      display: none;
     }
 
     .result-section-card {
@@ -1553,7 +1583,7 @@
       <div class="progress-wrap">
         <div class="progress-top">
           <div class="progress-text" id="progress-text">第 1 / 20 题</div>
-          <div class="progress-hint" id="progress-hint">不用想太久，第一反应最像你。</div>
+          <div class="progress-hint" id="progress-hint"></div>
         </div>
         <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
         <div class="progress-dots" id="progress-dots"></div>
@@ -1563,12 +1593,12 @@
         <div class="q-head">
           <div class="q-meta">
             <div class="q-number" id="q-number">Q1</div>
-            <div class="q-axis" id="q-axis">选更接近哪边一点</div>
+            <div class="q-axis" id="q-axis"></div>
           </div>
-          <div class="q-emoji" id="q-emoji">💼</div>
+          <div class="q-emoji" id="q-emoji"><img class="q-icon-image" id="q-icon-image" alt="题目图标" /></div>
         </div>
         <div class="q-text" id="q-text"></div>
-        <div class="question-subhint">两边都别太绝对，选更接近你的那一档就行。</div>
+        <div class="question-subhint"></div>
         <div class="compare-card">
           <div class="compare-labels">
             <div class="side-card left">
@@ -1582,7 +1612,7 @@
             </div>
           </div>
           <div class="scale-grid" id="options"></div>
-          <div class="question-footer-tip">不用想太久，第一反应最像你。</div>
+          <div class="question-footer-tip"></div>
         </div>
       </div>
     </div>
@@ -1764,6 +1794,170 @@
       'social-power-save': { emoji: '🔕', dept: '社交省电部' },
       'inspiration-party': { emoji: '💡', dept: '灵感蹦迪部' },
       'allround-substitute': { emoji: '🧰', dept: '全能补位部' }
+    };
+
+
+    const CHARACTER_BIBLES = {
+      'silent-efficient': {
+        codename: '静音推进员',
+        archetype: '低耗能但高输出的后台型角色',
+        look: '黑色短发，圆眼镜，深蓝高领卫衣，抱着发光笔记本，眼下有一点淡淡黑眼圈，但整个人站得很稳。',
+        props: ['发光笔记本', '进度条贴纸', '耳机', '待办清单'],
+        expression: '面无波澜，但眼神很清醒，像已经默默做完三版。',
+        pose: '身体微微前倾，一手托电脑，一手点触控板，姿态很安静。',
+        palette: ['深蓝', '灰紫', '冷白', '微金'],
+        sceneHook: '背后漂着几个已经打勾的待办框，像后台系统在自动跑。'
+      },
+      'seen-no-reply': {
+        codename: '消息缓冲员',
+        archetype: '看到了但先缓一下的社交低耗角色',
+        look: '连帽外套半盖头，手里拿着亮着99+的小手机，头发有点乱，表情困倦但不狼狈。',
+        props: ['99+消息手机', '勿扰月亮徽章', '抱枕', '气泡通知'],
+        expression: '嘴巴抿着，像在想“我知道，但等我一下”。',
+        pose: '一只手举手机，一只手把手机慢慢往怀里收。',
+        palette: ['深紫', '手机蓝光', '灰黑', '冷黄'],
+        sceneHook: '周围漂着红点通知，但角色本人像在时间缝隙里慢慢处理。'
+      },
+      'spirit-offline': {
+        codename: '灵魂放风员',
+        archetype: '身体在岗但精神会短暂出走的漂浮型角色',
+        look: '白衬衫外套松开一颗扣子，脸很平静，但头顶飘着一个半透明小灵魂版本的自己。',
+        props: ['半透明灵魂分身', '小风景贴纸', '咖啡杯', '工位转椅'],
+        expression: '本体淡定，灵魂版本一脸轻松，像已经出去透气。',
+        pose: '人坐在工位上打字，灵魂从肩膀后面轻轻飘出去。',
+        palette: ['雾白', '浅蓝', '深灰', '冷紫'],
+        sceneHook: '角色背后像开了一道小窗，窗外有风和云。'
+      },
+      'deadline-warrior': {
+        codename: '前夜战神',
+        archetype: '越到最后越会爆发的倒计时战斗角色',
+        look: '头发有点炸，外套半披，眼下微青但瞳孔发亮，像熬夜状态下突然觉醒。',
+        props: ['倒计时钟', '燃烧待办', '能量饮料', '键盘火花'],
+        expression: '眼神发狠，像终于进入专属战斗模式。',
+        pose: '身体前冲，一手敲键盘，一手拽住快要飞走的方案纸。',
+        palette: ['橙红', '亮黄', '深灰', '冷白'],
+        sceneHook: '背后有一个巨大倒计时钟，秒针像快要烧起来。'
+      },
+      'emotion-stable': {
+        codename: '表面稳定员',
+        archetype: '内心风暴但外壳稳定的职业微笑角色',
+        look: '头发整齐，穿衬衫或针织开衫，肩膀上停着三朵小乌云，脸上却是礼貌微笑。',
+        props: ['职业微笑面具感', '三朵小乌云', 'OK手势', '文件夹'],
+        expression: '嘴角稳定上扬，但眼神写着“我先接住”。',
+        pose: '一只手比OK，一只手抱资料，站姿平衡得很职业。',
+        palette: ['雾蓝', '米白', '浅灰', '一点温黄'],
+        sceneHook: '头顶小乌云在轻轻打转，但角色脚下非常稳。'
+      },
+      'requirements-translator': {
+        codename: '需求翻译官',
+        archetype: '专门把空气需求翻译成落地语言的拆解角色',
+        look: '利落短发，细框眼镜，手里拿荧光笔和写满箭头的便签板，像一个极清醒的流程师。',
+        props: ['便签板', '荧光笔', '箭头流程图', '放大镜'],
+        expression: '眉头轻皱，像在问“你到底想要什么”。',
+        pose: '一手举流程板，一手拿笔指向关键节点。',
+        palette: ['荧光黄', '浅蓝', '白灰', '深紫'],
+        sceneHook: '身后飘着模糊气泡，被她拆成清晰方框。'
+      },
+      'meeting-endurance': {
+        codename: '会议续航员',
+        archetype: '坐得住也听得完的超长待机角色',
+        look: '耳机挂脖，工牌歪在胸前，眼睛没完全亮但表情管理仍然在线。',
+        props: ['耳机', '长会议时间条', '马克杯', '发言小灯'],
+        expression: '脸很稳，眼神有一点点飘，但还在听。',
+        pose: '坐姿端正但肩膀略塌，一只手扶下巴。',
+        palette: ['灰蓝', '墨紫', '冷白', '浅黄'],
+        sceneHook: '头顶有一个超长进度条，几乎拉满。'
+      },
+      'desk-charger': {
+        codename: '工位充电员',
+        archetype: '低电量运行但意外稳定的续航角色',
+        look: '毛衣软塌塌，抱着咖啡和充电线，发型睡醒感，但整个人没有乱。',
+        props: ['充电线', '咖啡杯', '低电量图标', '小靠枕'],
+        expression: '像刚开机，但神情并不绝望。',
+        pose: '半坐半靠在工位边，一手抓充电线，一手抱杯子。',
+        palette: ['暖棕', '奶白', '灰蓝', '一点橙黄'],
+        sceneHook: '背后有一个20%电量条，但屏幕仍亮着。'
+      },
+      'boundary-keeper': {
+        codename: '边界守门员',
+        archetype: '温柔但有门槛的清醒角色',
+        look: '穿得很整洁，手里拿着写有范围边框的板子，身边有一道会发光的界线。',
+        props: ['边界线板', '小门牌', '回形盾牌', '规则贴纸'],
+        expression: '很礼貌，但眼神明确写着“先把范围说清楚”。',
+        pose: '一只手向前轻轻拦住，一只手举着范围卡。',
+        palette: ['青蓝', '白', '深紫', '浅金'],
+        sceneHook: '脚下有一道柔和发光的边界线，别人靠近会慢下来。'
+      },
+      'surface-business': {
+        codename: '营业面板员',
+        archetype: '表面很正常但后台持续重启的外壳角色',
+        look: '发型和衣着都很整齐，脸上像自带一个完美营业面板，脑后却有小故障提示框。',
+        props: ['重启小弹窗', '营业面板', '加载圈', '系统窗口'],
+        expression: '外表稳定营业，眼神深处略微空白。',
+        pose: '双手交叠站好，像随时可以进入职业模式。',
+        palette: ['冰白', '雾紫', '深蓝', '一点桃粉'],
+        sceneHook: '头后有小小“loading / retry”窗口在闪。'
+      },
+      'detail-polisher': {
+        codename: '细节抛光员',
+        archetype: '会为一个句号再改一遍的精修角色',
+        look: '头发整齐到位，戴细边眼镜，拿放大镜和布，像刚对某个细节进行第八次确认。',
+        props: ['放大镜', '抛光布', '红笔', '标点放大泡泡'],
+        expression: '很认真，像在说“我再看最后一眼”。',
+        pose: '身体前探，用放大镜盯着一点小细节。',
+        palette: ['米白', '银灰', '深蓝', '暖黄'],
+        sceneHook: '周围飘着被高亮的小标点和修订痕迹。'
+      },
+      'plan-rescue': {
+        codename: '方案急救员',
+        archetype: '项目一着火就会自动拿水管的救场角色',
+        look: '袖子卷起，头发有点乱，身上挂着急救包和几张框架纸，像刚冲进火场。',
+        props: ['急救包', '方案框架图', '水管', '红色警报灯'],
+        expression: '嘴上想叹气，但眼神是“我先救”。',
+        pose: '一手举框架纸，一手拉着软管往前冲。',
+        palette: ['红', '橙', '白', '深灰'],
+        sceneHook: '背景里有轻微报警灯在转，但角色已经抢先动手。'
+      },
+      'happy-fish': {
+        codename: '科学降温员',
+        archetype: '懂得摸鱼续命的松弛角色',
+        look: '卫衣+拖鞋感，头发松散，身边飘着小鱼、风扇和表情包，但电脑上显示已提交。',
+        props: ['小鱼', '风扇', '冰饮', '已提交弹窗'],
+        expression: '很松弛，嘴角微扬，像知道自己在合理续命。',
+        pose: '半躺半坐，一只脚勾着椅子，一只手还在点提交。',
+        palette: ['薄荷绿', '浅蓝', '亮黄', '柔白'],
+        sceneHook: '空气里像有一点降温波纹，整个人很凉快。'
+      },
+      'social-power-save': {
+        codename: '社交省电员',
+        archetype: '礼貌在线但热情限量的低耗沟通角色',
+        look: '戴连帽耳机，抱着手机或平板，整个人很整齐，但会把自己缩在安全距离里。',
+        props: ['静音耳机', '表情包气泡', '低电量徽章', '聊天窗口'],
+        expression: '不是冷漠，是一种礼貌但不想多聊的克制。',
+        pose: '身体微缩，一只手举着设备，一只手插口袋。',
+        palette: ['浅紫', '灰蓝', '白', '一点亮黄'],
+        sceneHook: '周围的对话气泡自动收缩成最短回复。'
+      },
+      'inspiration-party': {
+        codename: '灵感蹦迪员',
+        archetype: '前面安静后面突然炸场的创意角色',
+        look: '头发有点翘，衣服搭配带一点反常规感，眼神平时发空，一有想法时会突然亮起来。',
+        props: ['灯泡', '霓虹草图', '灵感音符', '便签雨'],
+        expression: '平时发呆，一旦想通会露出“等下我有了”的表情。',
+        pose: '前一秒托腮，后一秒突然抬手指向空中。',
+        palette: ['荧光紫', '亮青', '桃橙', '深蓝'],
+        sceneHook: '头顶像开了一小场脑内蹦迪，灯牌同时亮起。'
+      },
+      'allround-substitute': {
+        codename: '全能补位员',
+        archetype: '哪里缺人就会被默认叫过去的万能接口角色',
+        look: '身上挂着很多工具和工牌，像一个移动接口站，手里永远有多余的文件夹。',
+        props: ['多功能腰包', '备用工牌', '工具夹', '好几份文件'],
+        expression: '有点无奈但很熟练，像已经习惯“又是我”。',
+        pose: '一边小跑一边回头，身上挂满各种临时任务。',
+        palette: ['工具橙', '藏青', '白灰', '卡其'],
+        sceneHook: '角色周围伸出很多小手在递任务，但他居然都接住了。'
+      }
     };
 
     const RESULTS = {
@@ -1993,7 +2187,269 @@
       }
     };
 
+
+
+    function escSvg(textValue) {
+      return String(textValue || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+
+    const AVATAR_THEMES = {
+      'silent-efficient': { skin: '#f0c7a8', hair: '#111827', suit: '#2d4d89', glow: '#6c84ff', accent: '#f7c948', prop: '#7fe7ff', mood: 'screen', hairShape: 'bob' },
+      'seen-no-reply': { skin: '#f2cfb4', hair: '#241a37', suit: '#5a48a6', glow: '#9b7cff', accent: '#ff8f4d', prop: '#90b9ff', mood: 'phone', hairShape: 'hood' },
+      'spirit-offline': { skin: '#f1d5c3', hair: '#3b4d70', suit: '#cfe9ff', glow: '#88dfff', accent: '#d2d8ff', prop: '#ffffff', mood: 'ghost', hairShape: 'soft' },
+      'deadline-warrior': { skin: '#eec2a3', hair: '#311714', suit: '#c74238', glow: '#ff6b35', accent: '#f7c948', prop: '#ffe7aa', mood: 'timer', hairShape: 'spiky' },
+      'emotion-stable': { skin: '#f2ceba', hair: '#374056', suit: '#7f98c9', glow: '#a5bbff', accent: '#ffe188', prop: '#d5def8', mood: 'storm', hairShape: 'sleek' },
+      'requirements-translator': { skin: '#f0ccad', hair: '#223146', suit: '#e9eef9', glow: '#7fd8ff', accent: '#f7c948', prop: '#98fff0', mood: 'board', hairShape: 'short' },
+      'meeting-endurance': { skin: '#efc9ad', hair: '#283144', suit: '#687993', glow: '#93a8cf', accent: '#ffe08a', prop: '#b2c9ff', mood: 'headset', hairShape: 'short' },
+      'desk-charger': { skin: '#f2ceb5', hair: '#75523f', suit: '#b39a82', glow: '#a8b7cc', accent: '#f7c948', prop: '#ffd9a3', mood: 'battery', hairShape: 'messy' },
+      'boundary-keeper': { skin: '#efc3a9', hair: '#22384d', suit: '#4b98aa', glow: '#63d1d9', accent: '#ffd86f', prop: '#c6fff8', mood: 'shield', hairShape: 'sleek' },
+      'surface-business': { skin: '#f3d5c1', hair: '#232941', suit: '#eff2fa', glow: '#d5b8ff', accent: '#ff9bc4', prop: '#ffffff', mood: 'mask', hairShape: 'sleek' },
+      'detail-polisher': { skin: '#f0cdb1', hair: '#2b3243', suit: '#efe9df', glow: '#c2cbdd', accent: '#f7c948', prop: '#d8ecff', mood: 'lens', hairShape: 'short' },
+      'plan-rescue': { skin: '#ecc09f', hair: '#4a241d', suit: '#d24c41', glow: '#ff8f5a', accent: '#ffd469', prop: '#fff4cb', mood: 'rescue', hairShape: 'messy' },
+      'happy-fish': { skin: '#f3d1b8', hair: '#3d645f', suit: '#57c7b0', glow: '#8be1d4', accent: '#f7c948', prop: '#c3fff3', mood: 'fish', hairShape: 'hood' },
+      'social-power-save': { skin: '#f2ccb5', hair: '#4d456d', suit: '#9b8dd8', glow: '#bbb0ff', accent: '#ffe07e', prop: '#d2ddff', mood: 'bubble', hairShape: 'hood' },
+      'inspiration-party': { skin: '#f2ccb3', hair: '#552f76', suit: '#8f6dff', glow: '#85f0ff', accent: '#ff8f5b', prop: '#fff09e', mood: 'idea', hairShape: 'spiky' },
+      'allround-substitute': { skin: '#efc5aa', hair: '#334050', suit: '#d98a3f', glow: '#a7becf', accent: '#ffe486', prop: '#e5f4ff', mood: 'tools', hairShape: 'short' }
+    };
+
+    const QUESTION_SCENE_MAP = {
+      '🌙': { title: '深夜群消息', bg: '#0e1020', panel: '#24284f', accent: '#f7c948', scene: 'night-message' },
+      '🫠': { title: '简单弄一下', bg: '#17111d', panel: '#4d325d', accent: '#ff8f4d', scene: 'simple-request' },
+      '🎤': { title: '开会被 cue', bg: '#121523', panel: '#334867', accent: '#7fd8ff', scene: 'meeting-cue' },
+      '🧠': { title: '等灵感上线', bg: '#121320', panel: '#56347b', accent: '#ff79c6', scene: 'idea-loading' },
+      '📥': { title: '临时需求砸来', bg: '#101722', panel: '#2f536d', accent: '#f7c948', scene: 'urgent-request' },
+      '🪑': { title: '工位待机', bg: '#15121b', panel: '#5d4337', accent: '#c98f5a', scene: 'desk-mode' },
+      '📱': { title: '下班后消息', bg: '#101522', panel: '#47557a', accent: '#8f6dff', scene: 'after-hours-phone' },
+      '🚀': { title: '突然爆发', bg: '#101421', panel: '#394b63', accent: '#ff6b35', scene: 'burst-mode' },
+      '🤝': { title: '又来找你', bg: '#121522', panel: '#4a4b70', accent: '#f2c9a5', scene: 'coworker-help' },
+      '😵‍💫': { title: '脑内风暴', bg: '#16111f', panel: '#5d3a62', accent: '#f7c948', scene: 'mental-whirl' },
+      '📄': { title: '方案急救', bg: '#101722', panel: '#496177', accent: '#d8ecff', scene: 'plan-rescue' },
+      '🕰️': { title: '会议加时', bg: '#121522', panel: '#536786', accent: '#f7c948', scene: 'meeting-overtime' },
+      '🐟': { title: '科学摸鱼', bg: '#0d1b21', panel: '#286660', accent: '#42d392', scene: 'fish-cooling' },
+      '🔔': { title: '@所有人', bg: '#14111f', panel: '#5f436d', accent: '#f7c948', scene: 'all-mention' },
+      '📎': { title: '再改一遍', bg: '#101420', panel: '#4c5871', accent: '#d8ecff', scene: 'revise-file' },
+      '☕': { title: '周一开机', bg: '#17121d', panel: '#6a4c3f', accent: '#ffb36b', scene: 'monday-boot' },
+      '🧩': { title: '需求拼图', bg: '#121421', panel: '#4d4a77', accent: '#f7c948', scene: 'brief-puzzle' },
+      '💥': { title: '脑暴现场', bg: '#17111d', panel: '#673b59', accent: '#ff6b35', scene: 'brainstorm-burst' },
+      '🏖️': { title: '假期前夜', bg: '#0f1d27', panel: '#366c7b', accent: '#f7c948', scene: 'holiday-window' },
+      '✨': { title: '想要被夸', bg: '#15111f', panel: '#56446f', accent: '#fff4be', scene: 'spotlight-wish' }
+    };
+
+    function escSvg(textValue) {
+      return String(textValue || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function buildHairPath(shape, color) {
+      if (shape === 'hood') return `<path d="M27 44q5-30 37-30q32 0 37 30v16H27z" fill="${color}"/><path d="M33 28q12-12 31-12q19 0 31 12" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6" stroke-linecap="round"/>`;
+      if (shape === 'spiky') return `<path d="M27 46q4-17 11-26l7 8l8-12l8 12l9-10q8 7 13 28v17H27z" fill="${color}"/>`;
+      if (shape === 'sleek') return `<path d="M29 42q4-27 35-27q31 0 35 27v14H29z" fill="${color}"/><path d="M34 31q10-11 30-11q20 0 30 11" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="5" stroke-linecap="round"/>`;
+      if (shape === 'messy') return `<path d="M27 45q5-18 14-25l7 5l6-8l9 10l8-6q8 9 13 24v16H27z" fill="${color}"/>`;
+      if (shape === 'bob') return `<path d="M29 42q4-26 35-26q31 0 35 26v20H29z" fill="${color}"/><path d="M33 50q4 12 12 15M95 50q-4 12-12 15" stroke="${color}" stroke-width="8" stroke-linecap="round"/>`;
+      return `<path d="M29 43q4-26 35-26q31 0 35 26v16H29z" fill="${color}"/>`;
+    }
+
+    function buildMoodProp(theme) {
+      const accent = theme.accent;
+      const prop = theme.prop;
+      if (theme.mood === 'phone') return `<g transform="translate(94 98)"><rect x="-16" y="-28" width="22" height="34" rx="7" fill="#111629" stroke="${prop}" stroke-width="2"/><rect x="-12" y="-22" width="14" height="14" rx="4" fill="${prop}" opacity="0.9"/><circle cx="-5" cy="-1" r="2.3" fill="${accent}"/><circle cx="4" cy="-26" r="12" fill="${accent}"/><text x="4" y="-22" text-anchor="middle" font-size="7" font-weight="900" fill="#fff">99+</text></g>`;
+      if (theme.mood === 'ghost') return `<g transform="translate(101 90)"><path d="M0-20q9 0 9 10v13l-4-3l-4 3l-4-3l-4 3v-13q0-10 7-10z" fill="${prop}" opacity="0.9"/><circle cx="-2" cy="-11" r="1.8" fill="#445"/><circle cx="4" cy="-11" r="1.8" fill="#445"/></g>`;
+      if (theme.mood === 'timer') return `<g transform="translate(100 92)"><circle cx="0" cy="0" r="16" fill="${accent}"/><circle cx="0" cy="0" r="10" fill="#fff4c7"/><path d="M0-6v8l6 3" stroke="#8a3a18" stroke-width="3" stroke-linecap="round" fill="none"/><rect x="-4" y="-23" width="8" height="6" rx="2" fill="#fff4c7"/></g>`;
+      if (theme.mood === 'storm') return `<g transform="translate(100 86)"><ellipse cx="0" cy="0" rx="14" ry="8" fill="${prop}" opacity="0.75"/><ellipse cx="-10" cy="5" rx="9" ry="6" fill="${prop}" opacity="0.6"/><path d="M-2 7l-5 10l8-2l-4 8" fill="${accent}"/></g>`;
+      if (theme.mood === 'board') return `<g transform="translate(101 93)"><rect x="-17" y="-20" width="26" height="24" rx="5" fill="${prop}" opacity="0.92"/><path d="M-11-10h14M-11-3h10M-11 4h8" stroke="#2d4d89" stroke-width="2" stroke-linecap="round"/><circle cx="7" cy="-12" r="4" fill="${accent}"/></g>`;
+      if (theme.mood === 'headset') return `<g transform="translate(101 92)"><path d="M-12-6q0-12 12-12q12 0 12 12" fill="none" stroke="${prop}" stroke-width="4" stroke-linecap="round"/><rect x="-16" y="-4" width="8" height="15" rx="4" fill="${accent}"/><rect x="8" y="-4" width="8" height="15" rx="4" fill="${accent}"/><path d="M14 6h8" stroke="${prop}" stroke-width="3" stroke-linecap="round"/></g>`;
+      if (theme.mood === 'battery') return `<g transform="translate(100 92)"><rect x="-18" y="-10" width="28" height="18" rx="5" fill="none" stroke="${prop}" stroke-width="3"/><rect x="10" y="-4" width="4" height="6" rx="2" fill="${prop}"/><rect x="-14" y="-6" width="8" height="10" rx="3" fill="${accent}"/></g>`;
+      if (theme.mood === 'shield') return `<g transform="translate(100 92)"><path d="M0-20l14 5v10q0 11-14 18q-14-7-14-18v-10z" fill="${prop}" opacity="0.95"/><path d="M0-12v18M-8-3h16" stroke="${accent}" stroke-width="3" stroke-linecap="round"/></g>`;
+      if (theme.mood === 'mask') return `<g transform="translate(101 92)"><path d="M-15-11q15-12 30 0v10q-15 11-30 0z" fill="#fff" opacity="0.9"/><circle cx="-6" cy="-5" r="2" fill="#445"/><circle cx="6" cy="-5" r="2" fill="#445"/><path d="M-5 4q5 3 10 0" stroke="#ff9bc4" stroke-width="2" fill="none" stroke-linecap="round"/></g>`;
+      if (theme.mood === 'lens') return `<g transform="translate(101 93)"><circle cx="-4" cy="-4" r="11" fill="none" stroke="${prop}" stroke-width="4"/><path d="M4 4l10 10" stroke="${accent}" stroke-width="4" stroke-linecap="round"/></g>`;
+      if (theme.mood === 'rescue') return `<g transform="translate(100 92)"><rect x="-18" y="-14" width="30" height="22" rx="5" fill="${prop}"/><path d="M-3-9v12M-9-3h12" stroke="#d24c41" stroke-width="4" stroke-linecap="round"/><rect x="-8" y="-20" width="10" height="6" rx="3" fill="${accent}"/></g>`;
+      if (theme.mood === 'fish') return `<g transform="translate(101 93)"><path d="M-16 0q12-12 24 0q-12 12-24 0z" fill="${prop}"/><circle cx="-8" cy="-2" r="2" fill="#0f2f35"/><path d="M8 0l9-7v14z" fill="${accent}"/></g>`;
+      if (theme.mood === 'bubble') return `<g transform="translate(101 92)"><rect x="-18" y="-18" width="28" height="20" rx="8" fill="${prop}" opacity="0.92"/><path d="M-5 2l-7 8l1-8" fill="${prop}"/><path d="M-11-9h13M-11-2h9" stroke="#4d456d" stroke-width="2" stroke-linecap="round"/></g>`;
+      if (theme.mood === 'idea') return `<g transform="translate(101 92)"><path d="M0-22q10 0 10 10q0 5-4 8q-2 3-2 7h-8q0-4-2-7q-4-3-4-8q0-10 10-10z" fill="${prop}"/><rect x="-5" y="3" width="10" height="5" rx="2" fill="${accent}"/><path d="M0-30v6M-12-24l4 4M12-24l-4 4" stroke="${accent}" stroke-width="3" stroke-linecap="round"/></g>`;
+      if (theme.mood === 'tools') return `<g transform="translate(101 92)"><rect x="-18" y="-16" width="30" height="24" rx="5" fill="${prop}" opacity="0.92"/><path d="M-8-6l6 6M-2-6l-6 6" stroke="#d98a3f" stroke-width="3" stroke-linecap="round"/><circle cx="7" cy="-4" r="4" fill="${accent}"/><rect x="4" y="1" width="6" height="7" rx="2" fill="${accent}"/></g>`;
+      return '';
+    }
+
+    function buildCharacterAvatar(typeId, size) {
+      const theme = AVATAR_THEMES[typeId] || AVATAR_THEMES['silent-efficient'];
+      const view = size || 132;
+      const scale = view / 132;
+      const hair = buildHairPath(theme.hairShape, theme.hair);
+      const prop = buildMoodProp(theme);
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${view} ${view}">
+        <g transform="scale(${scale})">
+        <defs>
+          <linearGradient id="bg-${typeId}" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0%" stop-color="#0f1320"/>
+            <stop offset="58%" stop-color="${theme.glow}"/>
+            <stop offset="100%" stop-color="#201728"/>
+          </linearGradient>
+          <linearGradient id="coat-${typeId}" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="${theme.suit}"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0.42)"/>
+          </linearGradient>
+          <filter id="glow-${typeId}" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="7" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <rect width="${view}" height="${view}" rx="32" fill="url(#bg-${typeId})"/>
+        <circle cx="24" cy="25" r="17" fill="rgba(255,255,255,0.08)"/>
+        <circle cx="106" cy="18" r="12" fill="rgba(255,255,255,0.06)"/>
+        <path d="M13 113q20-20 53-20q36 0 53 20v12H13z" fill="rgba(0,0,0,0.22)"/>
+        <g filter="url(#glow-${typeId})"><ellipse cx="101" cy="99" rx="22" ry="18" fill="${theme.accent}" opacity="0.45"/></g>
+        <path d="M32 103q8-26 32-26q24 0 32 26v16H32z" fill="url(#coat-${typeId})"/>
+        <path d="M44 101q6-14 20-14q14 0 20 14" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="64" cy="58" r="26" fill="${theme.skin}"/>
+        ${hair}
+        <ellipse cx="47" cy="67" rx="5.2" ry="4.4" fill="#222631"/>
+        <ellipse cx="81" cy="67" rx="5.2" ry="4.4" fill="#222631"/>
+        <path d="M51 84q13 10 26 0" fill="none" stroke="#8f5349" stroke-width="3.8" stroke-linecap="round"/>
+        <circle cx="41" cy="77" r="4" fill="rgba(255,160,160,0.2)"/>
+        <circle cx="87" cy="77" r="4" fill="rgba(255,160,160,0.2)"/>
+        <path d="M39 60q8-8 16-3" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M73 57q8-5 16 3" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="3" stroke-linecap="round"/>
+        <g transform="translate(36 92)"><rect x="0" y="0" width="26" height="16" rx="5" fill="rgba(255,255,255,0.12)"/><path d="M6 8h14" stroke="${theme.prop}" stroke-width="3" stroke-linecap="round"/></g>
+        ${prop}
+        </g>
+      </svg>`;
+      return svg;
+    }
+
+    function sceneCharacter(cx, cy, body, hair, accent, mood) {
+      return `
+        <g transform="translate(${cx} ${cy})">
+          <path d="M-14 24q4-15 16-15q12 0 16 15v10h-32z" fill="${body}"/>
+          <circle cx="2" cy="-4" r="15" fill="#f2cfb4"/>
+          <path d="M-13 -8q3-16 15-16q12 0 15 16v8h-30z" fill="${hair}"/>
+          <circle cx="-4" cy="-2" r="2.5" fill="#1e2230"/>
+          <circle cx="8" cy="-2" r="2.5" fill="#1e2230"/>
+          <path d="M-2 8q4 4 8 0" fill="none" stroke="#88524a" stroke-width="2.5" stroke-linecap="round"/>
+          ${mood || ''}
+          <circle cx="-20" cy="-20" r="5" fill="${accent}" opacity="0.8"/>
+        </g>`;
+    }
+
+    function buildSceneDetail(scene) {
+      const person = (mood) => sceneCharacter(42, 49, '#7c8fe2', '#2a3146', scene.accent, mood);
+      if (scene.scene === 'night-message') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        <circle cx="83" cy="24" r="10" fill="#f7c948"/><path d="M86 16a11 11 0 1 0 0 18a9 9 0 1 1 0-18z" fill="#20284e"/>
+        ${person('<rect x="18" y="-2" width="24" height="36" rx="7" fill="#12182b" stroke="#d6e3ff" stroke-width="2"/><rect x="22" y="4" width="16" height="12" rx="3" fill="#7fd8ff"/><circle cx="42" cy="4" r="10" fill="#ff6b35"/><text x="42" y="8" text-anchor="middle" font-size="6" font-weight="900" fill="#fff">99+</text>')}
+        <rect x="13" y="84" width="90" height="14" rx="7" fill="rgba(0,0,0,0.18)"/>`;
+      if (scene.scene === 'simple-request') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M18 -18l20 5l-8 8z" fill="#fff0d0"/><path d="M18 -6h18" stroke="#fff0d0" stroke-width="2" stroke-linecap="round"/>')}
+        <rect x="66" y="18" width="16" height="22" rx="4" fill="#d8ecff" transform="rotate(12 74 29)"/>
+        <rect x="79" y="28" width="16" height="22" rx="4" fill="#f7c948" transform="rotate(-8 87 39)"/>
+        <rect x="69" y="42" width="20" height="26" rx="4" fill="#ff8f4d" transform="rotate(10 79 55)"/>
+        <path d="M56 20v18" stroke="#ff6b35" stroke-width="4" stroke-linecap="round"/><path d="M56 38l-8-8h16z" fill="#ff6b35"/>`;
+      if (scene.scene === 'meeting-cue') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        <rect x="16" y="58" width="62" height="20" rx="8" fill="#1f2738"/>
+        ${person('<rect x="18" y="-22" width="12" height="24" rx="6" fill="#7fd8ff"/><rect x="22" y="0" width="4" height="12" rx="2" fill="#d8ecff"/>')}
+        <circle cx="86" cy="31" r="12" fill="#ff8f4d"/><text x="86" y="35" text-anchor="middle" font-size="8" font-weight="900" fill="#fff">?!</text>`;
+      if (scene.scene === 'idea-loading') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M28 -26q10 0 10 9q0 4-4 7q-2 2-2 5h-8q0-3-2-5q-4-3-4-7q0-9 10-9z" fill="#fff0a3"/><path d="M28 -33v5M18 -28l4 3M38 -28l-4 3" stroke="#f7c948" stroke-width="2" stroke-linecap="round"/>')}
+        <circle cx="81" cy="33" r="10" fill="#ff79c6" opacity="0.85"/><circle cx="91" cy="48" r="6" fill="#f7c948" opacity="0.8"/>`;
+      if (scene.scene === 'urgent-request') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<rect x="24" y="-8" width="20" height="14" rx="4" fill="#fff0c7"/><path d="M34 -28v14" stroke="#f7c948" stroke-width="4" stroke-linecap="round"/><path d="M34 -12l-8-8h16z" fill="#f7c948"/>')}
+        <rect x="72" y="28" width="20" height="14" rx="5" fill="#d8ecff"/><rect x="68" y="42" width="24" height="16" rx="5" fill="#7fd8ff"/>`;
+      if (scene.scene === 'desk-mode') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M20 18h26" stroke="#f7c948" stroke-width="4" stroke-linecap="round"/><rect x="25 -4" width="20" height="12" rx="5" fill="#ffd9a3"/>')}
+        <rect x="72" y="22" width="10" height="52" rx="4" fill="#36253a"/><rect x="22" y="72" width="38" height="8" rx="4" fill="#f7c948"/>`;
+      if (scene.scene === 'after-hours-phone') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<rect x="20" y="-10" width="22" height="34" rx="7" fill="#0d1321" stroke="#d8ecff" stroke-width="2"/><rect x="24" y="-4" width="14" height="14" rx="4" fill="#7fd8ff"/>')}
+        <circle cx="86" cy="26" r="11" fill="#ff6b35"/><text x="86" y="30" text-anchor="middle" font-size="8" font-weight="900" fill="#fff">23</text>`;
+      if (scene.scene === 'burst-mode') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M26 -18l8 12l-8 4l-8-4z" fill="#eef6ff"/><rect x="22" y="-2" width="8" height="22" rx="4" fill="#ff6b35"/><path d="M22 16l-7 11l11-5l11 5l-7-11" fill="#f7c948"/>')}
+        <circle cx="84" cy="26" r="9" fill="#ff8f4d"/><path d="M84 17v18M75 26h18" stroke="#fff" stroke-width="2" stroke-linecap="round"/>`;
+      if (scene.scene === 'coworker-help') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<rect x="20" y="-8" width="22" height="14" rx="5" fill="#d8ecff"/><text x="31" y="1" text-anchor="middle" font-size="7" font-weight="900" fill="#32405d">懂</text>')}
+        <path d="M71 46q12-12 21-3" fill="none" stroke="#f2c9a5" stroke-width="7" stroke-linecap="round"/><path d="M68 55q10 8 20 0" fill="none" stroke="#8f6dff" stroke-width="6" stroke-linecap="round"/>`;
+      if (scene.scene === 'mental-whirl') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M22 -16q9-10 18 0q-9 10-18 0z" fill="#8f6dff"/><path d="M38 -16q9-10 18 0q-9 10-18 0z" fill="#ff6b35"/>')}
+        <path d="M86 24q9 7 0 14q-9 7 0 14" stroke="#f7c948" stroke-width="4" fill="none"/>`;
+      if (scene.scene === 'plan-rescue') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<rect x="18" y="-16" width="20" height="26" rx="4" fill="#fff"/><path d="M40 -7l13 13" stroke="#ff6b35" stroke-width="4" stroke-linecap="round"/><path d="M49 6l-3 10" stroke="#ff6b35" stroke-width="4" stroke-linecap="round"/>')}
+        <circle cx="83" cy="24" r="10" fill="#f7c948"/><path d="M83 18v12M77 24h12" stroke="#fff" stroke-width="2"/>`;
+      if (scene.scene === 'meeting-overtime') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M23 -18h18" stroke="#d8ecff" stroke-width="3" stroke-linecap="round"/><circle cx="33" cy="0" r="10" fill="#fff4c7"/><path d="M33 -5v8l5 3" stroke="#f7c948" stroke-width="3" stroke-linecap="round"/>')}
+        <rect x="76" y="22" width="10" height="50" rx="5" fill="#8f6dff"/><rect x="79" y="12" width="4" height="10" rx="2" fill="#f7c948"/>`;
+      if (scene.scene === 'fish-cooling') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M20 -3q10-10 20 0q-10 10-20 0z" fill="#c3fff3"/><circle cx="27" cy="-5" r="2" fill="#174345"/><path d="M40 -3l8-6v12z" fill="#f7c948"/>')}
+        <path d="M68 70q11 6 22 0" stroke="#7fd8ff" stroke-width="4" fill="none"/><circle cx="82" cy="24" r="8" fill="#f7c948"/>`;
+      if (scene.scene === 'all-mention') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M32 -18q10 0 10 9v8q0 3 4 6H18q4-3 4-6v-8q0-9 10-9z" fill="#f7c948"/><circle cx="32" cy="10" r="3" fill="#fff4be"/>')}
+        <circle cx="84" cy="26" r="12" fill="#ff6b35"/><text x="84" y="30" text-anchor="middle" font-size="9" font-weight="900" fill="#fff">@</text>`;
+      if (scene.scene === 'revise-file') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<rect x="21" y="-14" width="22" height="30" rx="4" fill="#d8ecff"/><path d="M30 -7h4v12q0 4-4 4q-4 0-4-4v-9q0-3 3-3q3 0 3 3v8" fill="none" stroke="#8f6dff" stroke-width="2.5" stroke-linecap="round"/>')}
+        <circle cx="84" cy="24" r="11" fill="#f7c948"/><text x="84" y="28" text-anchor="middle" font-size="8" font-weight="900" fill="#fff">×8</text>`;
+      if (scene.scene === 'monday-boot') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<rect x="20" y="-2" width="22" height="18" rx="5" fill="#f2dbc4"/><path d="M42 1h6a5 5 0 0 1 0 10h-6" fill="none" stroke="#c98f5a" stroke-width="2.5"/><path d="M25 -10v7M36 -10v7" stroke="#ffb36b" stroke-width="3" stroke-linecap="round"/>')}
+        <rect x="78" y="46" width="10" height="20" rx="4" fill="#7a533d"/>`;
+      if (scene.scene === 'brief-puzzle') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M18 -8h12a4 4 0 1 1 7 0h12v12a4 4 0 1 1 0 7v12H37a4 4 0 1 1-7 0H18V11a4 4 0 1 1 0-7z" fill="#8f6dff"/>')}
+        <circle cx="84" cy="26" r="10" fill="#f7c948"/><path d="M84 20v12M78 26h12" stroke="#fff6c8" stroke-width="2"/>`;
+      if (scene.scene === 'brainstorm-burst') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M32 -22l5 11l11 5l-11 5l-5 11l-5-11l-11-5l11-5z" fill="#ff6b35"/>')}
+        <circle cx="84" cy="58" r="12" fill="#f7c948"/><text x="84" y="62" text-anchor="middle" font-size="7" font-weight="900" fill="#fff">IDEA</text>`;
+      if (scene.scene === 'holiday-window') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<rect x="20" y="-10" width="28" height="20" rx="5" fill="#7fd8ff"/><path d="M20 2h28v8H20z" fill="#f7c948"/>')}
+        <path d="M83 22v22" stroke="#ff8f4d" stroke-width="4" stroke-linecap="round"/><path d="M83 26q10 0 16 8H83z" fill="#ff8f4d"/><rect x="90" y="41" width="7" height="28" rx="3" fill="#42d392"/>`;
+      return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M32 -24q10 0 10 10q0 5-4 8q-2 2-2 6h-8q0-4-2-6q-4-3-4-8q0-10 10-10z" fill="#fff4be"/>')}
+        <circle cx="84" cy="24" r="9" fill="#8f6dff"/>`;
+    }
+
+    function buildSceneIllustration(iconKey) {
+      const scene = QUESTION_SCENE_MAP[iconKey] || QUESTION_SCENE_MAP['✨'];
+      const title = escSvg(scene.title);
+      const detail = buildSceneDetail(scene);
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 116 116">
+        <defs>
+          <linearGradient id="scene-bg-${escSvg(iconKey)}" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0%" stop-color="${scene.bg}"/>
+            <stop offset="100%" stop-color="${scene.accent}" stop-opacity="0.35"/>
+          </linearGradient>
+        </defs>
+        <rect width="116" height="116" rx="24" fill="url(#scene-bg-${escSvg(iconKey)})"/>
+        ${detail}
+        <rect x="14" y="93" width="88" height="13" rx="6.5" fill="rgba(0,0,0,0.18)"/>
+        <text x="58" y="102.5" text-anchor="middle" font-size="8.6" font-weight="900" fill="#fff8d8" letter-spacing="0.4">${title}</text>
+      </svg>`;
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
+
     const QUESTIONS = [
+
       { text: '工作群晚上 11:48 又亮了，你会：', emoji: '🌙', options: [
         { text: '点进去看一眼，然后默默扣上手机', scores: ['seen-no-reply', 'social-power-save', 'desk-charger'] },
         { text: '先回一句“收到”，把体面维持住', scores: ['surface-business', 'allround-substitute', 'meeting-endurance'] }
@@ -2078,7 +2534,7 @@
 
     const totalQuestions = QUESTIONS.length;
     const progressHints = [
-      '不用想太久，第一反应最像你。',
+      '不用想太久，点更像你的那一边。',
       '你那套体面上班法，已经快藏不住了。',
       '再答几题，你的工型就快加载完成。'
     ];
@@ -2092,6 +2548,7 @@
 
     let currentQ = 0;
     let answers = [];
+    let questionChoices = [];
     let currentTypeKey = TYPE_PRIORITY[0];
     let currentResult = RESULTS[currentTypeKey];
     let idCardQrReady = false;
@@ -2119,30 +2576,32 @@
       const q = QUESTIONS[currentQ];
       const progress = ((currentQ + 1) / totalQuestions) * 100;
       document.getElementById('progress-text').textContent = '第 ' + (currentQ + 1) + ' / ' + totalQuestions + ' 题';
-      document.getElementById('progress-hint').textContent = progressHints[currentQ % progressHints.length];
+      document.getElementById('progress-hint').textContent = '';
       document.getElementById('progress-fill').style.width = progress.toFixed(1) + '%';
       document.getElementById('q-number').textContent = 'Q' + (currentQ + 1);
-      document.getElementById('q-axis').textContent = '选更接近哪边一点';
-      document.getElementById('q-emoji').textContent = q.emoji || '💼';
+      document.getElementById('q-axis').textContent = '';
+      document.getElementById('q-icon-image').src = buildSceneIllustration(q.emoji || '✨');
       document.getElementById('q-text').textContent = q.text;
       document.getElementById('left-text').textContent = q.options[0].text;
       document.getElementById('right-text').textContent = q.options[1].text;
 
       const options = document.getElementById('options');
       options.innerHTML = '';
-      scales.forEach(function(item) {
+      questionChoices = [];
+      q.options.forEach(function(option, index) {
         const btn = document.createElement('button');
-        btn.className = 'scale-btn ' + item.className;
-        btn.innerHTML = '<em>' + item.icon + '</em><span>' + item.label + '</span>';
-        btn.onclick = createAnswerHandler(item.value, btn);
+        btn.className = 'choice-card choice-' + (index === 0 ? 'left' : 'right');
+        btn.innerHTML = '<span class="choice-kicker">' + (index === 0 ? '左边更像我' : '右边更像我') + '</span><strong>' + escapeHtml(option.text) + '</strong>';
+        btn.onclick = createAnswerHandler(index, btn);
         options.appendChild(btn);
+        questionChoices.push(btn);
       });
       renderProgressDots();
     }
 
     function createAnswerHandler(value, btn) {
       return function () {
-        const buttons = document.querySelectorAll('.scale-btn');
+        const buttons = document.querySelectorAll('.choice-card');
         buttons.forEach(function(item) {
           item.disabled = true;
           item.style.opacity = '0.55';
@@ -2190,13 +2649,9 @@
       });
       QUESTIONS.forEach(function(question, index) {
         const pickedValue = typeof answers[index] === 'number' ? answers[index] : 0;
-        const leftWeight = pickedValue < 0 ? Math.abs(pickedValue) : (pickedValue === 0 ? 1 : 0);
-        const rightWeight = pickedValue > 0 ? Math.abs(pickedValue) : (pickedValue === 0 ? 1 : 0);
-        question.options[0].scores.forEach(function(typeId) {
-          scoreMap[typeId] = (scoreMap[typeId] || 0) + leftWeight;
-        });
-        question.options[1].scores.forEach(function(typeId) {
-          scoreMap[typeId] = (scoreMap[typeId] || 0) + rightWeight;
+        const chosenOption = question.options[pickedValue] || question.options[0];
+        chosenOption.scores.forEach(function(typeId) {
+          scoreMap[typeId] = (scoreMap[typeId] || 0) + 1;
         });
       });
       const normalizedScoreMap = {};
@@ -2218,8 +2673,8 @@
       const groupCopy = result.groupShare;
 
       document.getElementById('result-code').textContent = typeId;
-      document.getElementById('result-avatar').textContent = visual.emoji;
-      document.getElementById('poster-mini-emoji').textContent = visual.emoji;
+      document.getElementById('result-avatar').innerHTML = buildCharacterAvatar(typeId, 132);
+      document.getElementById('poster-mini-emoji').innerHTML = buildCharacterAvatar(typeId, 96);
       document.getElementById('result-type').textContent = result.name;
       document.getElementById('poster-mini-type').textContent = result.name;
       document.getElementById('result-subtitle').textContent = result.subtitle;
@@ -2269,7 +2724,7 @@
 
     function renderIdCard(typeId, result, visual, status) {
       document.getElementById('idcard-status').textContent = status;
-      document.getElementById('idcard-avatar').textContent = visual.emoji;
+      document.getElementById('idcard-avatar').innerHTML = buildCharacterAvatar(typeId, 118);
       document.getElementById('idcard-type-name').textContent = result.name;
       document.getElementById('idcard-type-en').textContent = result.enName || typeId;
       document.getElementById('idcard-subtitle').textContent = result.subtitle;
