@@ -1,394 +1,2859 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>51TI · 劳动者人格测试</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>测测你是哪一种“工”｜51TI劳动者人格测试</title>
+  <meta name="description" content="20道题测出你的上班隐藏人格，生成专属劳动者工牌。" />
+  <meta property="og:title" content="测测你是哪一种“工”｜51TI劳动者人格测试" />
+  <meta property="og:description" content="有的人上班靠热爱，有的人靠咖啡，还有的人靠“收到”维持体面。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="./share-cover.png" />
+  <meta name="51ti-deploy-note" content="Set window.__51TI_SITE_URL__ before deploy if moving off GitHub Pages." />
+  <meta name="theme-color" content="#15111f" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0a0a0f;
+      --bg-soft: #12122a;
+      --card: rgba(18, 18, 42, 0.92);
+      --line: #23234a;
+      --line-strong: #343468;
+      --text: #f3f1ff;
+      --text-soft: #b4b2c9;
+      --text-faint: #7a7892;
+      --orange: #ff6b35;
+      --yellow: #f7c948;
+      --purple: #8f6dff;
+      --green: #42d392;
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-      background: #0a0a0f;
-      color: #fff;
-      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(143,109,255,0.15), transparent 36%),
+        linear-gradient(145deg, #08080d 0%, #111128 48%, #0a0a0f 100%);
+      color: var(--text);
       overflow-x: hidden;
     }
-    .page { display: none; min-height: 100vh; padding: 20px; }
-    .page.active { display: flex; flex-direction: column; }
-    #page-start {
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 50%, #0f1a3a 100%);
+
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding: 18px 16px 28px;
     }
-    .logo-badge {
-      background: linear-gradient(135deg, #ff6b35, #f7c948);
-      color: #0a0a0f;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      padding: 4px 14px;
-      border-radius: 20px;
-      margin-bottom: 24px;
-      display: inline-block;
-    }
-    #page-start h1 {
-      font-size: 72px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #ff6b35, #f7c948, #ff6b35);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: shimmer 3s linear infinite;
-      margin-bottom: 8px;
-      letter-spacing: 4px;
-    }
-    @keyframes shimmer {
-      0% { background-position: 0% center; }
-      100% { background-position: 200% center; }
-    }
-    #page-start .subtitle {
-      font-size: 15px;
-      color: #8888aa;
-      margin-bottom: 40px;
-      line-height: 1.8;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, #ff6b35, #f7c948);
-      color: #0a0a0f;
-      border: none;
-      padding: 16px 52px;
-      font-size: 18px;
-      font-weight: 700;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      letter-spacing: 3px;
-    }
-    .btn-primary:hover { transform: scale(1.05); box-shadow: 0 8px 30px rgba(255,107,53,0.4); }
-    .countdown-badge { margin-top: 30px; font-size: 13px; color: #666688; }
-    .countdown-badge span { color: #f7c948; font-weight: 700; }
-    .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-    .particle {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0.3;
-      animation: float-up linear infinite;
-    }
-    @keyframes float-up {
-      0% { transform: translateY(100vh) scale(1); opacity: 0; }
-      10% { opacity: 0.3; }
-      90% { opacity: 0.3; }
-      100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
-    }
-    #page-test { padding-top: 20px; background: #0a0a0f; }
-    .progress-wrap { margin-bottom: 20px; }
-    .progress-text { font-size: 12px; color: #666688; margin-bottom: 8px; letter-spacing: 1px; }
-    .progress-bar { width: 100%; height: 4px; background: #1a1a2e; border-radius: 4px; overflow: hidden; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, #ff6b35, #f7c948); border-radius: 4px; transition: width 0.4s ease; }
-    .progress-dots { display: flex; gap: 5px; margin-top: 8px; justify-content: center; flex-wrap: wrap; }
-    .dot { width: 6px; height: 6px; border-radius: 50%; background: #2a2a50; transition: all 0.3s; }
-    .dot.done { background: #ff6b35; }
-    .dot.current { background: #f7c948; width: 18px; border-radius: 3px; }
-    .question-card {
-      background: #12122a;
-      border: 1px solid #1e1e40;
-      border-radius: 20px;
-      padding: 28px 22px;
-      flex: 1;
+    .page.active {
       display: flex;
       flex-direction: column;
     }
-    .q-emoji { font-size: 40px; margin-bottom: 14px; }
-    .q-number { font-size: 11px; color: #ff6b35; font-weight: 700; letter-spacing: 2px; margin-bottom: 10px; }
-    .q-text { font-size: 20px; font-weight: 600; line-height: 1.5; margin-bottom: 28px; color: #e0e0f0; }
-    .options { display: flex; flex-direction: column; gap: 12px; flex: 1; }
-    .option-btn {
-      background: #1a1a2e;
-      border: 1.5px solid #2a2a50;
+
+    .shell {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: calc(100vh - 46px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      gap: 18px;
+    }
+
+    .logo-badge,
+    .mini-badge {
+      align-self: center;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .hero h1 {
+      font-size: 40px;
+      line-height: 1.06;
+      font-weight: 900;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #fff 0%, var(--yellow) 30%, var(--orange) 65%, #fff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 4.5s linear infinite;
+    }
+
+    @keyframes shimmer {
+      from { background-position: 0% center; }
+      to { background-position: 200% center; }
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      line-height: 1.55;
+      color: #f5f2ff;
+      font-weight: 700;
+    }
+
+    .hero-desc {
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .hero-point {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
       border-radius: 14px;
-      padding: 16px 20px;
-      color: #c0c0d8;
-      font-size: 15px;
-      text-align: left;
+      padding: 12px 10px;
+      color: var(--text-soft);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .hero-tip {
+      color: var(--text-faint);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .btn,
+    .scale-btn,
+    .share-btn {
+      border: none;
+      outline: none;
       cursor: pointer;
-      transition: all 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.16s ease, opacity 0.16s ease, border-color 0.16s ease, background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .btn:active,
+    .scale-btn:active,
+    .share-btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      width: 100%;
+      min-height: 56px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      color: #120d10;
+      font-weight: 900;
+      font-size: 17px;
+      letter-spacing: 1px;
+      box-shadow: 0 12px 24px rgba(255, 107, 53, 0.28);
+      margin-top: 6px;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      min-height: 52px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text);
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .btn-ghost {
+      width: 100%;
+      min-height: 50px;
+      border-radius: 16px;
+      background: transparent;
+      border: 1px solid #353565;
+      color: var(--text-soft);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    #page-test {
+      padding-top: 14px;
+      padding-bottom: 24px;
+    }
+
+    .progress-wrap {
+      position: sticky;
+      top: 8px;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      background: rgba(10,10,15,0.78);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .progress-top {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .progress-text {
+      color: var(--text-soft);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .progress-hint {
+      display: none;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #191932;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--orange), var(--yellow));
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-dots {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #2b2b50;
+    }
+
+    .dot.done { background: var(--orange); }
+    .dot.current {
+      width: 18px;
+      background: var(--yellow);
+    }
+
+    .question-card,
+    .result-card,
+    .metrics-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .question-card {
+      padding: 20px 16px 18px;
+    }
+
+    .q-head {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .q-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .q-number {
+      color: var(--orange);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+    }
+
+    .q-axis {
+      display: none;
+    }
+
+    .q-emoji {
+      width: 148px;
+      height: 148px;
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .q-icon-image {
+      width: 140px;
+      height: 140px;
+      display: block;
+    }
+
+    .q-text {
+      font-size: 21px;
+      line-height: 1.45;
+      font-weight: 800;
+      margin-bottom: 18px;
+      color: #f7f4ff;
+    }
+
+    .choice-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .choice-btn {
+      min-height: 84px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(26,26,52,0.96), rgba(19,19,38,0.96));
+      border: 1px solid #343468;
+      color: var(--text);
+      padding: 16px 16px 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      text-align: left;
+      font-size: 16px;
+      line-height: 1.55;
+      font-weight: 760;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .choice-btn::after {
+      content: '›';
+      color: var(--yellow);
+      font-size: 22px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .choice-btn.selected {
+      background: linear-gradient(180deg, rgba(255, 107, 53, 0.24), rgba(143, 109, 255, 0.18));
+      border-color: rgba(247,201,72,0.9);
+      box-shadow: 0 0 0 2px rgba(247, 201, 72, 0.14) inset, 0 10px 24px rgba(143, 109, 255, 0.14);
+    }
+
+    .question-footer-tip {
+      margin-top: 12px;
+      text-align: center;
+      color: var(--text-faint);
+      font-size: 12px;
+      line-height: 1.5;
+      min-height: 18px;
+    }
+
+    #page-result {
+      padding-top: 14px;
+      padding-bottom: 30px;
+    }
+
+    .result-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .result-hero {
+      position: relative;
+      overflow: hidden;
+      padding: 20px 18px 18px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at top right, rgba(247,201,72,0.22), transparent 32%),
+        radial-gradient(circle at left bottom, rgba(143,109,255,0.20), transparent 30%),
+        linear-gradient(145deg, rgba(255,107,53,0.14), rgba(143,109,255,0.12)),
+        rgba(18,18,42,0.96);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow);
+    }
+
+    .result-hero::after {
+      content: '';
+      position: absolute;
+      inset: auto -24px -28px auto;
+      width: 132px;
+      height: 132px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255,255,255,0.12), transparent 68%);
+      pointer-events: none;
+    }
+
+    .result-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .result-kicker {
+      color: var(--yellow);
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-weight: 900;
+    }
+
+    .result-code {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #f7f4ff;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .result-poster-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 118px;
+      gap: 14px;
+      align-items: stretch;
+      margin-bottom: 14px;
+    }
+
+    .result-visual {
+      display: grid;
+      grid-template-columns: 132px 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 0;
+    }
+
+    .result-poster-mini {
+      position: relative;
+      padding: 14px 12px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 152px;
+      overflow: hidden;
+    }
+
+    .result-poster-mini::after {
+      content: '';
+      position: absolute;
+      inset: auto -22px -30px auto;
+      width: 90px;
+      height: 90px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(247,201,72,0.20), transparent 70%);
+      pointer-events: none;
+    }
+
+    .poster-mini-top {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1.6px;
+      color: rgba(255,255,255,0.76);
+      text-transform: uppercase;
+    }
+
+    .poster-mini-emoji {
+      width: 82px;
+      height: 82px;
+      border-radius: 18px;
+      overflow: hidden;
+      margin: 10px 0 8px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .poster-mini-emoji svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .poster-mini-type {
+      font-size: 17px;
+      line-height: 1.25;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .poster-mini-line {
+      font-size: 12px;
+      line-height: 1.45;
+      color: #ffe9d1;
+      font-weight: 700;
+    }
+
+    .result-avatar {
+      width: 132px;
+      height: 132px;
+      border-radius: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+
+    .result-avatar svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .result-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .result-badge {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #f3f1ff;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .result-type-display {
+      font-size: 36px;
+      line-height: 1.16;
+      font-weight: 950;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .result-subtitle {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #ffe9d1;
+      font-weight: 750;
+      margin-bottom: 2px;
+    }
+
+
+    .result-en-name {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-weight: 800;
+      margin: 2px 0 8px;
+    }
+
+    .poster-mini-en {
+      font-size: 10px;
+      line-height: 1.4;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .worker-id-en {
+      margin-top: 4px;
+      color: var(--text-faint);
+      font-size: 11px;
+      line-height: 1.4;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 800;
+    }
+
+    .result-summary {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .summary-pill {
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-soft);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .result-card {
+      padding: 18px;
+    }
+
+    .card-title {
+      color: var(--yellow);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+    }
+
+    .result-desc {
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    .manifesto-box {
+      padding: 18px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(255,107,53,0.16), rgba(247,201,72,0.14));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow);
+    }
+
+    .manifesto-box .card-title { color: #fff7cf; }
+
+    .manifesto-text {
+      color: #fff;
+      font-size: 22px;
+      line-height: 1.6;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+    }
+
+    .metrics-card {
+      padding: 16px;
+    }
+
+    .metric-item + .metric-item {
+      margin-top: 12px;
+    }
+
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    .metric-row strong {
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .metric-bar {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: #1a1a33;
+      overflow: hidden;
+    }
+
+    .metric-bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--orange), var(--yellow));
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .share-btn {
+      width: 100%;
+      min-height: 54px;
+      border-radius: 16px;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .share-primary {
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      color: #140f12;
+      box-shadow: 0 12px 24px rgba(255,107,53,0.22);
+    }
+
+    .share-secondary {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    .share-ghost {
+      background: transparent;
+      border: 1px solid #38386b;
+      color: var(--text-soft);
+    }
+
+    .result-footer-tip {
+      text-align: center;
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 4px 12px 0;
+    }
+
+    .share-suite {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .share-suite .card-title {
+      margin-bottom: 12px;
+    }
+
+    .share-preview-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .share-preview-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      color: var(--text-soft);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .share-preview-top strong {
+      color: #fff;
+      font-size: 12px;
+      letter-spacing: 0.4px;
+    }
+
+    .share-copy-text {
+      white-space: pre-wrap;
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .share-scene-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .share-scene-card {
+      min-height: 112px;
+      border-radius: 18px;
+      padding: 14px 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .share-scene-label {
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .share-scene-card p {
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .share-helper-text {
+      margin-top: 10px;
+      color: var(--text-soft);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .share-sheet-card {
+      text-align: left;
+      max-width: 380px;
+      padding: 18px;
+    }
+
+    .share-sheet-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .share-sheet-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .share-sheet-subtitle {
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .share-sheet-chip {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .share-sheet-preview {
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      padding: 14px;
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.75;
+      white-space: pre-wrap;
+      margin-bottom: 12px;
+    }
+
+    .share-sheet-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .share-sheet-note {
+      margin-top: 12px;
+      color: var(--text-soft);
+      font-size: 12px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .idcard-overlay {
+      align-items: flex-start;
+      overflow-y: auto;
+      padding: 20px 16px 34px;
+    }
+
+    .overlay-card.idcard-sheet {
+      max-width: 390px;
+      margin: 0 auto;
+      text-align: left;
+      padding: 16px;
+    }
+
+    .idcard-sheet .share-sheet-head {
+      margin-bottom: 14px;
+    }
+
+    .idcard-stage {
+      position: relative;
+      padding: 16px;
+      border-radius: 24px;
+      background: linear-gradient(160deg, rgba(255,107,53,0.10), rgba(143,109,255,0.12)), rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .idcard-stage::after {
+      content: '';
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 999px;
+      right: -70px;
+      bottom: -80px;
+      background: radial-gradient(circle, rgba(247,201,72,0.18), transparent 72%);
+      pointer-events: none;
+    }
+
+    .worker-idcard {
+      position: relative;
+      width: 100%;
+      border-radius: 28px;
+      padding: 18px;
+      background:
+        radial-gradient(circle at top right, rgba(247,201,72,0.18), transparent 36%),
+        radial-gradient(circle at left bottom, rgba(143,109,255,0.18), transparent 34%),
+        linear-gradient(145deg, #15152d 0%, #0f1023 100%);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 18px 42px rgba(0,0,0,0.34);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .worker-idcard::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 38%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .worker-idcard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .worker-idcard-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .worker-idcard-brand strong {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 950;
+      letter-spacing: 1px;
+    }
+
+    .worker-idcard-brand span {
+      color: var(--yellow);
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      font-weight: 900;
+    }
+
+    .worker-idcard-badge {
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .worker-idcard-main {
+      display: grid;
+      grid-template-columns: 124px minmax(0, 1fr);
+      gap: 14px;
+      align-items: stretch;
+      margin-bottom: 14px;
+    }
+
+    .worker-id-avatar {
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 136px;
+      overflow: hidden;
+    }
+
+    .worker-id-avatar svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .worker-id-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .worker-id-label {
+      color: rgba(255,255,255,0.72);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+    }
+
+    .worker-id-type {
+      color: #fff;
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 950;
+    }
+
+    .worker-id-subtitle {
+      color: #ffe9d1;
+      font-size: 14px;
+      line-height: 1.55;
+      font-weight: 700;
+    }
+
+    .worker-id-dept {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #f6f4ff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .worker-id-manifesto {
+      border-radius: 20px;
+      padding: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+      font-size: 15px;
+      line-height: 1.75;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .worker-id-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .worker-id-tags span {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .worker-id-footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .worker-id-footer-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .worker-id-footer-copy strong {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+    }
+
+    .worker-id-footer-copy span {
+      color: var(--text-soft);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .worker-id-qr {
+      width: 78px;
+      height: 78px;
+      border-radius: 16px;
+      background: #fff;
+      padding: 6px;
+      flex-shrink: 0;
+    }
+
+    .worker-id-qr img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .idcard-helper-text {
+      color: var(--text-soft);
+      font-size: 12px;
+      line-height: 1.7;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5,5,10,0.88);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 99;
+    }
+    .overlay.active { display: flex; }
+
+    .overlay-card {
+      width: 100%;
+      max-width: 360px;
+      background: #12122a;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 22px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .overlay-emoji {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    .overlay-title {
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .overlay-text {
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 26px;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(10,10,15,0.95);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 13px;
+      line-height: 1.4;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 110;
+      max-width: calc(100vw - 36px);
+      text-align: center;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 360px) {
+      .hero h1 { font-size: 34px; }
+      .q-text { font-size: 19px; }
+      .result-topline { align-items: flex-start; flex-direction: column; }
+      .result-poster-grid { grid-template-columns: 1fr; }
+      .result-visual { grid-template-columns: 1fr; }
+      .result-poster-mini { min-height: auto; }
+      .result-avatar { width: 104px; height: 104px; border-radius: 28px; font-size: 38px; }
+      .q-emoji { width: 128px; height: 128px; }
+      .q-icon-image { width: 120px; height: 120px; }
+      .result-type-display { font-size: 30px; }
+      .manifesto-text { font-size: 20px; }
+      .choice-list { gap: 10px; }
+      .choice-btn { min-height: 78px; font-size: 15px; padding: 14px 14px 14px 16px; }
+      .worker-idcard-main { grid-template-columns: 1fr; }
+      .worker-id-avatar { min-height: 92px; }
+      .worker-id-type { font-size: 24px; }
+      .worker-id-footer { align-items: flex-start; flex-direction: column; }
+    }
+  
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .hero-tag {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #f6f2ff;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .question-subhint {
+      display: none;
+    }
+
+    .choice-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .choice-btn {
+      min-height: 84px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(26,26,52,0.96), rgba(19,19,38,0.96));
+      border: 1px solid #343468;
+      color: var(--text);
+      padding: 16px 16px 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      text-align: left;
+      font-size: 16px;
+      line-height: 1.55;
+      font-weight: 760;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .choice-btn::after {
+      content: '›';
+      color: var(--yellow);
+      font-size: 22px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .choice-btn.selected {
+      background: linear-gradient(180deg, rgba(255, 107, 53, 0.24), rgba(143, 109, 255, 0.18));
+      border-color: rgba(247,201,72,0.9);
+      box-shadow: 0 0 0 2px rgba(247, 201, 72, 0.14) inset, 0 10px 24px rgba(143, 109, 255, 0.14);
+    }
+
+    .question-footer-tip {
+      margin-top: 12px;
+      text-align: center;
+      color: var(--text-faint);
+      font-size: 12px;
+      line-height: 1.5;
+      min-height: 18px;
+    }
+
+    .result-section-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .result-intro-label {
+      color: var(--yellow);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1.6px;
+      margin-bottom: 10px;
+    }
+
+    .trait-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .trait-chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .analysis-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .analysis-item {
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 14px;
+    }
+
+    .analysis-item strong {
+      display: block;
+      color: var(--yellow);
+      font-size: 12px;
+      letter-spacing: 1px;
+      margin-bottom: 7px;
+    }
+
+    .analysis-item p {
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .share-copy-card {
+      padding: 16px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .share-copy-card + .share-copy-card {
+      margin-top: 12px;
+    }
+
+    .share-copy-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .share-copy-title {
+      color: var(--yellow);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .share-copy-desc {
+      color: var(--text-faint);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .share-copy-body {
+      white-space: pre-wrap;
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .result-helper-copy {
+      text-align: center;
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.7;
+      padding: 0 10px;
+    }
+
+    .result-actions .share-primary {
+      order: 1;
+    }
+
+    .result-actions .share-secondary:nth-child(2) {
+      order: 2;
+    }
+
+    .result-actions .share-secondary:nth-child(3) {
+      order: 3;
+    }
+
+    .result-actions .share-secondary:nth-child(4) {
+      order: 4;
+    }
+
+    .result-actions .share-ghost {
+      order: 5;
+    }
+
+    .hero-marquee {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 2px 4px 6px;
+      margin-top: 2px;
+      scrollbar-width: none;
+    }
+
+    .hero-marquee::-webkit-scrollbar { display: none; }
+
+    .hero-chip {
+      flex: 0 0 auto;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(135deg, rgba(143,109,255,0.22), rgba(255,107,53,0.18));
+      color: #fff8e6;
+      font-size: 12px;
+      font-weight: 800;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 18px rgba(0,0,0,0.18);
+      white-space: nowrap;
+    }
+
+    .share-card {
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.30), 0 0 0 1px rgba(255,255,255,0.03) inset;
+    }
+
+    .share-card-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #f5de87;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      margin-bottom: 14px;
+    }
+
+    .share-card-main {
+      display: grid;
+      grid-template-columns: 108px 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .share-card-avatar { min-height: 108px; }
+    .share-card-copy { display: grid; gap: 10px; }
+
+    .manifesto-inline {
+      color: #fff5d8;
+      font-size: 15px;
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      width: fit-content;
+      max-width: 100%;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: #fff5d8;
+      font-size: 12px;
+      font-weight: 800;
       line-height: 1.4;
     }
-    .option-btn:hover { border-color: #ff6b35; color: #fff; background: #1e1838; transform: translateX(4px); }
-    .option-btn:active { transform: scale(0.97); }
-    .option-btn.selected { border-color: #ff6b35; background: #1e1838; color: #fff; }
-    #page-result {
-      align-items: center;
-      background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 50%, #0a0a0f 100%);
-      padding-top: 20px;
+
+    @media (max-width: 480px) {
+      .choice-list { gap: 10px; }
+      .choice-btn { min-height: 78px; font-size: 15px; padding: 14px 14px 14px 16px; }
+      .share-card-main { grid-template-columns: 1fr; }
+      .share-card-avatar { min-height: 92px; }
     }
-    .result-badge { font-size: 11px; letter-spacing: 3px; color: #f7c948; margin-bottom: 16px; }
-    .result-type-display { font-size: 48px; font-weight: 900; letter-spacing: 6px; margin-bottom: 6px; background: linear-gradient(135deg, #ff6b35, #f7c948); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 3s linear infinite; }
-    .result-cn { font-size: 13px; color: #8888aa; margin-bottom: 20px; font-style: italic; line-height: 1.5; }
-    .result-card { background: #12122a; border: 1px solid #1e1e40; border-radius: 20px; padding: 22px; width: 100%; max-width: 380px; margin-bottom: 18px; }
-    .result-desc { font-size: 14px; color: #c0c0d8; line-height: 1.75; margin-bottom: 18px; }
-    .result-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-    .tag { background: #1e1838; border: 1px solid #ff6b35; color: #ff6b35; font-size: 11px; padding: 4px 12px; border-radius: 20px; }
-    .manifesto { background: linear-gradient(135deg, #1a0a2e, #0f1a3a); border: 1px solid #2a2a50; border-radius: 16px; padding: 20px; width: 100%; max-width: 380px; margin-bottom: 22px; }
-    .manifesto-title { font-size: 11px; color: #f7c948; letter-spacing: 3px; margin-bottom: 12px; text-align: center; }
-    .manifesto-text { font-size: 13px; color: #9999bb; line-height: 1.85; text-align: center; }
-    .manifesto-highlight { color: #f7c948; font-weight: 600; }
-    .btn-share { background: transparent; border: 2px solid #ff6b35; color: #ff6b35; padding: 14px 40px; font-size: 16px; font-weight: 700; border-radius: 50px; cursor: pointer; letter-spacing: 2px; transition: all 0.2s; margin-bottom: 10px; }
-    .btn-share:hover { background: #ff6b35; color: #0a0a0f; }
-    .btn-retry { background: transparent; border: none; color: #666688; font-size: 13px; cursor: pointer; text-decoration: underline; margin-bottom: 40px; }
-    .share-tip { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 999; flex-direction: column; text-align: center; padding: 40px; }
-    .share-tip.active { display: flex; }
-    .share-tip-icon { font-size: 60px; margin-bottom: 20px; }
-    .share-tip-text { font-size: 18px; color: #fff; margin-bottom: 8px; }
-    .share-tip-sub { font-size: 14px; color: #8888aa; }
-    .share-tip-close { margin-top: 30px; background: #ff6b35; color: #0a0a0f; border: none; padding: 12px 32px; border-radius: 50px; font-size: 15px; font-weight: 700; cursor: pointer; }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .fade-in { animation: fadeInUp 0.4s ease forwards; }
-    .fade-in-delay { animation: fadeInUp 0.4s 0.15s ease forwards; opacity: 0; }
-    .fade-in-delay2 { animation: fadeInUp 0.4s 0.3s ease forwards; opacity: 0; }
+
   </style>
 </head>
+
 <body>
-<div class="particles" id="particles"></div>
-
-<div class="page active" id="page-start">
-  <div class="logo-badge">WORK PERSONA TEST</div>
-  <h1>51TI</h1>
-  <div class="subtitle">30道题 &middot; 测出你的劳动者人格<br>16种类型 &middot; 总有一款属于你</div>
-  <button class="btn-primary" onclick="startTest()">开始测试</button>
-  <div class="countdown-badge">👷 还有 <span id="days-to-51">?</span> 天就是五一劳动节</div>
-</div>
-
-<div class="page" id="page-test">
-  <div class="progress-wrap">
-    <div class="progress-text" id="progress-text">第 1 / 30 题</div>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:3.3%"></div></div>
-    <div class="progress-dots" id="progress-dots"></div>
-  </div>
-  <div class="question-card">
-    <div class="q-emoji" id="q-emoji"></div>
-    <div class="q-number" id="q-number">Q1</div>
-    <div class="q-text" id="q-text"></div>
-    <div class="options" id="options"></div>
-  </div>
-</div>
-
-<div class="page" id="page-result">
-  <div class="result-badge fade-in">YOUR WORK PERSONA</div>
-  <div class="result-type-display fade-in" id="result-type"></div>
-  <div class="result-cn fade-in-delay" id="result-cn"></div>
-  <div class="result-card fade-in-delay">
-    <div class="result-desc" id="result-desc"></div>
-    <div class="result-tags" id="result-tags"></div>
-  </div>
-  <div class="manifesto fade-in-delay2">
-    <div class="manifesto-title">51TI 劳动者宣言</div>
-    <div class="manifesto-text">
-      无论你是<span class="manifesto-highlight">卷王牛马</span>还是<span class="manifesto-highlight">辞职预备役</span>，<br>
-      无论你是<span class="manifesto-highlight">老黄牛</span>还是<span class="manifesto-highlight">摸鱼仙人</span>，<br>
-      认真劳动的人，都值得被尊重。<br><br>
-      <strong style="color:#f7c948">五一劳动节，致敬每一位认真工作的你。</strong>
+  <div class="page active" id="page-start">
+    <div class="shell hero">
+      <div class="logo-badge">WORK PERSONA TEST</div>
+      <h1>测测你是哪一种“工”</h1>
+      <div class="hero-subtitle">有的人上班靠热爱，<br />有的人上班靠咖啡，<br />还有的人靠“收到”两个字维持体面。</div>
+      <div class="hero-desc">
+        20 道题，2 分钟。<br />
+        认领你的劳动者工牌。<br />
+        看看你到底是静音高效工，<br />还是精神离岗工。
+      </div>
+      <div class="hero-marquee" aria-label="代表工型预览">
+        <span class="hero-chip">静音高效工</span>
+        <span class="hero-chip">精神离岗工</span>
+        <span class="hero-chip">全能补位工</span>
+        <span class="hero-chip">社交省电工</span>
+        <span class="hero-chip">截止日前夜战神</span>
+        <span class="hero-chip">快乐摸鱼工</span>
+        <span class="hero-chip">边界守门工</span>
+        <span class="hero-chip">灵感蹦迪工</span>
+      </div>
+      <div class="hero-tags">
+        <span class="hero-tag">2分钟完成</span>
+        <span class="hero-tag">16种工型</span>
+        <span class="hero-tag">生成工牌</span>
+        <span class="hero-tag">可发群</span>
+      </div>
+      <button class="btn btn-primary" onclick="startTest()">看看我是哪种工</button>
+      <div class="hero-tip">不用想太久，第一反应最像你。</div>
     </div>
   </div>
-  <button class="btn-share fade-in-delay2" onclick="showShareTip()">分享到朋友圈</button><br>
-  <button class="btn-retry" onclick="restartTest()">重新测试</button>
-</div>
 
-<div class="share-tip" id="share-tip">
-  <div class="share-tip-icon">👆</div>
-  <div class="share-tip-text">点击右上角「···」分享</div>
-  <div class="share-tip-sub">让朋友们也来测测自己的劳动者人格</div>
-  <button class="share-tip-close" onclick="hideShareTip()">知道了</button>
-</div>
+  <div class="page" id="page-test">
+    <div class="shell">
+      <div class="progress-wrap">
+        <div class="progress-top">
+          <div class="progress-text" id="progress-text">第 1 / 20 题</div>
+          <div class="progress-hint" id="progress-hint"></div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="progress-dots" id="progress-dots"></div>
+      </div>
 
-<script>
-var questions = [
-  { dim: 'P', emoji: '⏰', q: '周一闹钟响了，你的第一反应是？', opts: ['秒醒，立刻弹起来', '按掉，再睡三分钟'] },
-  { dim: 'P', emoji: '📱', q: '收到领导发来的加班通知，你？', opts: ['秒回"没问题！"', '假装没看见，等五分钟再回'] },
-  { dim: 'P', emoji: '⏳', q: 'Deadline就在今天，你？', opts: ['肾上腺素飙升，立刻开干', '明天再说，反正没人知道'] },
-  { dim: 'P', emoji: '👀', q: '看到同事在加班，你？', opts: ['我也不能走，陪着', '关我什么事，到点下班'] },
-  { dim: 'P', emoji: '💬', q: '工作群突然弹出领导消息，你？', opts: ['秒回"收到"', '意念回复，等下班再看'] },
-  { dim: 'P', emoji: '🌙', q: '周末双休，但工作群有消息，你？', opts: ['立刻回复，处理完再说', '周六谁看工作消息？'] },
-  { dim: 'P', emoji: '💰', q: '发工资那天，你？', opts: ['立刻打开银行App算清楚', '懒得看，反正月光'] },
-  { dim: 'P', emoji: '🚪', q: '下班前领导突然找你，你？', opts: ['停下所有事，立刻响应', '明天再回，反正也下班了'] },
-  { dim: 'T', emoji: '🤔', q: '工作中遇到一个棘手问题，你？', opts: ['拉群讨论，集思广益', '自己研究，自己搞定'] },
-  { dim: 'T', emoji: '📚', q: '同事来请教你，你？', opts: ['倾囊相授，一起进步', '留一手，教会徒弟饿死师傅'] },
-  { dim: 'T', emoji: '🎤', q: '项目汇报的时候，你？', opts: ['团队一起讲，功劳是大家的', '自己做主角，展现我的贡献'] },
-  { dim: 'T', emoji: '🎉', q: '公司组织团建活动，你？', opts: ['积极参与，多认识人', '找个角落待着，别来烦我'] },
-  { dim: 'T', emoji: '🔧', q: '项目需要更多资源支持，你？', opts: ['找领导协调，申请支援', '自己想办法克服'] },
-  { dim: 'T', emoji: '🏆', q: '项目获奖了，发表感言时你？', opts: ['感谢团队，没有大家就没有我', '主要是我的功劳，我付出最多'] },
-  { dim: 'T', emoji: '💥', q: '工作出了差错，你？', opts: ['主动认领，一起扛', '谁的问题谁负责'] },
-  { dim: 'T', emoji: '📋', q: '讨论方案的时候，你？', opts: ['开会头脑风暴，热火朝天', '写完文档发群里，各看各的'] },
-  { dim: 'B', emoji: '🔄', q: '方案被领导否了，你？', opts: ['继续改，改到第三版', '爱咋咋地，随便吧'] },
-  { dim: 'B', emoji: '📝', q: '客户临时改需求，你？', opts: ['好的没问题，马上改', '加钱，不加不做'] },
-  { dim: 'B', emoji: '🍕', q: '领导又开始画饼了，你？', opts: ['默默听完，点头表示理解', '心里翻白眼，脸上笑嘻嘻'] },
-  { dim: 'B', emoji: '🥺', q: '同事甩锅给你，你？', opts: ['忍了，多一事不如少一事', '当场反驳，我不背这个锅'] },
-  { dim: 'B', emoji: '😵', q: '已经连续加班一周了，你？', opts: ['还能扛，咬咬牙就过去了', '提离职，现在，立刻，马上'] },
-  { dim: 'B', emoji: '🎊', q: '得知同事升职了，你？', opts: ['真不错，真心恭喜他', '为什么不是我？凭什么是他？'] },
-  { dim: 'B', emoji: '📉', q: '公司开始"降本增效"传遍全网，你？', opts: ['继续努力，稳住心态', '简历悄悄更新，随时准备跑'] },
-  { dim: 'S', emoji: '😴', q: '下午三点开始犯困，你？', opts: ['硬撑，喝咖啡熬过去', '借口去茶水间，溜达一下'] },
-  { dim: 'S', emoji: '📦', q: '快递到了，你？', opts: ['必须亲自去拿，顺便活动', '让同事带，懒得动'] },
-  { dim: 'S', emoji: '🚽', q: '厕所时间，你？', opts: ['速战速决，赶紧回去', '带手机进去蹲十五分钟'] },
-  { dim: 'S', emoji: '🚶', q: '需要外出办事，你？', opts: ['能线上就不线下，省事', '正好借机出去透透气'] },
-  { dim: 'S', emoji: '🍱', q: '午饭时间，你？', opts: ['电脑前解决，边吃边看', '必须出门走走，换换空气'] },
-  { dim: 'S', emoji: '📹', q: '开线上会议，你？', opts: ['必须开摄像头，精神面貌很重要', '能不开就不开，省心'] },
-  { dim: 'S', emoji: '🏃', q: '下班时间到了，你？', opts: ['等领导先走我再走', '准点消失，绝不多待一秒'] }
-];
+      <div class="question-card">
+        <div class="q-head">
+          <div class="q-meta">
+            <div class="q-number" id="q-number">Q1</div>
+            <div class="q-axis" id="q-axis"></div>
+          </div>
+          <div class="q-emoji" id="q-emoji"><img class="q-icon-image" id="q-icon-image" alt="题目图标" /></div>
+        </div>
+        <div class="q-text" id="q-text"></div>
+        <div class="question-subhint"></div>
+        <div class="choice-list" id="options"></div>
+        <div class="question-footer-tip" id="question-footer-tip">做完可以直接生成工牌，不用自己想文案。</div>
+      </div>
+    </div>
+  </div>
 
-var personas = {
-  // dim1=P/L, dim2=T/G, dim3=B/R, dim4=S/O
-  // P-责任心强, L-躺平放松, T-团队协作, G-独立自主, B-逆来顺受, R-有棱有角, S-休息优先, O-工作优先
-  'PTBS': { cn: '卷王牛马', en: 'Pusher Ox — The Ox Who Runs Before the Whistle', desc: '你是办公室里最早到、最晚走的那一个。领导的消息你秒回，加班通知你接活。团队的事就是你的事，责任心强到停不下来。辛苦了，卷王。', tags: ['责任心爆棚', '领导最爱', '全勤标兵'] },
-  'PTBO': { cn: '拼命三郎', en: '996 Survivor — Still Breathing After 9 to 9, 6 Days', desc: '你是那个连续加班一周还笑着说"没事"的狠人。别人在抱怨，你已经在改了。别人在摸鱼，你在写方案。你不是不累，是不敢累。', tags: ['抗压王者', 'Deadline Fighter', '铁打的'] },
-  'PTRS': { cn: '效率刺客', en: 'Slackmaster General — Busy Doing Nothing at All', desc: '你看起来很忙，其实你很会忙。消息秒回、会议必到、表格填满，但你总能在最后关头精准完成。时间管理大师，效率与社交的平衡高手。', tags: ['效率高手', '社交达人', '时间管理大师'] },
-  'PTRO': { cn: '节奏大师', en: 'Chaos Coordinator — Looks Busy, Everything Everywhere', desc: '你永远在救火的路上，同时还在组织下一场火。混乱是你最熟悉的战场，先干了再说。你是团队的多线程处理器。', tags: ['多线程战士', '救火队长', '边干边想'] },
-  'PGBS': { cn: '吃瓜狗', en: 'Pro Gossipper — Information Hub of the Office', desc: '你是办公室的情报中心，谁要离职、谁和谁有矛盾、哪个部门要合并，你第一个知道。你独立但也爱八卦——活是干的，瓜也不能落下。', tags: ['情报大师', '社交润滑剂', '消息灵通'] },
-  'PGBO': { cn: '社交蝴蝶', en: 'Social Butterfly — Work Is Just My Social Arena', desc: '你的工作就是维持办公室的人际关系。群消息你秒回，会议你捧场，聚餐你组织。你的社交能力让你在职场如鱼得水。', tags: ['社交高手', '气氛组', '人脉王'] },
-  'PGRS': { cn: '独行侠', en: 'The Closer — Solo Mission, No Backup Needed', desc: '你不需要团队，你一个人就是一支队伍。遇到问题自己解决，扛着压力往前冲。高冷的能力者，孤独是你的常态。', tags: ['独立能力', '单兵作战', '高冷大佬'] },
-  'PGRO': { cn: '独处大佬', en: 'Lone Wolf — PrefersWorking Alone', desc: '你喜欢独立思考，不喜欢被人打扰。工作是工作，生活是生活，你把界限划得很清楚。不是不合群，是更喜欢独处。', tags: ['独立思考', '边界感强', '专注力强'] },
-  'LTBS': { cn: '躺平专业户', en: 'Quiet Quitter — On Payroll, Not On Work', desc: '你是那个"不卷、不争、不站队"的三不员工。活能少就少，事能推就推。你不是没能力，你是看透了：卷来卷去，不如躺平。', tags: ['精神解脱', '不争不抢', '岁月静好'] },
-  'LTBO': { cn: '职场摸鱼王', en: 'Professional Slacker — Masters of Doing Nothing', desc: '你的工作状态：人在工位上，魂在摸鱼中。领导来了马上敲键盘，领导走了马上玩手机。你是办公室的太极高手。', tags: ['摸鱼大师', '时间管理大师', '演技派'] },
-  'LTRS': { cn: '快乐打工仔', en: 'Happy Camper — Work to Live, Not Live to Work', desc: '你上班就是来赚钱的，下班才是真正的生活。工作是副业，快乐是本职。你的座右铭：给多少钱干多少活，绝不多付出。', tags: ['人间清醒', '务实派', '性价比选手'] },
-  'LTRO': { cn: '职场老油条', en: 'Office Veteran — Seen It All, Done It All', desc: '你什么世面没见过？加班、甩锅、站队、画饼，你都经历过。现在你的策略是：少说多做，少做少错，不做不错。', tags: ['职场老鸟', '人精', '不粘锅'] },
-  'LGBS': { cn: '低调做事', en: 'Quiet Professional — Let Your Work Speak', desc: '你默默干活，从不邀功。团队的事你能帮则帮，但你更喜欢独立完成工作。你是那种让领导放心、让同事依赖的存在。', tags: ['任劳任怨', '团队基石', '靠谱担当'] },
-  'LGBO': { cn: '和事佬', en: 'Office Peacekeeper — Smooth Operator, No Waves Made', desc: '你总是在冲突爆发之前就悄悄化解了。你不站队、不冒尖、不出头，但你是团队运转的隐形润滑油。没有你，办公室早就吵翻天了。', tags: ['调和高手', '隐形润滑', '和平使者'] },
-  'LGRS': { cn: '淡人', en: 'Chill Vibes Only — Nothing Bothers Me', desc: '你的人生字典里没有"焦虑"两个字。工资够了就行，职位不强求，快乐最重要。你是那种活得最通透的人。', tags: ['人间清醒', '无欲则刚', '内心平静'] },
-  'LGRO': { cn: '职场丧尸', en: 'The Working Dead — Already a Zombie, Just Waiting for Monday', desc: '周一等周五，周五等下一个周一。你的灵魂已经下班，但你的身体还在工位上。你不是没有梦想，你的梦想就是不上班。', tags: ['灵魂已下班', '人形工位', '周一快乐'] }
-};
+  <div class="page" id="page-result">
+    <div class="shell result-stack">
+      <div class="result-hero share-card" id="share-card">
+        <div class="share-card-brand">51TI 劳动者人格测试 · 社交身份认领卡</div>
+        <div class="result-intro-label">你的工型是</div>
+        <div class="result-topline">
+          <div class="result-kicker">51TI WORKER PROFILE</div>
+          <div class="result-code" id="result-code">silent-efficient</div>
+        </div>
+        <div class="share-card-main">
+          <div class="share-card-avatar" id="result-avatar">💼</div>
+          <div class="share-card-copy">
+            <div class="result-type-display" id="result-type">静音高效工</div>
+            <div class="result-subtitle" id="result-subtitle">副标题</div>
+            <div class="result-en-name" id="result-en-name">SILENT EFFICIENT</div>
+            <div class="manifesto-inline" id="manifesto-inline">“我可以安静，但我的进度条一直在动。”</div>
+            <div class="result-badges" id="result-badges"></div>
+            <div class="status-pill" id="status-pill">今日状态：后台高效运行</div>
+          </div>
+        </div>
+      </div>
 
-var currentQ = 0;
-var answers = [];
-var opposite = { P: 'L', L: 'P', T: 'G', G: 'T', B: 'R', R: 'B', S: 'O', O: 'S' };
+      <div class="idcard-stage">
+        <div class="worker-idcard" id="worker-idcard">
+          <div class="worker-idcard-header">
+            <div class="worker-idcard-brand">
+              <strong>51TI 劳动者人格测试</strong>
+              <span>WORKER IDENTITY CARD</span>
+            </div>
+            <div class="worker-idcard-badge" id="idcard-status">今日状态：后台高效运行</div>
+          </div>
+          <div class="worker-idcard-main">
+            <div class="worker-id-avatar" id="idcard-avatar">💼</div>
+            <div class="worker-id-body">
+              <div>
+                <div class="worker-id-label">工型身份</div>
+                <div class="worker-id-type" id="idcard-type-name">静音高效工</div>
+                <div class="worker-id-en" id="idcard-type-en">SILENT EFFICIENT</div>
+                <div class="worker-id-subtitle" id="idcard-subtitle">副标题</div>
+              </div>
+              <div class="worker-id-dept" id="idcard-dept">劳动者人格研究院</div>
+            </div>
+          </div>
+          <div class="worker-id-manifesto" id="idcard-manifesto">“我可以安静，但我的进度条一直在动。”</div>
+          <div class="worker-id-tags" id="idcard-tags"></div>
+          <div class="worker-id-footer">
+            <div class="worker-id-footer-copy">
+              <strong id="idcard-footer-title">扫我领同款工感</strong>
+              <span>不想解释自己是哪种工，让工牌替你说。</span>
+            </div>
+            <div class="worker-id-qr">
+              <img id="idcard-qr" src="" alt="51TI 测试二维码" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-section-card">
+        <div class="card-title">人格说明</div>
+        <div class="result-desc" id="result-desc"></div>
+      </div>
+
+      <div class="result-section-card">
+        <div class="card-title">工型特征</div>
+        <div class="trait-grid" id="trait-grid"></div>
+      </div>
+
+      <div class="manifesto-box">
+        <div class="card-title">工感宣言</div>
+        <div class="manifesto-text" id="manifesto-text"></div>
+      </div>
+
+      <div class="result-section-card">
+        <div class="card-title">再看一层，你为什么像这一型</div>
+        <div class="analysis-list" id="analysis-list"></div>
+      </div>
+
+      <div class="share-suite">
+        <div class="card-title">把你的工型发出去</div>
+        <div class="share-helper-text">把结果发群里，看看你们这群人到底有多少种工。</div>
+        <div class="share-copy-card">
+          <div class="share-copy-head">
+            <div class="share-copy-title">朋友圈体面版</div>
+            <span id="public-copy-length">0 字</span>
+          </div>
+          <div class="share-copy-desc">适合公开发，不怕同事看到。</div>
+          <div class="share-copy-body" id="public-copy-preview"></div>
+        </div>
+        <div class="share-copy-card">
+          <div class="share-copy-head">
+            <div class="share-copy-title">群聊发疯版</div>
+            <span id="group-copy-length">0 字</span>
+          </div>
+          <div class="share-copy-desc">适合发给朋友、小群、熟人。</div>
+          <div class="share-copy-body" id="group-copy-preview"></div>
+        </div>
+      </div>
+
+      <div class="result-helper-copy">你先认领，再看看朋友们都是什么工。</div>
+
+      <div class="actions result-actions">
+        <button class="share-btn share-primary" onclick="saveIdCard()">截图保存我的工牌</button>
+        <button class="share-btn share-secondary" onclick="copyPublicShare()">复制朋友圈体面版</button>
+        <button class="share-btn share-secondary" onclick="copyGroupShare()">发给朋友测测</button>
+        <button class="share-btn share-ghost" onclick="restartTest()">再测一次</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    const DEFAULT_SITE_URL = 'https://workpersona.cn/';
+    const siteUrl = (window.__51TI_SITE_URL__ && String(window.__51TI_SITE_URL__).trim()) || DEFAULT_SITE_URL;
+    window.__51TI_VERSION__ = '2026-04-29-v3';
+    const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=' + encodeURIComponent(siteUrl);
+    const TYPE_PRIORITY = [
+      'silent-efficient',
+      'emotion-stable',
+      'desk-charger',
+      'social-power-save',
+      'requirements-translator',
+      'deadline-warrior',
+      'spirit-offline',
+      'seen-no-reply',
+      'boundary-keeper',
+      'detail-polisher',
+      'plan-rescue',
+      'meeting-endurance',
+      'happy-fish',
+      'inspiration-party',
+      'surface-business',
+      'allround-substitute'
+    ];
+
+    const STATUS_TEXT = {
+      'silent-efficient': '今日状态：后台高效运行',
+      'seen-no-reply': '今日状态：消息缓冲中',
+      'spirit-offline': '今日状态：灵魂适度放风',
+      'deadline-warrior': '今日状态：倒计时启动',
+      'emotion-stable': '今日状态：表面风平浪静',
+      'requirements-translator': '今日状态：正在翻译需求',
+      'meeting-endurance': '今日状态：会议续航中',
+      'desk-charger': '今日状态：低电量运行',
+      'boundary-keeper': '今日状态：边界守护中',
+      'surface-business': '今日状态：系统后台重启',
+      'detail-polisher': '今日状态：细节抛光中',
+      'plan-rescue': '今日状态：方案急救中',
+      'happy-fish': '今日状态：科学降温中',
+      'social-power-save': '今日状态：社交省电中',
+      'inspiration-party': '今日状态：灵感加载中',
+      'allround-substitute': '今日状态：哪里需要哪里搬'
+    };
+
+    const RESULT_VISUALS = {
+      'silent-efficient': { emoji: '🖥️', dept: '静音推进部' },
+      'seen-no-reply': { emoji: '📵', dept: '后台处理部' },
+      'spirit-offline': { emoji: '🫥', dept: '适度放风部' },
+      'deadline-warrior': { emoji: '⏳', dept: '倒计时作战部' },
+      'emotion-stable': { emoji: '🧊', dept: '稳定接住部' },
+      'requirements-translator': { emoji: '📝', dept: '需求翻译部' },
+      'meeting-endurance': { emoji: '🎧', dept: '会议续航部' },
+      'desk-charger': { emoji: '🔋', dept: '工位充电部' },
+      'boundary-keeper': { emoji: '🧱', dept: '边界守护部' },
+      'surface-business': { emoji: '🪞', dept: '表面营业部' },
+      'detail-polisher': { emoji: '🔍', dept: '细节抛光部' },
+      'plan-rescue': { emoji: '🧯', dept: '方案急救部' },
+      'happy-fish': { emoji: '🐟', dept: '科学降温部' },
+      'social-power-save': { emoji: '🔕', dept: '社交省电部' },
+      'inspiration-party': { emoji: '💡', dept: '灵感蹦迪部' },
+      'allround-substitute': { emoji: '🧰', dept: '全能补位部' }
+    };
 
 
-function startTest() {
-  currentQ = 0;
-  answers = [];
-  showPage('page-test');
-  renderProgressDots();
-  renderQuestion();
-}
+    const CHARACTER_BIBLES = {
+      'silent-efficient': {
+        codename: '静音推进员',
+        archetype: '低耗能但高输出的后台型角色',
+        look: '黑色短发，圆眼镜，深蓝高领卫衣，抱着发光笔记本，眼下有一点淡淡黑眼圈，但整个人站得很稳。',
+        props: ['发光笔记本', '进度条贴纸', '耳机', '待办清单'],
+        expression: '面无波澜，但眼神很清醒，像已经默默做完三版。',
+        pose: '身体微微前倾，一手托电脑，一手点触控板，姿态很安静。',
+        palette: ['深蓝', '灰紫', '冷白', '微金'],
+        sceneHook: '背后漂着几个已经打勾的待办框，像后台系统在自动跑。'
+      },
+      'seen-no-reply': {
+        codename: '消息缓冲员',
+        archetype: '看到了但先缓一下的社交低耗角色',
+        look: '连帽外套半盖头，手里拿着亮着99+的小手机，头发有点乱，表情困倦但不狼狈。',
+        props: ['99+消息手机', '勿扰月亮徽章', '抱枕', '气泡通知'],
+        expression: '嘴巴抿着，像在想“我知道，但等我一下”。',
+        pose: '一只手举手机，一只手把手机慢慢往怀里收。',
+        palette: ['深紫', '手机蓝光', '灰黑', '冷黄'],
+        sceneHook: '周围漂着红点通知，但角色本人像在时间缝隙里慢慢处理。'
+      },
+      'spirit-offline': {
+        codename: '灵魂放风员',
+        archetype: '身体在岗但精神会短暂出走的漂浮型角色',
+        look: '白衬衫外套松开一颗扣子，脸很平静，但头顶飘着一个半透明小灵魂版本的自己。',
+        props: ['半透明灵魂分身', '小风景贴纸', '咖啡杯', '工位转椅'],
+        expression: '本体淡定，灵魂版本一脸轻松，像已经出去透气。',
+        pose: '人坐在工位上打字，灵魂从肩膀后面轻轻飘出去。',
+        palette: ['雾白', '浅蓝', '深灰', '冷紫'],
+        sceneHook: '角色背后像开了一道小窗，窗外有风和云。'
+      },
+      'deadline-warrior': {
+        codename: '前夜战神',
+        archetype: '越到最后越会爆发的倒计时战斗角色',
+        look: '头发有点炸，外套半披，眼下微青但瞳孔发亮，像熬夜状态下突然觉醒。',
+        props: ['倒计时钟', '燃烧待办', '能量饮料', '键盘火花'],
+        expression: '眼神发狠，像终于进入专属战斗模式。',
+        pose: '身体前冲，一手敲键盘，一手拽住快要飞走的方案纸。',
+        palette: ['橙红', '亮黄', '深灰', '冷白'],
+        sceneHook: '背后有一个巨大倒计时钟，秒针像快要烧起来。'
+      },
+      'emotion-stable': {
+        codename: '表面稳定员',
+        archetype: '内心风暴但外壳稳定的职业微笑角色',
+        look: '头发整齐，穿衬衫或针织开衫，肩膀上停着三朵小乌云，脸上却是礼貌微笑。',
+        props: ['职业微笑面具感', '三朵小乌云', 'OK手势', '文件夹'],
+        expression: '嘴角稳定上扬，但眼神写着“我先接住”。',
+        pose: '一只手比OK，一只手抱资料，站姿平衡得很职业。',
+        palette: ['雾蓝', '米白', '浅灰', '一点温黄'],
+        sceneHook: '头顶小乌云在轻轻打转，但角色脚下非常稳。'
+      },
+      'requirements-translator': {
+        codename: '需求翻译官',
+        archetype: '专门把空气需求翻译成落地语言的拆解角色',
+        look: '利落短发，细框眼镜，手里拿荧光笔和写满箭头的便签板，像一个极清醒的流程师。',
+        props: ['便签板', '荧光笔', '箭头流程图', '放大镜'],
+        expression: '眉头轻皱，像在问“你到底想要什么”。',
+        pose: '一手举流程板，一手拿笔指向关键节点。',
+        palette: ['荧光黄', '浅蓝', '白灰', '深紫'],
+        sceneHook: '身后飘着模糊气泡，被她拆成清晰方框。'
+      },
+      'meeting-endurance': {
+        codename: '会议续航员',
+        archetype: '坐得住也听得完的超长待机角色',
+        look: '耳机挂脖，工牌歪在胸前，眼睛没完全亮但表情管理仍然在线。',
+        props: ['耳机', '长会议时间条', '马克杯', '发言小灯'],
+        expression: '脸很稳，眼神有一点点飘，但还在听。',
+        pose: '坐姿端正但肩膀略塌，一只手扶下巴。',
+        palette: ['灰蓝', '墨紫', '冷白', '浅黄'],
+        sceneHook: '头顶有一个超长进度条，几乎拉满。'
+      },
+      'desk-charger': {
+        codename: '工位充电员',
+        archetype: '低电量运行但意外稳定的续航角色',
+        look: '毛衣软塌塌，抱着咖啡和充电线，发型睡醒感，但整个人没有乱。',
+        props: ['充电线', '咖啡杯', '低电量图标', '小靠枕'],
+        expression: '像刚开机，但神情并不绝望。',
+        pose: '半坐半靠在工位边，一手抓充电线，一手抱杯子。',
+        palette: ['暖棕', '奶白', '灰蓝', '一点橙黄'],
+        sceneHook: '背后有一个20%电量条，但屏幕仍亮着。'
+      },
+      'boundary-keeper': {
+        codename: '边界守门员',
+        archetype: '温柔但有门槛的清醒角色',
+        look: '穿得很整洁，手里拿着写有范围边框的板子，身边有一道会发光的界线。',
+        props: ['边界线板', '小门牌', '回形盾牌', '规则贴纸'],
+        expression: '很礼貌，但眼神明确写着“先把范围说清楚”。',
+        pose: '一只手向前轻轻拦住，一只手举着范围卡。',
+        palette: ['青蓝', '白', '深紫', '浅金'],
+        sceneHook: '脚下有一道柔和发光的边界线，别人靠近会慢下来。'
+      },
+      'surface-business': {
+        codename: '营业面板员',
+        archetype: '表面很正常但后台持续重启的外壳角色',
+        look: '发型和衣着都很整齐，脸上像自带一个完美营业面板，脑后却有小故障提示框。',
+        props: ['重启小弹窗', '营业面板', '加载圈', '系统窗口'],
+        expression: '外表稳定营业，眼神深处略微空白。',
+        pose: '双手交叠站好，像随时可以进入职业模式。',
+        palette: ['冰白', '雾紫', '深蓝', '一点桃粉'],
+        sceneHook: '头后有小小“loading / retry”窗口在闪。'
+      },
+      'detail-polisher': {
+        codename: '细节抛光员',
+        archetype: '会为一个句号再改一遍的精修角色',
+        look: '头发整齐到位，戴细边眼镜，拿放大镜和布，像刚对某个细节进行第八次确认。',
+        props: ['放大镜', '抛光布', '红笔', '标点放大泡泡'],
+        expression: '很认真，像在说“我再看最后一眼”。',
+        pose: '身体前探，用放大镜盯着一点小细节。',
+        palette: ['米白', '银灰', '深蓝', '暖黄'],
+        sceneHook: '周围飘着被高亮的小标点和修订痕迹。'
+      },
+      'plan-rescue': {
+        codename: '方案急救员',
+        archetype: '项目一着火就会自动拿水管的救场角色',
+        look: '袖子卷起，头发有点乱，身上挂着急救包和几张框架纸，像刚冲进火场。',
+        props: ['急救包', '方案框架图', '水管', '红色警报灯'],
+        expression: '嘴上想叹气，但眼神是“我先救”。',
+        pose: '一手举框架纸，一手拉着软管往前冲。',
+        palette: ['红', '橙', '白', '深灰'],
+        sceneHook: '背景里有轻微报警灯在转，但角色已经抢先动手。'
+      },
+      'happy-fish': {
+        codename: '科学降温员',
+        archetype: '懂得摸鱼续命的松弛角色',
+        look: '卫衣+拖鞋感，头发松散，身边飘着小鱼、风扇和表情包，但电脑上显示已提交。',
+        props: ['小鱼', '风扇', '冰饮', '已提交弹窗'],
+        expression: '很松弛，嘴角微扬，像知道自己在合理续命。',
+        pose: '半躺半坐，一只脚勾着椅子，一只手还在点提交。',
+        palette: ['薄荷绿', '浅蓝', '亮黄', '柔白'],
+        sceneHook: '空气里像有一点降温波纹，整个人很凉快。'
+      },
+      'social-power-save': {
+        codename: '社交省电员',
+        archetype: '礼貌在线但热情限量的低耗沟通角色',
+        look: '戴连帽耳机，抱着手机或平板，整个人很整齐，但会把自己缩在安全距离里。',
+        props: ['静音耳机', '表情包气泡', '低电量徽章', '聊天窗口'],
+        expression: '不是冷漠，是一种礼貌但不想多聊的克制。',
+        pose: '身体微缩，一只手举着设备，一只手插口袋。',
+        palette: ['浅紫', '灰蓝', '白', '一点亮黄'],
+        sceneHook: '周围的对话气泡自动收缩成最短回复。'
+      },
+      'inspiration-party': {
+        codename: '灵感蹦迪员',
+        archetype: '前面安静后面突然炸场的创意角色',
+        look: '头发有点翘，衣服搭配带一点反常规感，眼神平时发空，一有想法时会突然亮起来。',
+        props: ['灯泡', '霓虹草图', '灵感音符', '便签雨'],
+        expression: '平时发呆，一旦想通会露出“等下我有了”的表情。',
+        pose: '前一秒托腮，后一秒突然抬手指向空中。',
+        palette: ['荧光紫', '亮青', '桃橙', '深蓝'],
+        sceneHook: '头顶像开了一小场脑内蹦迪，灯牌同时亮起。'
+      },
+      'allround-substitute': {
+        codename: '全能补位员',
+        archetype: '哪里缺人就会被默认叫过去的万能接口角色',
+        look: '身上挂着很多工具和工牌，像一个移动接口站，手里永远有多余的文件夹。',
+        props: ['多功能腰包', '备用工牌', '工具夹', '好几份文件'],
+        expression: '有点无奈但很熟练，像已经习惯“又是我”。',
+        pose: '一边小跑一边回头，身上挂满各种临时任务。',
+        palette: ['工具橙', '藏青', '白灰', '卡其'],
+        sceneHook: '角色周围伸出很多小手在递任务，但他居然都接住了。'
+      }
+    };
 
-function renderProgressDots() {
-  var container = document.getElementById('progress-dots');
-  container.innerHTML = '';
-  for (var i = 0; i < questions.length; i++) {
-    var d = document.createElement('div');
-    d.className = 'dot' + (i < currentQ ? ' done' : (i === currentQ ? ' current' : ''));
-    container.appendChild(d);
-  }
-}
+    const RESULTS = {
+      'silent-efficient': {
+        name: '静音高效工',
+        enName: 'Silent Efficient Worker',
+        subtitle: '话少不是冷淡，是进度条在后台跑。',
+        description: '你不是不合群，你只是把大部分能量都留给了真正要交付的事。你话不多，废话更少。别人还在讨论怎么推进，你已经默默开了文档。',
+        traits: ['稳定交付', '低调推进', '不爱废话', '结果导向'],
+        declaration: '我可以安静，但我的进度条一直在动。',
+        publicShare: '测出来我是「静音高效工」。\n话少不是冷淡，是我在省电。\n但该交的东西，我一般都交得出来。',
+        groupShare: '我先认领了「静音高效工」。\n这玩意居然有点像我。\n现在轮到你们了。',
+        tags: ['稳定', '高效', '省电', '靠谱'],
+        resonance: '别人眼里，你像一台不怎么说话、但一直在稳定运转的后台系统。你不靠热闹证明存在感，反而越安静越让人放心。',
+        workStyle: '你最容易在别人还在开口讨论时，已经先把文档搭起来、把关键细节补齐。这种先做再说的节奏，会让人天然觉得：交给你，事就不会掉地上。',
+        whyShareable: '你真正让人上头的地方，是低调但很稳。很多人是存在感强，你是完成度强；很多人负责热闹，你负责落地。',
+      },
+      'seen-no-reply': {
+        name: '已读不回工',
+        enName: 'Seen No Reply Worker',
+        subtitle: '消息我看到了，灵魂还在加载。',
+        description: '你不是不回消息，你是在给每一句回复做心理预热。你的已读不是冷漠，而是一种缓冲机制。你知道很多消息不急着回，反而能回得更稳。',
+        traits: ['消息缓冲', '谨慎回复', '后台处理', '社交省电'],
+        declaration: '我不是消失了，我是在后台处理中。',
+        publicShare: '测出来我是「已读不回工」。\n不是冷漠，是消息太多，我需要一点缓冲。\n成年人的礼貌，有时候就是先不崩溃。',
+        groupShare: '我先认领了「已读不回工」。\n这玩意居然有点像我。\n现在轮到你们了。',
+        tags: ['已读', '缓冲', '加载中', '省电'],
+        resonance: '你不是故意吊人胃口，你只是需要一点缓冲空间，先把情绪、语气、信息量都消化一下，再决定怎么回。',
+        workStyle: '你对消息密度和社交能量非常诚实。别人也许会秒回，但你更在意回复之后会不会引出更多对话、更多来回、更多消耗。',
+        whyShareable: '有趣的是，你越像在离线，别人越会发现你其实很稳定。你不是消失型选手，你是慢半拍但不掉线的类型。',
+      },
+      'spirit-offline': {
+        name: '精神离岗工',
+        enName: 'Spirit Offline Worker',
+        subtitle: '人在工位，心有年假。',
+        description: '你的身体负责上班，你的灵魂负责保持自由。你可以坐在工位上完成任务，也可以在脑海里完成一次短途旅行。你不是不认真，只是需要偶尔把精神拿出去透透气。',
+        traits: ['精神放风', '灵魂自由', '适度抽离', '照常交付'],
+        declaration: '人在工位，心有年假。',
+        publicShare: '测出来我是「精神离岗工」。\n人在认真工作，心在适度放风。\n原来我的上班方式叫：边交付，边自救。',
+        groupShare: '我先认领了「精神离岗工」。\n这玩意居然有点像我。\n现在轮到你们了。',
+        tags: ['放风', '离线', '自由', '自救'],
+        resonance: '你最像那种表面坐在工位、内心却偶尔去窗边吹风的人。不是逃避工作，而是需要给自己一点精神透气口。',
+        workStyle: '你会在任务和情绪之间悄悄给自己留一道缝：活照做，魂适度飘一下。正因为这样，你反而比一直硬扛的人更能续航。',
+        whyShareable: '很多人会一下子被这句话戳中，因为你把很多成年人共有但不太会明说的状态，活成了一种日常：边上班，边自救。',
+      },
+      'deadline-warrior': {
+        name: '截止日前夜战神',
+        enName: 'Deadline Eve Warrior',
+        subtitle: '不倒计时，不启动最终形态。',
+        description: '你不是拖延，你是在等待压力把潜能唤醒。你平时看起来云淡风轻，一到 deadline 前夜，整个人突然进入战斗模式。',
+        traits: ['临门爆发', '高压输出', '极限交付', '战斗模式'],
+        declaration: '不到最后一刻，不启动最终形态。',
+        publicShare: '测出来我是「截止日前夜战神」。\n平时不显山不露水，deadline 一来自动开大。\n虽然过程惊险，但结果通常还行。',
+        groupShare: '我先认领了「截止日前夜战神」。\n这玩意居然有点像我。\n现在轮到你们了。',
+        tags: ['爆发', '倒计时', '交付', '战神'],
+        resonance: '你很少从一开始就把能量打满，你更像那种必须看到倒计时、身体才会正式上线的人。',
+        workStyle: '一旦时间逼近，你会突然切到高压模式：思路更快、判断更准、执行更猛。别人可能会捏一把汗，但你自己知道，这就是你的启动方式。',
+        whyShareable: '你平时看着云淡风轻，关键时刻却像换了个人。危险的是过程，迷人的也是过程。',
+      },
+      'emotion-stable': {
+        name: '情绪稳定工',
+        enName: 'Emotion Stable Worker',
+        subtitle: '脸上风平浪静，心里开过三轮会。',
+        description: '你不是没有情绪，你只是很会把情绪放进静音模式。你经常在心里完成一整套崩溃流程，然后抬头说：好的，我看一下。',
+        traits: ['情绪管理', '表面冷静', '稳定接住', '体面处理'],
+        declaration: '表面风平浪静，内心已经开过三轮会。',
+        publicShare: '测出来我是「情绪稳定工」。\n不是没情绪，是我比较擅长把情绪先放一边。\n成年人的稳定，有时候也是练出来的。',
+        groupShare: '我先认领了「情绪稳定工」。\n这玩意居然有点像我。\n现在轮到你们了。',
+        tags: ['稳定', '冷静', '体面', '接住'],
+        resonance: '你很像那类表面永远说“好的我看一下”，内心其实已经默默召开过三轮紧急会议的人。',
+        workStyle: '你不是没有情绪，而是很会把情绪先放到旁边，优先让事情继续往前走。很多人靠外放消化，你靠内部处理消化。',
+        whyShareable: '你不是天生稳定，你只是太懂成年人有时候得先把场面接住。所以很多人一看到这句，就会觉得：这不就是我平时那个样子。',
+      },
+      'requirements-translator': {
+        name: '需求翻译工',
+        enName: 'Requirements Translator',
+        subtitle: '专门把“你看着办”翻译成人话。',
+        description: '你对模糊需求有天然警觉。别人听到一句“简单弄一下”，你已经开始拆解目标、边界、时间和交付标准。你不是麻烦，你是在减少返工。',
+        traits: ['拆解需求', '确认边界', '减少返工', '精准沟通'],
+        declaration: '先把话说明白，后面才能少改几遍。',
+        publicShare: '测出来我是「需求翻译工」。\n我不是问题多，\n我只是知道“你看着办”通常不能真的看着办。',
+        groupShare: '我先认领了「需求翻译工」。\n这玩意居然有点像我。\n现在轮到你们了。',
+        tags: ['需求', '翻译', '边界', '沟通'],
+        resonance: '你属于那种一听到“简单弄一下”“你看着办”就会瞬间警觉的人，因为你太知道模糊需求后面藏着多少返工。',
+        workStyle: '你会本能地去拆：到底要什么、边界在哪、什么时候要、怎么才算做完。别人觉得你问得细，你知道自己是在替未来的自己省命。',
+        whyShareable: '很多人会在你身上看到一种很实用的可靠感：你不是难搞，你只是擅长把空气里的话，翻译成能真正落地的人话。',
+      },
+      'meeting-endurance': {
+        name: '会议续航工',
+        enName: 'Meeting Endurance Worker',
+        subtitle: '会议越长，表情越稳。',
+        description: '你拥有一种神奇的会议续航能力。无论议题如何绕远，你都能保持基本在线。你不一定每分钟都想发言，但你会在关键节点稳稳接住。',
+        traits: ['会议续航', '稳定在线', '关键补充', '耐心听完'],
+        declaration: '只要会议还没结束，我的表情就不会掉线。',
+        publicShare: '测出来我是「会议续航工」。\n会议越长，表情越稳。\n不是我不累，是我比较擅长维持在线状态。',
+        groupShare: '我先认领了「会议续航工」。\n这玩意居然有点像我。\n现在轮到你们了。',
+        tags: ['会议', '续航', '在线', '表情管理'],
+        resonance: '你像那种会议越长、脸越稳的人。别人可能已经开始神游，你还能把表情管理和基础在线状态维持住。',
+        workStyle: '你未必最爱发言，但很会在关键节点接上一句有用的话，把快散掉的场子再拢回来一点。',
+        whyShareable: '很多人看到这里都会停一下，因为：不是你喜欢会，而是你真的很懂一种成年人的耐力——我不一定快乐，但我还在线。',
+      },
+      'desk-charger': {
+        name: '工位充电工',
+        enName: 'Desk Charger Worker',
+        subtitle: '电量不高，但系统稳定。',
+        description: '你不是满电选手，但你很擅长低电量运行。你每天都在 20% 电量左右徘徊，但总能神奇地撑到任务完成。',
+        traits: ['低电运行', '缓慢开机', '稳定续航', '需要充电'],
+        declaration: '电量不高，但系统稳定。',
+        publicShare: '测出来我是「工位充电工」。\n每天低电量运行，但还算稳定交付。\n打工人的续航能力，有时候真的很神奇。',
+        groupShare: '我先认领了「工位充电工」。\n这玩意居然有点像我。\n现在轮到你们了。',
+        tags: ['低电量', '续航', '充电', '稳定'],
+        resonance: '你像一台长期处于 20% 电量、但 somehow 还能稳定运行的系统。你不一定满电，但你很会低耗续航。',
+        workStyle: '你的开机速度可能慢一点，反应可能要一杯咖啡和一点安静，但真正进入状态后，通常不会轻易掉链。',
+        whyShareable: '有趣的是，很多人会在你身上看到一种熟悉感：每天都觉得自己快没电了，但最后还是把事做完了。',
+      },
+      'boundary-keeper': {
+        name: '边界守门工',
+        enName: 'Boundary Keeper Worker',
+        subtitle: '温柔可以，但不能无限加班。',
+        description: '你很清楚自己的时间和能量边界。你不是不配合，而是知道一件事如果没有边界，很容易从帮忙变成默认负责。',
+        traits: ['边界清晰', '温柔拒绝', '合理协作', '能量保护'],
+        declaration: '我可以配合，但也需要边界。',
+        publicShare: '测出来我是「边界守门工」。\n我不是不帮忙，\n只是希望每一份努力都有清楚的边界。',
+        groupShare: '我先认领了「边界守门工」。\n这玩意居然有点像我。\n现在轮到你们了。',
+        tags: ['边界', '清晰', '保护', '协作'],
+        resonance: '你很知道什么叫帮忙，什么叫被默认负责；什么叫配合，什么叫无限外扩。你的边界感不是冷漠，是自保。',
+        workStyle: '你会在很多人还没反应过来之前，先问清楚责任、范围、时间和预期，因为你知道模糊的好人，最容易变成隐形的兜底人。',
+        whyShareable: '真正微妙的地方在这里：你很温柔，但并不无限量供应。你不是拒绝合作，你只是拒绝被悄悄吞掉。',
+      },
+      'surface-business': {
+        name: '表面营业工',
+        enName: 'Surface Business Worker',
+        subtitle: '看起来很正常，其实正在后台重启。',
+        description: '你很擅长维持外在状态。哪怕内心正在加载、重启、弹窗报错，你也能先保持一个看起来还不错的工作界面。',
+        traits: ['表情管理', '外在在线', '后台重启', '临场应对'],
+        declaration: '看起来稳定，也是一种能力。',
+        publicShare: '测出来我是「表面营业工」。\n看起来很正常，其实后台一直在重启。\n成年人有时候靠的就是一个稳定界面。',
+        groupShare: '我先认领了「表面营业工」。\n这玩意居然有点像我。\n现在轮到你们了。',
+        tags: ['营业', '重启', '表情管理', '在线'],
+        resonance: '你很会维持一个看起来还不错的外在界面。哪怕后台正在重启、加载、报错，表面上也还能继续营业。',
+        workStyle: '这不是虚假，而是一种临场能力。你知道很多时候先让场面稳住，比立刻暴露全部真实状态更重要。',
+        whyShareable: '别人会在你身上看到一种很真实的现代感：外壳稳定，内核波动；表情在线，系统稍后再试。',
+      },
+      'detail-polisher': {
+        name: '细节抛光工',
+        enName: 'Detail Polisher Worker',
+        subtitle: '交出去之前，自己先改八遍。',
+        description: '你对细节有天然敏感度。别人觉得差不多了，你还想再顺一遍格式、逻辑、措辞和标点。你不是纠结，你是在把作品变得更稳。',
+        traits: ['细节控', '反复检查', '质量优先', '认真交付'],
+        declaration: '不是我慢，是我想让它更好。',
+        publicShare: '测出来我是「细节抛光工」。\n交出去之前，自己先改八遍。\n不是纠结，是我真的看不得它差一点。',
+        groupShare: '我先认领了「细节抛光工」。\n这玩意居然有点像我。\n现在轮到你们了。',
+        tags: ['细节', '质量', '认真', '抛光'],
+        resonance: '你属于那种交出去前一定会自己再看八遍的人。不是你闲，是你真的很难对“差不多”完全放心。',
+        workStyle: '你会在格式、措辞、逻辑、标点这些别人容易忽略的地方反复打磨，因为你知道，作品最后的体面很多时候就藏在这些小地方。',
+        whyShareable: '你不是在拖延，你是在对抗粗糙。别人说你细，你心里会想：我只是想让它更像样一点。',
+      },
+      'plan-rescue': {
+        name: '方案急救工',
+        enName: 'Plan Rescue Worker',
+        subtitle: '专治“明天就要”。',
+        description: '你有很强的临场救火能力。越是突然、越是紧急，你越能迅速搭框架、抓重点、补缺口。你不一定喜欢救火，但你真的能救。',
+        traits: ['救火能力', '快速成型', '临场反应', '抓大放小'],
+        declaration: '先别慌，我先搭个框架。',
+        publicShare: '测出来我是「方案急救工」。\n专治“明天就要”。\n虽然我不想每天救火，但火来了我确实能先把水管接上。',
+        groupShare: '我先认领了「方案急救工」。\n这玩意居然有点像我。\n现在轮到你们了。',
+        tags: ['方案', '急救', '救火', '框架'],
+        resonance: '你像那种一听到“明天就要”就会自动进入抢救模式的人。平时也许不想救火，但火真来了，你确实会先接水管。',
+        workStyle: '你很擅长在混乱里抓主线，在时间不够的时候先把骨架搭起来，让事情至少先能站住。',
+        whyShareable: '很多人会在你身上看到一种非常真实的魅力：嘴上可能想叹气，手上却已经开始列框架。',
+      },
+      'happy-fish': {
+        name: '快乐摸鱼工',
+        enName: 'Happy Fish Worker',
+        subtitle: '摸的是鱼，护的是能量。',
+        description: '你对工作节奏有自己的理解。你知道人不能一直满负荷运行，适度摸鱼不是放弃工作，而是为了让自己更稳定地回来。',
+        traits: ['能量管理', '轻度放空', '节奏感', '自我恢复'],
+        declaration: '短暂离线，是为了更好上线。',
+        publicShare: '测出来我是「快乐摸鱼工」。\n摸的是鱼，护的是能量。\n只要不影响交付，我认为这叫科学续航。',
+        groupShare: '我先认领了「快乐摸鱼工」。\n这玩意居然有点像我。\n现在轮到你们了。',
+        tags: ['摸鱼', '能量', '放空', '续航'],
+        resonance: '你对摸鱼的理解很先进：不是偷懒，而是给系统降温。你知道人不可能一直满载输出，总得给自己一点缓冲。',
+        workStyle: '你会在不影响交付的前提下，偷偷把能量拉回来一点。别人也许会觉得你在放空，你心里知道自己是在续命。',
+        whyShareable: '这型特别容易让人会心一笑，因为你把很多人不敢明说的真相说出来了：短暂离线，不代表不上线。',
+      },
+      'social-power-save': {
+        name: '社交省电工',
+        enName: 'Social Power Save Worker',
+        subtitle: '不是冷漠，是电量管理。',
+        description: '你不是不会社交，只是对自己的社交电量很诚实。你可以礼貌、配合、在线，但你也需要足够的安静时间恢复自己。',
+        traits: ['社交省电', '安静恢复', '礼貌在线', '低耗沟通'],
+        declaration: '不是不想说话，是电量要用在刀刃上。',
+        publicShare: '测出来我是「社交省电工」。\n不是冷漠，是电量管理。\n话少一点，但礼貌和交付都还在。',
+        groupShare: '我是「社交省电工」。\n能文字就不语音，能表情包就不展开，\n能明天说就先让我充会儿电。',
+        tags: ['省电', '社交', '安静', '恢复'],
+        resonance: '你不是不会社交，你只是很清楚自己的电量在哪。能少说一句的时候，你宁愿把力气留给更重要的部分。',
+        workStyle: '你可以礼貌、可以配合、可以回复，但前提是别把每一次交流都变成一次长线消耗。你很懂如何低耗在线。',
+        whyShareable: '这会让人强烈认同，因为很多人都是这样：不是冷漠，只是电量有限，得把热情用在刀刃上。',
+      },
+      'inspiration-party': {
+        name: '灵感蹦迪工',
+        enName: 'Inspiration Party Worker',
+        subtitle: '安静半天，突然开大。',
+        description: '你的工作方式不是线性推进，而是灵感突然上线。你可能沉默很久，但一旦想通，脑子里会同时亮起好几个方案灯牌。',
+        traits: ['灵感爆发', '跳跃思维', '突然开大', '创意输出'],
+        declaration: '别急，我的灵感正在路上。',
+        publicShare: '测出来我是「灵感蹦迪工」。\n安静半天，突然开大。\n我的工作进度有时候不明显，但灵感上线时真的很热闹。',
+        groupShare: '我是「灵感蹦迪工」。\n前面像没动，后面突然：\n等等，我有个想法。',
+        tags: ['灵感', '创意', '爆发', '想法'],
+        resonance: '你最像那种安静很久、突然一句话把全场点亮的人。你的工作方式不是线性推进，而是灵感突然上线。',
+        workStyle: '在没感觉的时候，你可能像在发呆；一旦想通，脑子里会同时亮起好几个方案，甚至自己都来不及全记下来。',
+        whyShareable: '别人会觉得你有趣，是因为你不是一直热闹型选手，但每次真热闹起来，都是脑内烟花级别。',
+      },
+      'allround-substitute': {
+        name: '全能补位工',
+        enName: 'All-round Substitute Worker',
+        subtitle: '哪里需要哪里搬，搬完还要微笑。',
+        description: '你是团队里的万能接口。缺人时你能顶上，混乱时你能接住，别人不知道找谁时也常常会想到你。你很可靠，但也要记得给自己留一点空间。',
+        traits: ['万能补位', '稳定接住', '临场配合', '团队接口'],
+        declaration: '我可以补位，但也需要被看见。',
+        publicShare: '测出来我是「全能补位工」。\n哪里需要哪里搬，搬完还要微笑。\n可靠是真的，偶尔想休息也是真的。',
+        groupShare: '我是「全能补位工」。\n我也不知道为什么，\n最后总能补到我这里。',
+        tags: ['补位', '万能', '可靠', '接住'],
+        resonance: '你像团队里的万能接口：哪里空了一块，最后都很容易补到你这儿。你能接、能顶、能扛，也能把事情先往前推。',
+        workStyle: '这并不只是因为你会得多，更因为你给人一种“找你基本不会翻车”的感觉。于是久而久之，大家就默认你是那个能接住的人。',
+        whyShareable: '你确实可靠，但你也会偷偷想，为什么兜一圈又是我。好笑，且真实。',
+      }
+    };
 
-function renderQuestion() {
-  var q = questions[currentQ];
-  document.getElementById('q-emoji').textContent = q.emoji;
-  document.getElementById('q-number').textContent = 'Q' + (currentQ + 1);
-  document.getElementById('q-text').textContent = q.q;
-  document.getElementById('progress-text').textContent = '第 ' + (currentQ + 1) + ' / ' + questions.length + ' 题';
-  document.getElementById('progress-fill').style.width = (((currentQ + 1) / questions.length) * 100).toFixed(1) + '%';
-  var opts = document.getElementById('options');
-  opts.innerHTML = '';
-  for (var i = 0; i < q.opts.length; i++) {
-    var winDim = i === 0 ? q.dim : opposite[q.dim];
-    var btn = document.createElement('button');
-    btn.className = 'option-btn';
-    btn.textContent = q.opts[i];
-    (function(wd, b) {
-      b.onclick = function() { answer(wd, b); };
-    })(winDim, btn);
-    opts.appendChild(btn);
-  }
-  renderProgressDots();
-}
 
-function answer(winDim, btn) {
-  answers[currentQ] = winDim;
-  var allBtns = document.querySelectorAll('.option-btn');
-  for (var i = 0; i < allBtns.length; i++) {
-    allBtns[i].style.pointerEvents = 'none';
-    allBtns[i].style.opacity = '0.5';
-  }
-  btn.style.opacity = '1';
-  btn.style.borderColor = '#ff6b35';
-  btn.classList.add('selected');
-  setTimeout(function() {
-    currentQ++;
-    if (currentQ < questions.length) {
-      renderQuestion();
-    } else {
-      showResult();
+
+    function escSvg(textValue) {
+      return String(textValue || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     }
-  }, 300);
-}
 
-function showResult() {
-  var scores = { P: 0, L: 0, T: 0, G: 0, B: 0, R: 0, S: 0, O: 0 };
-  for (var i = 0; i < answers.length; i++) {
-    var dim = answers[i];
-    if (dim) scores[dim]++;
-  }
-  var dim1 = scores.P >= scores.L ? 'P' : 'L';
-  var dim2 = scores.T >= scores.G ? 'T' : 'G';
-  var dim3 = scores.B >= scores.R ? 'B' : 'R';
-  var dim4 = scores.S >= scores.O ? 'S' : 'O';
-  var type = dim1 + dim2 + dim3 + dim4;
-  var p = personas[type];
-  if (!p) {
-    document.getElementById('result-type').textContent = '???';
-    document.getElementById('result-cn').textContent = '人格未识别（' + type + '）';
-    showPage('page-result');
-    return;
-  }
-  document.getElementById('result-type').textContent = p.cn;
-  document.getElementById('result-cn').textContent = p.en;
-  document.getElementById('result-desc').textContent = p.desc;
-  var tagsEl = document.getElementById('result-tags');
-  tagsEl.innerHTML = '';
-  for (var i = 0; i < p.tags.length; i++) {
-    var span = document.createElement('span');
-    span.className = 'tag';
-    span.textContent = p.tags[i];
-    tagsEl.appendChild(span);
-  }
-  showPage('page-result');
-}
 
-function showPage(id) {
-  var pages = document.querySelectorAll('.page');
-  for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active'); }
-  document.getElementById(id).classList.add('active');
-}
+    const AVATAR_THEMES = {
+      'silent-efficient': { skin: '#f0c7a8', hair: '#111827', suit: '#2d4d89', glow: '#6c84ff', accent: '#f7c948', prop: '#7fe7ff', mood: 'screen', hairShape: 'bob' },
+      'seen-no-reply': { skin: '#f2cfb4', hair: '#241a37', suit: '#5a48a6', glow: '#9b7cff', accent: '#ff8f4d', prop: '#90b9ff', mood: 'phone', hairShape: 'hood' },
+      'spirit-offline': { skin: '#f1d5c3', hair: '#3b4d70', suit: '#cfe9ff', glow: '#88dfff', accent: '#d2d8ff', prop: '#ffffff', mood: 'ghost', hairShape: 'soft' },
+      'deadline-warrior': { skin: '#eec2a3', hair: '#311714', suit: '#c74238', glow: '#ff6b35', accent: '#f7c948', prop: '#ffe7aa', mood: 'timer', hairShape: 'spiky' },
+      'emotion-stable': { skin: '#f2ceba', hair: '#374056', suit: '#7f98c9', glow: '#a5bbff', accent: '#ffe188', prop: '#d5def8', mood: 'storm', hairShape: 'sleek' },
+      'requirements-translator': { skin: '#f0ccad', hair: '#223146', suit: '#e9eef9', glow: '#7fd8ff', accent: '#f7c948', prop: '#98fff0', mood: 'board', hairShape: 'short' },
+      'meeting-endurance': { skin: '#efc9ad', hair: '#283144', suit: '#687993', glow: '#93a8cf', accent: '#ffe08a', prop: '#b2c9ff', mood: 'headset', hairShape: 'short' },
+      'desk-charger': { skin: '#f2ceb5', hair: '#75523f', suit: '#b39a82', glow: '#a8b7cc', accent: '#f7c948', prop: '#ffd9a3', mood: 'battery', hairShape: 'messy' },
+      'boundary-keeper': { skin: '#efc3a9', hair: '#22384d', suit: '#4b98aa', glow: '#63d1d9', accent: '#ffd86f', prop: '#c6fff8', mood: 'shield', hairShape: 'sleek' },
+      'surface-business': { skin: '#f3d5c1', hair: '#232941', suit: '#eff2fa', glow: '#d5b8ff', accent: '#ff9bc4', prop: '#ffffff', mood: 'mask', hairShape: 'sleek' },
+      'detail-polisher': { skin: '#f0cdb1', hair: '#2b3243', suit: '#efe9df', glow: '#c2cbdd', accent: '#f7c948', prop: '#d8ecff', mood: 'lens', hairShape: 'short' },
+      'plan-rescue': { skin: '#ecc09f', hair: '#4a241d', suit: '#d24c41', glow: '#ff8f5a', accent: '#ffd469', prop: '#fff4cb', mood: 'rescue', hairShape: 'messy' },
+      'happy-fish': { skin: '#f3d1b8', hair: '#3d645f', suit: '#57c7b0', glow: '#8be1d4', accent: '#f7c948', prop: '#c3fff3', mood: 'fish', hairShape: 'hood' },
+      'social-power-save': { skin: '#f2ccb5', hair: '#4d456d', suit: '#9b8dd8', glow: '#bbb0ff', accent: '#ffe07e', prop: '#d2ddff', mood: 'bubble', hairShape: 'hood' },
+      'inspiration-party': { skin: '#f2ccb3', hair: '#552f76', suit: '#8f6dff', glow: '#85f0ff', accent: '#ff8f5b', prop: '#fff09e', mood: 'idea', hairShape: 'spiky' },
+      'allround-substitute': { skin: '#efc5aa', hair: '#334050', suit: '#d98a3f', glow: '#a7becf', accent: '#ffe486', prop: '#e5f4ff', mood: 'tools', hairShape: 'short' }
+    };
 
-function restartTest() { startTest(); }
-function showShareTip() { document.getElementById('share-tip').classList.add('active'); }
-function hideShareTip() { document.getElementById('share-tip').classList.remove('active'); }
+    const QUESTION_SCENE_MAP = {
+      '🌙': { title: '深夜群消息', bg: '#0e1020', panel: '#24284f', accent: '#f7c948', scene: 'night-message' },
+      '🫠': { title: '简单弄一下', bg: '#17111d', panel: '#4d325d', accent: '#ff8f4d', scene: 'simple-request' },
+      '🎤': { title: '开会被 cue', bg: '#121523', panel: '#334867', accent: '#7fd8ff', scene: 'meeting-cue' },
+      '🧠': { title: '等灵感上线', bg: '#121320', panel: '#56347b', accent: '#ff79c6', scene: 'idea-loading' },
+      '📥': { title: '临时需求砸来', bg: '#101722', panel: '#2f536d', accent: '#f7c948', scene: 'urgent-request' },
+      '🪑': { title: '工位待机', bg: '#15121b', panel: '#5d4337', accent: '#c98f5a', scene: 'desk-mode' },
+      '📱': { title: '下班后消息', bg: '#101522', panel: '#47557a', accent: '#8f6dff', scene: 'after-hours-phone' },
+      '🚀': { title: '突然爆发', bg: '#101421', panel: '#394b63', accent: '#ff6b35', scene: 'burst-mode' },
+      '🤝': { title: '又来找你', bg: '#121522', panel: '#4a4b70', accent: '#f2c9a5', scene: 'coworker-help' },
+      '😵‍💫': { title: '脑内风暴', bg: '#16111f', panel: '#5d3a62', accent: '#f7c948', scene: 'mental-whirl' },
+      '📄': { title: '方案急救', bg: '#101722', panel: '#496177', accent: '#d8ecff', scene: 'plan-rescue' },
+      '🕰️': { title: '会议加时', bg: '#121522', panel: '#536786', accent: '#f7c948', scene: 'meeting-overtime' },
+      '🐟': { title: '科学摸鱼', bg: '#0d1b21', panel: '#286660', accent: '#42d392', scene: 'fish-cooling' },
+      '🔔': { title: '@所有人', bg: '#14111f', panel: '#5f436d', accent: '#f7c948', scene: 'all-mention' },
+      '📎': { title: '再改一遍', bg: '#101420', panel: '#4c5871', accent: '#d8ecff', scene: 'revise-file' },
+      '☕': { title: '周一开机', bg: '#17121d', panel: '#6a4c3f', accent: '#ffb36b', scene: 'monday-boot' },
+      '🧩': { title: '需求拼图', bg: '#121421', panel: '#4d4a77', accent: '#f7c948', scene: 'brief-puzzle' },
+      '💥': { title: '脑暴现场', bg: '#17111d', panel: '#673b59', accent: '#ff6b35', scene: 'brainstorm-burst' },
+      '🏖️': { title: '假期前夜', bg: '#0f1d27', panel: '#366c7b', accent: '#f7c948', scene: 'holiday-window' },
+      '✨': { title: '想要被夸', bg: '#15111f', panel: '#56446f', accent: '#fff4be', scene: 'spotlight-wish' }
+    };
 
-function updateCountdown() {
-  var wuyi = new Date('2026-05-01');
-  var now = new Date();
-  var diff = Math.ceil((wuyi - now) / (1000 * 60 * 60 * 24));
-  document.getElementById('days-to-51').textContent = diff > 0 ? diff : '今天！';
-}
+    function escSvg(textValue) {
+      return String(textValue || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
 
-function createParticles() {
-  var container = document.getElementById('particles');
-  for (var i = 0; i < 20; i++) {
-    var p = document.createElement('div');
-    p.className = 'particle';
-    p.style.left = (Math.random() * 100) + '%';
-    p.style.animationDuration = (5 + Math.random() * 10) + 's';
-    p.style.animationDelay = (Math.random() * 10) + 's';
-    var size = 2 + Math.random() * 3;
-    p.style.width = size + 'px';
-    p.style.height = size + 'px';
-    p.style.background = Math.random() > 0.5 ? '#ff6b35' : '#f7c948';
-    container.appendChild(p);
-  }
-}
+    function buildHairPath(shape, color) {
+      if (shape === 'hood') return `<path d="M27 44q5-30 37-30q32 0 37 30v16H27z" fill="${color}"/><path d="M33 28q12-12 31-12q19 0 31 12" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6" stroke-linecap="round"/>`;
+      if (shape === 'spiky') return `<path d="M27 46q4-17 11-26l7 8l8-12l8 12l9-10q8 7 13 28v17H27z" fill="${color}"/>`;
+      if (shape === 'sleek') return `<path d="M29 42q4-27 35-27q31 0 35 27v14H29z" fill="${color}"/><path d="M34 31q10-11 30-11q20 0 30 11" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="5" stroke-linecap="round"/>`;
+      if (shape === 'messy') return `<path d="M27 45q5-18 14-25l7 5l6-8l9 10l8-6q8 9 13 24v16H27z" fill="${color}"/>`;
+      if (shape === 'bob') return `<path d="M29 42q4-26 35-26q31 0 35 26v20H29z" fill="${color}"/><path d="M33 50q4 12 12 15M95 50q-4 12-12 15" stroke="${color}" stroke-width="8" stroke-linecap="round"/>`;
+      return `<path d="M29 43q4-26 35-26q31 0 35 26v16H29z" fill="${color}"/>`;
+    }
 
-updateCountdown();
-createParticles();
-</script>
+    function buildMoodProp(theme) {
+      const accent = theme.accent;
+      const prop = theme.prop;
+      if (theme.mood === 'phone') return `<g transform="translate(94 98)"><rect x="-16" y="-28" width="22" height="34" rx="7" fill="#111629" stroke="${prop}" stroke-width="2"/><rect x="-12" y="-22" width="14" height="14" rx="4" fill="${prop}" opacity="0.9"/><circle cx="-5" cy="-1" r="2.3" fill="${accent}"/><circle cx="4" cy="-26" r="12" fill="${accent}"/><text x="4" y="-22" text-anchor="middle" font-size="7" font-weight="900" fill="#fff">99+</text></g>`;
+      if (theme.mood === 'ghost') return `<g transform="translate(101 90)"><path d="M0-20q9 0 9 10v13l-4-3l-4 3l-4-3l-4 3v-13q0-10 7-10z" fill="${prop}" opacity="0.9"/><circle cx="-2" cy="-11" r="1.8" fill="#445"/><circle cx="4" cy="-11" r="1.8" fill="#445"/></g>`;
+      if (theme.mood === 'timer') return `<g transform="translate(100 92)"><circle cx="0" cy="0" r="16" fill="${accent}"/><circle cx="0" cy="0" r="10" fill="#fff4c7"/><path d="M0-6v8l6 3" stroke="#8a3a18" stroke-width="3" stroke-linecap="round" fill="none"/><rect x="-4" y="-23" width="8" height="6" rx="2" fill="#fff4c7"/></g>`;
+      if (theme.mood === 'storm') return `<g transform="translate(100 86)"><ellipse cx="0" cy="0" rx="14" ry="8" fill="${prop}" opacity="0.75"/><ellipse cx="-10" cy="5" rx="9" ry="6" fill="${prop}" opacity="0.6"/><path d="M-2 7l-5 10l8-2l-4 8" fill="${accent}"/></g>`;
+      if (theme.mood === 'board') return `<g transform="translate(101 93)"><rect x="-17" y="-20" width="26" height="24" rx="5" fill="${prop}" opacity="0.92"/><path d="M-11-10h14M-11-3h10M-11 4h8" stroke="#2d4d89" stroke-width="2" stroke-linecap="round"/><circle cx="7" cy="-12" r="4" fill="${accent}"/></g>`;
+      if (theme.mood === 'headset') return `<g transform="translate(101 92)"><path d="M-12-6q0-12 12-12q12 0 12 12" fill="none" stroke="${prop}" stroke-width="4" stroke-linecap="round"/><rect x="-16" y="-4" width="8" height="15" rx="4" fill="${accent}"/><rect x="8" y="-4" width="8" height="15" rx="4" fill="${accent}"/><path d="M14 6h8" stroke="${prop}" stroke-width="3" stroke-linecap="round"/></g>`;
+      if (theme.mood === 'battery') return `<g transform="translate(100 92)"><rect x="-18" y="-10" width="28" height="18" rx="5" fill="none" stroke="${prop}" stroke-width="3"/><rect x="10" y="-4" width="4" height="6" rx="2" fill="${prop}"/><rect x="-14" y="-6" width="8" height="10" rx="3" fill="${accent}"/></g>`;
+      if (theme.mood === 'shield') return `<g transform="translate(100 92)"><path d="M0-20l14 5v10q0 11-14 18q-14-7-14-18v-10z" fill="${prop}" opacity="0.95"/><path d="M0-12v18M-8-3h16" stroke="${accent}" stroke-width="3" stroke-linecap="round"/></g>`;
+      if (theme.mood === 'mask') return `<g transform="translate(101 92)"><path d="M-15-11q15-12 30 0v10q-15 11-30 0z" fill="#fff" opacity="0.9"/><circle cx="-6" cy="-5" r="2" fill="#445"/><circle cx="6" cy="-5" r="2" fill="#445"/><path d="M-5 4q5 3 10 0" stroke="#ff9bc4" stroke-width="2" fill="none" stroke-linecap="round"/></g>`;
+      if (theme.mood === 'lens') return `<g transform="translate(101 93)"><circle cx="-4" cy="-4" r="11" fill="none" stroke="${prop}" stroke-width="4"/><path d="M4 4l10 10" stroke="${accent}" stroke-width="4" stroke-linecap="round"/></g>`;
+      if (theme.mood === 'rescue') return `<g transform="translate(100 92)"><rect x="-18" y="-14" width="30" height="22" rx="5" fill="${prop}"/><path d="M-3-9v12M-9-3h12" stroke="#d24c41" stroke-width="4" stroke-linecap="round"/><rect x="-8" y="-20" width="10" height="6" rx="3" fill="${accent}"/></g>`;
+      if (theme.mood === 'fish') return `<g transform="translate(101 93)"><path d="M-16 0q12-12 24 0q-12 12-24 0z" fill="${prop}"/><circle cx="-8" cy="-2" r="2" fill="#0f2f35"/><path d="M8 0l9-7v14z" fill="${accent}"/></g>`;
+      if (theme.mood === 'bubble') return `<g transform="translate(101 92)"><rect x="-18" y="-18" width="28" height="20" rx="8" fill="${prop}" opacity="0.92"/><path d="M-5 2l-7 8l1-8" fill="${prop}"/><path d="M-11-9h13M-11-2h9" stroke="#4d456d" stroke-width="2" stroke-linecap="round"/></g>`;
+      if (theme.mood === 'idea') return `<g transform="translate(101 92)"><path d="M0-22q10 0 10 10q0 5-4 8q-2 3-2 7h-8q0-4-2-7q-4-3-4-8q0-10 10-10z" fill="${prop}"/><rect x="-5" y="3" width="10" height="5" rx="2" fill="${accent}"/><path d="M0-30v6M-12-24l4 4M12-24l-4 4" stroke="${accent}" stroke-width="3" stroke-linecap="round"/></g>`;
+      if (theme.mood === 'tools') return `<g transform="translate(101 92)"><rect x="-18" y="-16" width="30" height="24" rx="5" fill="${prop}" opacity="0.92"/><path d="M-8-6l6 6M-2-6l-6 6" stroke="#d98a3f" stroke-width="3" stroke-linecap="round"/><circle cx="7" cy="-4" r="4" fill="${accent}"/><rect x="4" y="1" width="6" height="7" rx="2" fill="${accent}"/></g>`;
+      return '';
+    }
+
+    function buildCharacterAvatar(typeId, size) {
+      const theme = AVATAR_THEMES[typeId] || AVATAR_THEMES['silent-efficient'];
+      const view = size || 132;
+      const scale = view / 132;
+      const hair = buildHairPath(theme.hairShape, theme.hair);
+      const prop = buildMoodProp(theme);
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${view} ${view}">
+        <g transform="scale(${scale})">
+        <defs>
+          <linearGradient id="bg-${typeId}" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0%" stop-color="#0f1320"/>
+            <stop offset="58%" stop-color="${theme.glow}"/>
+            <stop offset="100%" stop-color="#201728"/>
+          </linearGradient>
+          <linearGradient id="coat-${typeId}" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="${theme.suit}"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0.42)"/>
+          </linearGradient>
+          <filter id="glow-${typeId}" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="7" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <rect width="${view}" height="${view}" rx="32" fill="url(#bg-${typeId})"/>
+        <circle cx="24" cy="25" r="17" fill="rgba(255,255,255,0.08)"/>
+        <circle cx="106" cy="18" r="12" fill="rgba(255,255,255,0.06)"/>
+        <path d="M13 113q20-20 53-20q36 0 53 20v12H13z" fill="rgba(0,0,0,0.22)"/>
+        <g filter="url(#glow-${typeId})"><ellipse cx="101" cy="99" rx="22" ry="18" fill="${theme.accent}" opacity="0.45"/></g>
+        <path d="M32 103q8-26 32-26q24 0 32 26v16H32z" fill="url(#coat-${typeId})"/>
+        <path d="M44 101q6-14 20-14q14 0 20 14" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="64" cy="58" r="26" fill="${theme.skin}"/>
+        ${hair}
+        <ellipse cx="47" cy="67" rx="5.2" ry="4.4" fill="#222631"/>
+        <ellipse cx="81" cy="67" rx="5.2" ry="4.4" fill="#222631"/>
+        <path d="M51 84q13 10 26 0" fill="none" stroke="#8f5349" stroke-width="3.8" stroke-linecap="round"/>
+        <circle cx="41" cy="77" r="4" fill="rgba(255,160,160,0.2)"/>
+        <circle cx="87" cy="77" r="4" fill="rgba(255,160,160,0.2)"/>
+        <path d="M39 60q8-8 16-3" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M73 57q8-5 16 3" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="3" stroke-linecap="round"/>
+        <g transform="translate(36 92)"><rect x="0" y="0" width="26" height="16" rx="5" fill="rgba(255,255,255,0.12)"/><path d="M6 8h14" stroke="${theme.prop}" stroke-width="3" stroke-linecap="round"/></g>
+        ${prop}
+        </g>
+      </svg>`;
+      return svg;
+    }
+
+    function sceneCharacter(cx, cy, body, hair, accent, mood) {
+      return `
+        <g transform="translate(${cx} ${cy})">
+          <ellipse cx="8" cy="34" rx="28" ry="10" fill="rgba(0,0,0,0.18)"/>
+          <path d="M-18 26q5-19 20-19q15 0 20 19v12h-40z" fill="${body}"/>
+          <path d="M-8 38l-6 10M16 38l6 10" stroke="${body}" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="2" cy="-4" r="17" fill="#f2cfb4"/>
+          <path d="M-15 -10q4-18 17-18q13 0 17 18v10h-34z" fill="${hair}"/>
+          <circle cx="-4" cy="-2" r="2.8" fill="#1e2230"/>
+          <circle cx="9" cy="-2" r="2.8" fill="#1e2230"/>
+          <path d="M-1 9q5 4 10 0" fill="none" stroke="#88524a" stroke-width="2.6" stroke-linecap="round"/>
+          <path d="M-10 -10q6-7 12-4M6 -14q6-3 11 3" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2" stroke-linecap="round"/>
+          ${mood || ''}
+          <circle cx="-24" cy="-22" r="6" fill="${accent}" opacity="0.9"/>
+          <circle cx="25" cy="-18" r="4" fill="rgba(255,255,255,0.55)" opacity="0.55"/>
+        </g>`;
+    }
+
+    function buildSceneDetail(scene) {
+      const person = (mood) => sceneCharacter(44, 54, '#7c8fe2', '#2a3146', scene.accent, mood);
+      if (scene.scene === 'night-message') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        <circle cx="83" cy="24" r="10" fill="#f7c948"/><path d="M86 16a11 11 0 1 0 0 18a9 9 0 1 1 0-18z" fill="#20284e"/>
+        ${person('<rect x="18" y="-2" width="24" height="36" rx="7" fill="#12182b" stroke="#d6e3ff" stroke-width="2"/><rect x="22" y="4" width="16" height="12" rx="3" fill="#7fd8ff"/><circle cx="42" cy="4" r="10" fill="#ff6b35"/><text x="42" y="8" text-anchor="middle" font-size="6" font-weight="900" fill="#fff">99+</text>')}
+        <rect x="13" y="84" width="90" height="14" rx="7" fill="rgba(0,0,0,0.18)"/>`;
+      if (scene.scene === 'simple-request') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M18 -18l20 5l-8 8z" fill="#fff0d0"/><path d="M18 -6h18" stroke="#fff0d0" stroke-width="2" stroke-linecap="round"/>')}
+        <rect x="66" y="18" width="16" height="22" rx="4" fill="#d8ecff" transform="rotate(12 74 29)"/>
+        <rect x="79" y="28" width="16" height="22" rx="4" fill="#f7c948" transform="rotate(-8 87 39)"/>
+        <rect x="69" y="42" width="20" height="26" rx="4" fill="#ff8f4d" transform="rotate(10 79 55)"/>
+        <path d="M56 20v18" stroke="#ff6b35" stroke-width="4" stroke-linecap="round"/><path d="M56 38l-8-8h16z" fill="#ff6b35"/>`;
+      if (scene.scene === 'meeting-cue') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        <rect x="16" y="58" width="62" height="20" rx="8" fill="#1f2738"/>
+        ${person('<rect x="18" y="-22" width="12" height="24" rx="6" fill="#7fd8ff"/><rect x="22" y="0" width="4" height="12" rx="2" fill="#d8ecff"/>')}
+        <circle cx="86" cy="31" r="12" fill="#ff8f4d"/><text x="86" y="35" text-anchor="middle" font-size="8" font-weight="900" fill="#fff">?!</text>`;
+      if (scene.scene === 'idea-loading') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M28 -26q10 0 10 9q0 4-4 7q-2 2-2 5h-8q0-3-2-5q-4-3-4-7q0-9 10-9z" fill="#fff0a3"/><path d="M28 -33v5M18 -28l4 3M38 -28l-4 3" stroke="#f7c948" stroke-width="2" stroke-linecap="round"/>')}
+        <circle cx="81" cy="33" r="10" fill="#ff79c6" opacity="0.85"/><circle cx="91" cy="48" r="6" fill="#f7c948" opacity="0.8"/>`;
+      if (scene.scene === 'urgent-request') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<rect x="24" y="-8" width="20" height="14" rx="4" fill="#fff0c7"/><path d="M34 -28v14" stroke="#f7c948" stroke-width="4" stroke-linecap="round"/><path d="M34 -12l-8-8h16z" fill="#f7c948"/>')}
+        <rect x="72" y="28" width="20" height="14" rx="5" fill="#d8ecff"/><rect x="68" y="42" width="24" height="16" rx="5" fill="#7fd8ff"/>`;
+      if (scene.scene === 'desk-mode') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M20 18h26" stroke="#f7c948" stroke-width="4" stroke-linecap="round"/><rect x="25 -4" width="20" height="12" rx="5" fill="#ffd9a3"/>')}
+        <rect x="72" y="22" width="10" height="52" rx="4" fill="#36253a"/><rect x="22" y="72" width="38" height="8" rx="4" fill="#f7c948"/>`;
+      if (scene.scene === 'after-hours-phone') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<rect x="20" y="-10" width="22" height="34" rx="7" fill="#0d1321" stroke="#d8ecff" stroke-width="2"/><rect x="24" y="-4" width="14" height="14" rx="4" fill="#7fd8ff"/>')}
+        <circle cx="86" cy="26" r="11" fill="#ff6b35"/><text x="86" y="30" text-anchor="middle" font-size="8" font-weight="900" fill="#fff">23</text>`;
+      if (scene.scene === 'burst-mode') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M26 -18l8 12l-8 4l-8-4z" fill="#eef6ff"/><rect x="22" y="-2" width="8" height="22" rx="4" fill="#ff6b35"/><path d="M22 16l-7 11l11-5l11 5l-7-11" fill="#f7c948"/>')}
+        <circle cx="84" cy="26" r="9" fill="#ff8f4d"/><path d="M84 17v18M75 26h18" stroke="#fff" stroke-width="2" stroke-linecap="round"/>`;
+      if (scene.scene === 'coworker-help') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<rect x="20" y="-8" width="22" height="14" rx="5" fill="#d8ecff"/><text x="31" y="1" text-anchor="middle" font-size="7" font-weight="900" fill="#32405d">懂</text>')}
+        <path d="M71 46q12-12 21-3" fill="none" stroke="#f2c9a5" stroke-width="7" stroke-linecap="round"/><path d="M68 55q10 8 20 0" fill="none" stroke="#8f6dff" stroke-width="6" stroke-linecap="round"/>`;
+      if (scene.scene === 'mental-whirl') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M22 -16q9-10 18 0q-9 10-18 0z" fill="#8f6dff"/><path d="M38 -16q9-10 18 0q-9 10-18 0z" fill="#ff6b35"/>')}
+        <path d="M86 24q9 7 0 14q-9 7 0 14" stroke="#f7c948" stroke-width="4" fill="none"/>`;
+      if (scene.scene === 'plan-rescue') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<rect x="18" y="-16" width="20" height="26" rx="4" fill="#fff"/><path d="M40 -7l13 13" stroke="#ff6b35" stroke-width="4" stroke-linecap="round"/><path d="M49 6l-3 10" stroke="#ff6b35" stroke-width="4" stroke-linecap="round"/>')}
+        <circle cx="83" cy="24" r="10" fill="#f7c948"/><path d="M83 18v12M77 24h12" stroke="#fff" stroke-width="2"/>`;
+      if (scene.scene === 'meeting-overtime') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M23 -18h18" stroke="#d8ecff" stroke-width="3" stroke-linecap="round"/><circle cx="33" cy="0" r="10" fill="#fff4c7"/><path d="M33 -5v8l5 3" stroke="#f7c948" stroke-width="3" stroke-linecap="round"/>')}
+        <rect x="76" y="22" width="10" height="50" rx="5" fill="#8f6dff"/><rect x="79" y="12" width="4" height="10" rx="2" fill="#f7c948"/>`;
+      if (scene.scene === 'fish-cooling') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M20 -3q10-10 20 0q-10 10-20 0z" fill="#c3fff3"/><circle cx="27" cy="-5" r="2" fill="#174345"/><path d="M40 -3l8-6v12z" fill="#f7c948"/>')}
+        <path d="M68 70q11 6 22 0" stroke="#7fd8ff" stroke-width="4" fill="none"/><circle cx="82" cy="24" r="8" fill="#f7c948"/>`;
+      if (scene.scene === 'all-mention') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M32 -18q10 0 10 9v8q0 3 4 6H18q4-3 4-6v-8q0-9 10-9z" fill="#f7c948"/><circle cx="32" cy="10" r="3" fill="#fff4be"/>')}
+        <circle cx="84" cy="26" r="12" fill="#ff6b35"/><text x="84" y="30" text-anchor="middle" font-size="9" font-weight="900" fill="#fff">@</text>`;
+      if (scene.scene === 'revise-file') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<rect x="21" y="-14" width="22" height="30" rx="4" fill="#d8ecff"/><path d="M30 -7h4v12q0 4-4 4q-4 0-4-4v-9q0-3 3-3q3 0 3 3v8" fill="none" stroke="#8f6dff" stroke-width="2.5" stroke-linecap="round"/>')}
+        <circle cx="84" cy="24" r="11" fill="#f7c948"/><text x="84" y="28" text-anchor="middle" font-size="8" font-weight="900" fill="#fff">×8</text>`;
+      if (scene.scene === 'monday-boot') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<rect x="20" y="-2" width="22" height="18" rx="5" fill="#f2dbc4"/><path d="M42 1h6a5 5 0 0 1 0 10h-6" fill="none" stroke="#c98f5a" stroke-width="2.5"/><path d="M25 -10v7M36 -10v7" stroke="#ffb36b" stroke-width="3" stroke-linecap="round"/>')}
+        <rect x="78" y="46" width="10" height="20" rx="4" fill="#7a533d"/>`;
+      if (scene.scene === 'brief-puzzle') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M18 -8h12a4 4 0 1 1 7 0h12v12a4 4 0 1 1 0 7v12H37a4 4 0 1 1-7 0H18V11a4 4 0 1 1 0-7z" fill="#8f6dff"/>')}
+        <circle cx="84" cy="26" r="10" fill="#f7c948"/><path d="M84 20v12M78 26h12" stroke="#fff6c8" stroke-width="2"/>`;
+      if (scene.scene === 'brainstorm-burst') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M32 -22l5 11l11 5l-11 5l-5 11l-5-11l-11-5l11-5z" fill="#ff6b35"/>')}
+        <circle cx="84" cy="58" r="12" fill="#f7c948"/><text x="84" y="62" text-anchor="middle" font-size="7" font-weight="900" fill="#fff">IDEA</text>`;
+      if (scene.scene === 'holiday-window') return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<rect x="20" y="-10" width="28" height="20" rx="5" fill="#7fd8ff"/><path d="M20 2h28v8H20z" fill="#f7c948"/>')}
+        <path d="M83 22v22" stroke="#ff8f4d" stroke-width="4" stroke-linecap="round"/><path d="M83 26q10 0 16 8H83z" fill="#ff8f4d"/><rect x="90" y="41" width="7" height="28" rx="3" fill="#42d392"/>`;
+      return `
+        <rect x="12" y="12" width="92" height="92" rx="22" fill="${scene.panel}"/>
+        ${person('<path d="M32 -24q10 0 10 10q0 5-4 8q-2 2-2 6h-8q0-4-2-6q-4-3-4-8q0-10 10-10z" fill="#fff4be"/>')}
+        <circle cx="84" cy="24" r="9" fill="#8f6dff"/>`;
+    }
+
+    function buildSceneIllustration(iconKey) {
+      const scene = QUESTION_SCENE_MAP[iconKey] || QUESTION_SCENE_MAP['✨'];
+      const title = escSvg(scene.title);
+      const detail = buildSceneDetail(scene);
+      const safeKey = encodeURIComponent(iconKey);
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+        <defs>
+          <linearGradient id="scene-bg-${safeKey}" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0%" stop-color="${scene.bg}"/>
+            <stop offset="100%" stop-color="${scene.accent}" stop-opacity="0.42"/>
+          </linearGradient>
+          <radialGradient id="scene-glow-${safeKey}" cx="70%" cy="18%" r="70%">
+            <stop offset="0%" stop-color="${scene.accent}" stop-opacity="0.34"/>
+            <stop offset="100%" stop-color="${scene.accent}" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="128" height="128" rx="28" fill="url(#scene-bg-${safeKey})"/>
+        <rect width="128" height="128" rx="28" fill="url(#scene-glow-${safeKey})"/>
+        <path d="M18 104q18-14 46-14q32 0 46 14" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="5" stroke-linecap="round"/>
+        ${detail}
+        <rect x="16" y="103" width="96" height="13" rx="6.5" fill="rgba(0,0,0,0.22)"/>
+        <text x="64" y="112.3" text-anchor="middle" font-size="9" font-weight="900" fill="#fff8d8" letter-spacing="0.35">${title}</text>
+      </svg>`;
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
+
+    const QUESTIONS = [
+
+      { text: '工作群晚上 11:48 又亮了，你会：', emoji: '🌙', options: [
+        { text: '点进去看一眼，然后默默扣上手机', scores: ['seen-no-reply', 'social-power-save', 'desk-charger'] },
+        { text: '先回一句“收到”，把体面维持住', scores: ['emotion-stable', 'allround-substitute', 'meeting-endurance'] }
+      ]},
+      { text: '老板说“你简单弄一下就行”，你的第一反应是：', emoji: '🫠', options: [
+        { text: '警觉起来：这句话通常不简单', scores: ['requirements-translator', 'detail-polisher', 'boundary-keeper'] },
+        { text: '先做出来，反正大概率还会再改', scores: ['plan-rescue', 'allround-substitute', 'deadline-warrior'] }
+      ]},
+      { text: '开会时突然被 cue 到，你的状态是：', emoji: '🎤', options: [
+        { text: '表面冷静，脑内疯狂搜索上下文', scores: ['emotion-stable', 'meeting-endurance', 'surface-business'] },
+        { text: '先说“我补充两点”，给大脑争取时间', scores: ['requirements-translator', 'surface-business', 'allround-substitute'] }
+      ]},
+      { text: '你最常见的工作状态是：', emoji: '🧠', options: [
+        { text: '人很安静，但文档一直在更新', scores: ['silent-efficient', 'detail-polisher', 'desk-charger'] },
+        { text: '看起来在等，其实是在等灵感上线', scores: ['inspiration-party', 'spirit-offline', 'desk-charger'] }
+      ]},
+      { text: '面对临时需求，你第一反应是：', emoji: '📥', options: [
+        { text: '微笑说收到，内心打开备忘录整理情绪', scores: ['boundary-keeper', 'plan-rescue', 'surface-business'] },
+        { text: '先确认截止时间，再决定焦虑程度', scores: ['boundary-keeper', 'requirements-translator', 'silent-efficient'] }
+      ]},
+      { text: '你的工位更像：', emoji: '🪑', options: [
+        { text: '一个低电量但还能运行的充电站', scores: ['desk-charger', 'social-power-save', 'happy-fish'] },
+        { text: '一个随时可以进入战斗状态的临时指挥部', scores: ['plan-rescue', 'deadline-warrior', 'allround-substitute'] }
+      ]},
+      { text: '你对下班后消息的态度是：', emoji: '📱', options: [
+        { text: '看到了，但不一定立刻让它看到我', scores: ['seen-no-reply', 'boundary-keeper', 'social-power-save'] },
+        { text: '可以回，但请允许我先做三秒心理建设', scores: ['meeting-endurance', 'desk-charger', 'allround-substitute'] }
+      ]},
+      { text: '你最像哪种交付方式：', emoji: '🚀', options: [
+        { text: '前期安静，中后期突然爆发', scores: ['deadline-warrior', 'inspiration-party', 'spirit-offline'] },
+        { text: '每天推进一点，稳定得像系统后台', scores: ['silent-efficient', 'detail-polisher', 'meeting-endurance'] }
+      ]},
+      { text: '同事说“这个你比较懂”，你会：', emoji: '🤝', options: [
+        { text: '先谦虚一下，然后默默接住', scores: ['meeting-endurance', 'emotion-stable', 'plan-rescue'] },
+        { text: '先确认边界，避免从帮忙变成负责', scores: ['boundary-keeper', 'requirements-translator', 'silent-efficient'] }
+      ]},
+      { text: '你最怕听到哪句话：', emoji: '😵‍💫', options: [
+        { text: '“这个很快的”', scores: ['detail-polisher', 'plan-rescue', 'deadline-warrior'] },
+        { text: '“你自由发挥一下”', scores: ['requirements-translator', 'inspiration-party', 'surface-business'] }
+      ]},
+      { text: '如果明天就要一个方案，你会：', emoji: '📄', options: [
+        { text: '先搭框架，今晚进入急救模式', scores: ['plan-rescue', 'deadline-warrior', 'allround-substitute'] },
+        { text: '先开文档，把能确定的部分稳住', scores: ['silent-efficient', 'detail-polisher', 'requirements-translator'] }
+      ]},
+      { text: '会议突然又延长 10 分钟，你会：', emoji: '🕰️', options: [
+        { text: '表情稳定，内心默默重排人生计划', scores: ['meeting-endurance', 'emotion-stable', 'surface-business'] },
+        { text: '身体还在会议，灵魂已经短暂离席', scores: ['spirit-offline', 'desk-charger', 'social-power-save'] }
+      ]},
+      { text: '你怎么看待摸鱼：', emoji: '🐟', options: [
+        { text: '不是偷懒，是给系统降温', scores: ['happy-fish', 'desk-charger', 'spirit-offline'] },
+        { text: '只要不影响交付，就是合理能量管理', scores: ['boundary-keeper', 'silent-efficient', 'emotion-stable'] }
+      ]},
+      { text: '群聊突然 @所有人，你会：', emoji: '🔔', options: [
+        { text: '先扫一眼重点，再决定要不要出现', scores: ['seen-no-reply', 'surface-business', 'social-power-save'] },
+        { text: '需要我时我会出现，不需要我时我先静音', scores: ['emotion-stable', 'boundary-keeper', 'silent-efficient'] }
+      ]},
+      { text: '一个文件交出去前，你通常会：', emoji: '📎', options: [
+        { text: '自己先改八遍，不然心里不踏实', scores: ['detail-polisher', 'silent-efficient', 'emotion-stable'] },
+        { text: '先交初版对齐方向，避免精修错地方', scores: ['requirements-translator', 'plan-rescue', 'surface-business'] }
+      ]},
+      { text: '周一早上的你更像：', emoji: '☕', options: [
+        { text: '正在缓慢开机，需要咖啡和安静', scores: ['desk-charger', 'happy-fish', 'spirit-offline'] },
+        { text: '表面已经上线，其实系统还在加载', scores: ['surface-business', 'spirit-offline', 'meeting-endurance'] }
+      ]},
+      { text: '遇到需求不清楚的任务，你会：', emoji: '🧩', options: [
+        { text: '先问清楚关键问题，不然容易白忙', scores: ['requirements-translator', 'boundary-keeper', 'detail-polisher'] },
+        { text: '先做一个版本出来，让大家有东西可讨论', scores: ['plan-rescue', 'allround-substitute', 'deadline-warrior'] }
+      ]},
+      { text: '头脑风暴时，你通常是：', emoji: '💥', options: [
+        { text: '先安静听，等想清楚再开口', scores: ['silent-efficient', 'detail-polisher', 'seen-no-reply'] },
+        { text: '突然冒出一句，然后大家都看过来', scores: ['inspiration-party', 'surface-business', 'allround-substitute'] }
+      ]},
+      { text: '假期前最后一天，你会：', emoji: '🏖️', options: [
+        { text: '努力收尾，争取假期真的不想工作', scores: ['boundary-keeper', 'silent-efficient', 'detail-polisher'] },
+        { text: '表面放假，心里还留着一个工作小窗口', scores: ['emotion-stable', 'allround-substitute', 'meeting-endurance'] }
+      ]},
+      { text: '你最希望别人怎么评价你的工作状态：', emoji: '✨', options: [
+        { text: '话不多，但很靠谱', scores: ['silent-efficient', 'emotion-stable', 'detail-polisher'] },
+        { text: '总能在关键时刻想出办法', scores: ['plan-rescue', 'inspiration-party', 'allround-substitute'] }
+      ]}
+    ];
+
+    const totalQuestions = QUESTIONS.length;
+    const progressHints = [
+      '不用想太久，点更像你的那一边。',
+      '你那套体面上班法，已经快藏不住了。',
+      '再答几题，你的工型就快加载完成。'
+    ];
+
+    window.QUESTIONS = QUESTIONS;
+
+    let currentQ = 0;
+    let answers = [];
+    let questionChoices = [];
+    let currentTypeKey = TYPE_PRIORITY[0];
+    let currentResult = RESULTS[currentTypeKey];
+    let idCardQrReady = false;
+
+    function startTest() {
+      currentQ = 0;
+      answers = new Array(totalQuestions);
+      showPage('page-test');
+      renderProgressDots();
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderProgressDots() {
+      const container = document.getElementById('progress-dots');
+      container.innerHTML = '';
+      for (let i = 0; i < totalQuestions; i += 1) {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (i < currentQ ? ' done' : (i === currentQ ? ' current' : ''));
+        container.appendChild(dot);
+      }
+    }
+
+    function renderQuestion() {
+      const q = QUESTIONS[currentQ];
+      const progress = ((currentQ + 1) / totalQuestions) * 100;
+      document.getElementById('progress-text').textContent = '第 ' + (currentQ + 1) + ' / ' + totalQuestions + ' 题';
+      const progressHintMap = { 4: '有点像了，你平时上班确实有这味。', 9: '你这套上班生存法，已经快藏不住了。', 14: '再答几题，你的工牌就能发群了。' };
+      document.getElementById('progress-hint').textContent = progressHintMap[currentQ] || '';
+      document.getElementById('progress-fill').style.width = progress.toFixed(1) + '%';
+      document.getElementById('q-number').textContent = 'Q' + (currentQ + 1);
+      document.getElementById('q-axis').textContent = '';
+      document.getElementById('q-icon-image').src = buildSceneIllustration(q.emoji || '✨');
+      document.getElementById('q-text').textContent = q.text;
+
+      const options = document.getElementById('options');
+      options.innerHTML = '';
+      q.options.forEach(function(option, optionIndex) {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.setAttribute('aria-label', '选择：' + option.text);
+        btn.textContent = option.text;
+        btn.onclick = createAnswerHandler(optionIndex, btn);
+        options.appendChild(btn);
+      });
+
+      document.getElementById('question-footer-tip').textContent = '做完可以直接生成工牌，不用自己想文案。';
+      renderProgressDots();
+    }
+
+    function createAnswerHandler(value, btn) {
+      return function () {
+        const buttons = document.querySelectorAll('.choice-btn');
+        buttons.forEach(function(item) {
+          item.disabled = true;
+          item.style.opacity = '0.55';
+        });
+        btn.style.opacity = '1';
+        btn.classList.add('selected');
+        btn.style.transform = 'scale(0.985)';
+        answers[currentQ] = value;
+        setTimeout(function () {
+          currentQ += 1;
+          if (currentQ < totalQuestions) {
+            renderQuestion();
+          } else {
+            showResult();
+          }
+        }, 160);
+      };
+    }
+
+    function getWinningType(scoreMap) {
+      let winner = TYPE_PRIORITY[0];
+      let bestScore = -1;
+      TYPE_PRIORITY.forEach(function(typeId) {
+        const score = scoreMap[typeId] || 0;
+        if (score > bestScore) {
+          bestScore = score;
+          winner = typeId;
+        }
+      });
+      return winner;
+    }
+
+    function calculateResult(answerList) {
+      const scores = {};
+      TYPE_PRIORITY.forEach(function(typeId) { scores[typeId] = 0; });
+      answerList.forEach(function(optionIndex, questionIndex) {
+        const question = QUESTIONS[questionIndex];
+        const selected = question && question.options ? question.options[optionIndex] : null;
+        if (!selected || !selected.scores) return;
+        selected.scores.forEach(function(typeId) {
+          if (scores[typeId] === undefined) scores[typeId] = 0;
+          scores[typeId] += 1;
+        });
+      });
+      let bestType = TYPE_PRIORITY[0];
+      let bestScore = -1;
+      TYPE_PRIORITY.forEach(function(typeId) {
+        if (scores[typeId] > bestScore) {
+          bestScore = scores[typeId];
+          bestType = typeId;
+        }
+      });
+      return bestType;
+    }
+
+    function showResult() {
+      currentTypeKey = calculateResult(answers);
+      currentResult = RESULTS[currentTypeKey] || RESULTS['silent-efficient'];
+      renderResult(currentTypeKey, currentResult);
+      showPage('page-result');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderResult(typeId, result) {
+      const visual = RESULT_VISUALS[typeId] || { emoji: '💼', dept: '劳动者人格研究院' };
+      const status = STATUS_TEXT[typeId] || '今日状态：稳定交付';
+      const publicCopy = buildPublicShare();
+      const groupCopy = buildGroupShare();
+
+      document.getElementById('result-code').textContent = typeId;
+      document.getElementById('result-avatar').innerHTML = buildCharacterAvatar(typeId, 132);
+      document.getElementById('result-type').textContent = result.name;
+      document.getElementById('result-subtitle').textContent = result.subtitle;
+      document.getElementById('result-en-name').textContent = result.enName || typeId;
+      document.getElementById('result-desc').textContent = result.description;
+      document.getElementById('manifesto-text').textContent = '“' + result.declaration + '”';
+      document.getElementById('manifesto-inline').textContent = '“' + result.declaration + '”';
+      document.getElementById('status-pill').textContent = status;
+      document.getElementById('public-copy-preview').textContent = publicCopy;
+      document.getElementById('group-copy-preview').textContent = groupCopy;
+      document.getElementById('public-copy-length').textContent = publicCopy.length + ' 字';
+      document.getElementById('group-copy-length').textContent = groupCopy.length + ' 字';
+
+      const badgeWrap = document.getElementById('result-badges');
+      badgeWrap.innerHTML = '';
+      result.tags.forEach(function(tagText) {
+        const chip = document.createElement('span');
+        chip.className = 'result-badge';
+        chip.textContent = tagText;
+        badgeWrap.appendChild(chip);
+      });
+
+      const traitWrap = document.getElementById('trait-grid');
+      traitWrap.innerHTML = '';
+      result.traits.forEach(function(traitText) {
+        const chip = document.createElement('span');
+        chip.className = 'trait-chip';
+        chip.textContent = traitText;
+        traitWrap.appendChild(chip);
+      });
+
+      const analysisWrap = document.getElementById('analysis-list');
+      analysisWrap.innerHTML = '';
+      [
+        { title: '为什么你会认领这一型', text: result.resonance },
+        { title: '你上班时最像的状态', text: result.workStyle },
+        { title: '你为什么会对这句有感觉', text: result.whyShareable }
+      ].forEach(function(item) {
+        const box = document.createElement('div');
+        box.className = 'analysis-item';
+        box.innerHTML = '<strong>' + escapeHtml(item.title) + '</strong><p>' + escapeHtml(item.text) + '</p>';
+        analysisWrap.appendChild(box);
+      });
+
+      renderIdCard(typeId, result, visual, status);
+    }
+
+    function renderIdCard(typeId, result, visual, status) {
+      document.getElementById('idcard-status').textContent = status;
+      document.getElementById('idcard-avatar').innerHTML = buildCharacterAvatar(typeId, 118);
+      document.getElementById('idcard-type-name').textContent = result.name;
+      document.getElementById('idcard-type-en').textContent = result.enName || typeId;
+      document.getElementById('idcard-subtitle').textContent = result.subtitle;
+      document.getElementById('idcard-dept').textContent = visual.dept;
+      document.getElementById('idcard-manifesto').textContent = '“' + result.declaration + '”';
+      document.getElementById('idcard-footer-title').textContent = '扫我领同款工感';
+      const tagsWrap = document.getElementById('idcard-tags');
+      tagsWrap.innerHTML = '';
+      result.tags.slice(0, 4).forEach(function(tagText) {
+        const tag = document.createElement('span');
+        tag.textContent = tagText;
+        tagsWrap.appendChild(tag);
+      });
+      const qrImg = document.getElementById('idcard-qr');
+      idCardQrReady = false;
+      qrImg.onload = function () { idCardQrReady = true; };
+      qrImg.onerror = function () { idCardQrReady = false; };
+      qrImg.src = qrUrl;
+      if (qrImg.complete && qrImg.naturalWidth > 0) {
+        idCardQrReady = true;
+      }
+    }
+
+    function buildPublicShare() {
+      if (!currentResult) return '';
+      const shareUrl = window.location.href.split('#')[0];
+      return currentResult.publicShare + '\n\n测测你是哪一种“工”：\n' + shareUrl;
+    }
+
+    function buildGroupShare() {
+      if (!currentResult) return '';
+      const shareUrl = window.location.href.split('#')[0];
+      return currentResult.groupShare + '\n\n你也来认领一下，我想看看咱们群里到底有几种工：\n' + shareUrl;
+    }
+
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', 'readonly');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      textarea.setSelectionRange(0, textarea.value.length);
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      document.body.removeChild(textarea);
+      return ok;
+    }
+
+    async function copyPublicShare() {
+      try {
+        const ok = await copyText(buildPublicShare());
+        showToast(ok ? '已复制，去朋友圈认领你的工型吧' : '复制失败，可以长按手动选择文案');
+      } catch (err) {
+        showToast('复制失败，可以长按手动选择文案');
+      }
+    }
+
+    async function copyGroupShare() {
+      try {
+        const ok = await copyText(buildGroupShare());
+        showToast(ok ? '已复制，发给朋友看看谁更像' : '复制失败，可以长按手动选择文案');
+      } catch (err) {
+        showToast('复制失败，可以长按手动选择文案');
+      }
+    }
+
+    function waitForImageLoad(img, timeoutMs) {
+      return new Promise(function(resolve) {
+        if (!img) return resolve(false);
+        if (img.complete && img.naturalWidth > 0) return resolve(true);
+        let settled = false;
+        const timer = setTimeout(function() {
+          if (settled) return;
+          settled = true;
+          resolve(false);
+        }, timeoutMs || 2500);
+        function done(ok) {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timer);
+          img.removeEventListener('load', onLoad);
+          img.removeEventListener('error', onError);
+          resolve(ok);
+        }
+        function onLoad() { done(true); }
+        function onError() { done(false); }
+        img.addEventListener('load', onLoad);
+        img.addEventListener('error', onError);
+      });
+    }
+
+    function showGeneratedImage(canvas) {
+      const imageUrl = canvas.toDataURL('image/png');
+      const opened = window.open('');
+      if (opened && opened.document) {
+        opened.document.write('<title>51TI 工牌</title><body style="margin:0;background:#0b0c12;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px;"><img src="' + imageUrl + '" style="max-width:100%;height:auto;border-radius:18px;box-shadow:0 14px 36px rgba(0,0,0,0.28);" alt="51TI 工牌图片" />  <!-- 51TI viral version: 2026-04-29-v3 -->\n</body>');
+        opened.document.close();
+        showToast('已打开工牌图片，长按图片即可保存');
+      } else {
+        showToast('已生成工牌，请长按或截图保存');
+      }
+    }
+
+    async function saveIdCard() {
+      const target = document.getElementById('worker-idcard');
+      const qrImg = document.getElementById('idcard-qr');
+      if (!window.html2canvas) {
+        showToast('当前环境暂不支持生成图片，请先截图保存');
+        return;
+      }
+      try {
+        if (!idCardQrReady) {
+          idCardQrReady = await waitForImageLoad(qrImg, 2800);
+        }
+        const canvas = await html2canvas(target, {
+          backgroundColor: '#101221',
+          scale: Math.min(window.devicePixelRatio || 2, 3),
+          useCORS: true
+        });
+        const imageUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.download = '51TI-' + currentTypeKey + '-工牌.png';
+        link.href = imageUrl;
+        link.click();
+        if (navigator.userAgent && /MicroMessenger|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+          showGeneratedImage(canvas);
+        } else {
+          showToast(idCardQrReady ? '工牌图片已开始保存' : '工牌已保存，二维码若未出现可稍后重试');
+        }
+      } catch (err) {
+        try {
+          const fallbackCanvas = await html2canvas(target, {
+            backgroundColor: '#101221',
+            scale: Math.min(window.devicePixelRatio || 2, 3),
+            useCORS: true
+          });
+          showGeneratedImage(fallbackCanvas);
+        } catch (fallbackErr) {
+          showToast('保存失败，先截图也可以用');
+        }
+      }
+    }
+
+    function restartTest() {
+      startTest();
+    }
+
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(function(page) {
+        page.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
+    }
+
+    let toastTimer = null;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () {
+        toast.classList.remove('show');
+      }, 2200);
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function updateCountdown() {
+      return;
+    }
+
+    updateCountdown();
+    renderProgressDots();
+    document.getElementById('progress-fill').style.width = (100 / totalQuestions).toFixed(1) + '%';
+    renderResult(currentTypeKey, currentResult);
+  </script>
+  <!-- 51TI viral version: 2026-04-29-v3 -->
 </body>
 </html>
