@@ -1412,9 +1412,88 @@
       order: 5;
     }
 
+    .hero-marquee {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 2px 4px 6px;
+      margin-top: 2px;
+      scrollbar-width: none;
+    }
+
+    .hero-marquee::-webkit-scrollbar { display: none; }
+
+    .hero-chip {
+      flex: 0 0 auto;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(135deg, rgba(143,109,255,0.22), rgba(255,107,53,0.18));
+      color: #fff8e6;
+      font-size: 12px;
+      font-weight: 800;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 18px rgba(0,0,0,0.18);
+      white-space: nowrap;
+    }
+
+    .share-card {
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.30), 0 0 0 1px rgba(255,255,255,0.03) inset;
+    }
+
+    .share-card-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #f5de87;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      margin-bottom: 14px;
+    }
+
+    .share-card-main {
+      display: grid;
+      grid-template-columns: 108px 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .share-card-avatar { min-height: 108px; }
+    .share-card-copy { display: grid; gap: 10px; }
+
+    .manifesto-inline {
+      color: #fff5d8;
+      font-size: 15px;
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      width: fit-content;
+      max-width: 100%;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: #fff5d8;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
     @media (max-width: 480px) {
       .choice-list { gap: 10px; }
       .choice-btn { min-height: 78px; font-size: 15px; padding: 14px 14px 14px 16px; }
+      .share-card-main { grid-template-columns: 1fr; }
+      .share-card-avatar { min-height: 92px; }
     }
 
   </style>
@@ -1427,16 +1506,27 @@
       <h1>测测你是哪一种“工”</h1>
       <div class="hero-subtitle">有的人上班靠热爱，<br />有的人上班靠咖啡，<br />还有的人靠“收到”两个字维持体面。</div>
       <div class="hero-desc">
-        完成 20 道轻量选择题，生成你的专属劳动者工牌。<br />
-        看看你是稳定交付型选手，还是精神离岗型人才。
+        20 道题，2 分钟。<br />
+        认领你的劳动者工牌。<br />
+        看看你到底是静音高效工，<br />还是精神离岗工。
+      </div>
+      <div class="hero-marquee" aria-label="代表工型预览">
+        <span class="hero-chip">静音高效工</span>
+        <span class="hero-chip">精神离岗工</span>
+        <span class="hero-chip">全能补位工</span>
+        <span class="hero-chip">社交省电工</span>
+        <span class="hero-chip">截止日前夜战神</span>
+        <span class="hero-chip">快乐摸鱼工</span>
+        <span class="hero-chip">边界守门工</span>
+        <span class="hero-chip">灵感蹦迪工</span>
       </div>
       <div class="hero-tags">
-        <span class="hero-tag">20 道题</span>
-        <span class="hero-tag">16 种工型</span>
+        <span class="hero-tag">2分钟完成</span>
+        <span class="hero-tag">16种工型</span>
         <span class="hero-tag">生成工牌</span>
-        <span class="hero-tag">复制朋友圈文案</span>
+        <span class="hero-tag">可发群</span>
       </div>
-      <button class="btn btn-primary" onclick="startTest()">领取我的劳动者工牌</button>
+      <button class="btn btn-primary" onclick="startTest()">看看我是哪种工</button>
       <div class="hero-tip">不用想太久，第一反应最像你。</div>
     </div>
   </div>
@@ -1463,35 +1553,29 @@
         <div class="q-text" id="q-text"></div>
         <div class="question-subhint"></div>
         <div class="choice-list" id="options"></div>
-        <div class="question-footer-tip" id="question-footer-tip"></div>
+        <div class="question-footer-tip" id="question-footer-tip">做完可以直接生成工牌，不用自己想文案。</div>
       </div>
     </div>
   </div>
 
   <div class="page" id="page-result">
     <div class="shell result-stack">
-      <div class="result-hero">
+      <div class="result-hero share-card" id="share-card">
+        <div class="share-card-brand">51TI 劳动者人格测试 · 社交身份认领卡</div>
         <div class="result-intro-label">你的工型是</div>
         <div class="result-topline">
           <div class="result-kicker">51TI WORKER PROFILE</div>
           <div class="result-code" id="result-code">silent-efficient</div>
         </div>
-        <div class="result-poster-grid">
-          <div class="result-visual">
-            <div class="result-avatar" id="result-avatar">💼</div>
-            <div>
-              <div class="result-type-display" id="result-type">静音高效工</div>
-              <div class="result-subtitle" id="result-subtitle">副标题</div>
-              <div class="result-en-name" id="result-en-name">SILENT EFFICIENT</div>
-              <div class="result-badges" id="result-badges"></div>
-            </div>
-          </div>
-          <div class="result-poster-mini">
-            <div class="poster-mini-top">今日状态</div>
-            <div class="poster-mini-emoji" id="poster-mini-emoji">💼</div>
-            <div class="poster-mini-type" id="poster-mini-type">静音高效工</div>
-            <div class="poster-mini-en" id="poster-mini-en">SILENT EFFICIENT</div>
-            <div class="poster-mini-line" id="poster-mini-line">后台高效运行</div>
+        <div class="share-card-main">
+          <div class="share-card-avatar" id="result-avatar">💼</div>
+          <div class="share-card-copy">
+            <div class="result-type-display" id="result-type">静音高效工</div>
+            <div class="result-subtitle" id="result-subtitle">副标题</div>
+            <div class="result-en-name" id="result-en-name">SILENT EFFICIENT</div>
+            <div class="manifesto-inline" id="manifesto-inline">“我可以安静，但我的进度条一直在动。”</div>
+            <div class="result-badges" id="result-badges"></div>
+            <div class="status-pill" id="status-pill">今日状态：后台高效运行</div>
           </div>
         </div>
       </div>
@@ -1553,7 +1637,7 @@
 
       <div class="share-suite">
         <div class="card-title">把你的工型发出去</div>
-        <div class="share-helper-text">发给朋友测测，看看你们群里到底有多少种工。</div>
+        <div class="share-helper-text">把结果发群里，看看你们这群人到底有多少种工。</div>
         <div class="share-copy-card">
           <div class="share-copy-head">
             <div class="share-copy-title">朋友圈体面版</div>
@@ -1572,7 +1656,7 @@
         </div>
       </div>
 
-      <div class="result-helper-copy">不想解释自己是哪种工，让工牌替你说。</div>
+      <div class="result-helper-copy">你先认领，再看看朋友们都是什么工。</div>
 
       <div class="actions result-actions">
         <button class="share-btn share-primary" onclick="saveIdCard()">截图保存我的工牌</button>
@@ -1588,7 +1672,7 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script>
     const siteUrl = 'https://lincolnsama.github.io/51ti/51ti-wechat.html';
-    window.__51TI_VERSION__ = '2026-04-29-v2';
+    window.__51TI_VERSION__ = '2026-04-29-v3';
     const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=' + encodeURIComponent(siteUrl);
     const TYPE_PRIORITY = [
       'silent-efficient',
@@ -1820,7 +1904,7 @@
         traits: ['稳定交付', '低调推进', '不爱废话', '结果导向'],
         declaration: '我可以安静，但我的进度条一直在动。',
         publicShare: '测出来我是「静音高效工」。\n话少不是冷淡，是我在省电。\n但该交的东西，我一般都交得出来。',
-        groupShare: '我是「静音高效工」。\n看起来没动静，\n其实后台已经跑完三版了。',
+        groupShare: '我先认领了「静音高效工」。\n这玩意居然有点像我。\n现在轮到你们了。',
         tags: ['稳定', '高效', '省电', '靠谱'],
         resonance: '别人眼里，你像一台不怎么说话、但一直在稳定运转的后台系统。你不靠热闹证明存在感，反而越安静越让人放心。',
         workStyle: '你最容易在别人还在开口讨论时，已经先把文档搭起来、把关键细节补齐。这种先做再说的节奏，会让人天然觉得：交给你，事就不会掉地上。',
@@ -1834,7 +1918,7 @@
         traits: ['消息缓冲', '谨慎回复', '后台处理', '社交省电'],
         declaration: '我不是消失了，我是在后台处理中。',
         publicShare: '测出来我是「已读不回工」。\n不是冷漠，是消息太多，我需要一点缓冲。\n成年人的礼貌，有时候就是先不崩溃。',
-        groupShare: '我是「已读不回工」。\n消息我看到了，灵魂还没上线。\n别催，催就是正在加载。',
+        groupShare: '我先认领了「已读不回工」。\n这玩意居然有点像我。\n现在轮到你们了。',
         tags: ['已读', '缓冲', '加载中', '省电'],
         resonance: '你不是故意吊人胃口，你只是需要一点缓冲空间，先把情绪、语气、信息量都消化一下，再决定怎么回。',
         workStyle: '你对消息密度和社交能量非常诚实。别人也许会秒回，但你更在意回复之后会不会引出更多对话、更多来回、更多消耗。',
@@ -1848,7 +1932,7 @@
         traits: ['精神放风', '灵魂自由', '适度抽离', '照常交付'],
         declaration: '人在工位，心有年假。',
         publicShare: '测出来我是「精神离岗工」。\n人在认真工作，心在适度放风。\n原来我的上班方式叫：边交付，边自救。',
-        groupShare: '我是「精神离岗工」。\n看起来在上班，其实灵魂已经刷卡下班。\n但神奇的是，活儿还能交。',
+        groupShare: '我先认领了「精神离岗工」。\n这玩意居然有点像我。\n现在轮到你们了。',
         tags: ['放风', '离线', '自由', '自救'],
         resonance: '你最像那种表面坐在工位、内心却偶尔去窗边吹风的人。不是逃避工作，而是需要给自己一点精神透气口。',
         workStyle: '你会在任务和情绪之间悄悄给自己留一道缝：活照做，魂适度飘一下。正因为这样，你反而比一直硬扛的人更能续航。',
@@ -1862,7 +1946,7 @@
         traits: ['临门爆发', '高压输出', '极限交付', '战斗模式'],
         declaration: '不到最后一刻，不启动最终形态。',
         publicShare: '测出来我是「截止日前夜战神」。\n平时不显山不露水，deadline 一来自动开大。\n虽然过程惊险，但结果通常还行。',
-        groupShare: '我是「截止日前夜战神」。\n我的生产力不在日历里，在倒计时里。\n不逼一下，我都不知道自己这么能写。',
+        groupShare: '我先认领了「截止日前夜战神」。\n这玩意居然有点像我。\n现在轮到你们了。',
         tags: ['爆发', '倒计时', '交付', '战神'],
         resonance: '你很少从一开始就把能量打满，你更像那种必须看到倒计时、身体才会正式上线的人。',
         workStyle: '一旦时间逼近，你会突然切到高压模式：思路更快、判断更准、执行更猛。别人可能会捏一把汗，但你自己知道，这就是你的启动方式。',
@@ -1876,7 +1960,7 @@
         traits: ['情绪管理', '表面冷静', '稳定接住', '体面处理'],
         declaration: '表面风平浪静，内心已经开过三轮会。',
         publicShare: '测出来我是「情绪稳定工」。\n不是没情绪，是我比较擅长把情绪先放一边。\n成年人的稳定，有时候也是练出来的。',
-        groupShare: '我是「情绪稳定工」。\n脸上：好的。\n心里：谁来解释一下这又是什么情况。',
+        groupShare: '我先认领了「情绪稳定工」。\n这玩意居然有点像我。\n现在轮到你们了。',
         tags: ['稳定', '冷静', '体面', '接住'],
         resonance: '你很像那类表面永远说“好的我看一下”，内心其实已经默默召开过三轮紧急会议的人。',
         workStyle: '你不是没有情绪，而是很会把情绪先放到旁边，优先让事情继续往前走。很多人靠外放消化，你靠内部处理消化。',
@@ -1890,7 +1974,7 @@
         traits: ['拆解需求', '确认边界', '减少返工', '精准沟通'],
         declaration: '先把话说明白，后面才能少改几遍。',
         publicShare: '测出来我是「需求翻译工」。\n我不是问题多，\n我只是知道“你看着办”通常不能真的看着办。',
-        groupShare: '我是「需求翻译工」。\n专治一句话需求，\n尤其是“简单弄一下”和“自由发挥”。',
+        groupShare: '我先认领了「需求翻译工」。\n这玩意居然有点像我。\n现在轮到你们了。',
         tags: ['需求', '翻译', '边界', '沟通'],
         resonance: '你属于那种一听到“简单弄一下”“你看着办”就会瞬间警觉的人，因为你太知道模糊需求后面藏着多少返工。',
         workStyle: '你会本能地去拆：到底要什么、边界在哪、什么时候要、怎么才算做完。别人觉得你问得细，你知道自己是在替未来的自己省命。',
@@ -1904,7 +1988,7 @@
         traits: ['会议续航', '稳定在线', '关键补充', '耐心听完'],
         declaration: '只要会议还没结束，我的表情就不会掉线。',
         publicShare: '测出来我是「会议续航工」。\n会议越长，表情越稳。\n不是我不累，是我比较擅长维持在线状态。',
-        groupShare: '我是「会议续航工」。\n灵魂已经坐不住了，\n但表情管理还在坚持上班。',
+        groupShare: '我先认领了「会议续航工」。\n这玩意居然有点像我。\n现在轮到你们了。',
         tags: ['会议', '续航', '在线', '表情管理'],
         resonance: '你像那种会议越长、脸越稳的人。别人可能已经开始神游，你还能把表情管理和基础在线状态维持住。',
         workStyle: '你未必最爱发言，但很会在关键节点接上一句有用的话，把快散掉的场子再拢回来一点。',
@@ -1918,7 +2002,7 @@
         traits: ['低电运行', '缓慢开机', '稳定续航', '需要充电'],
         declaration: '电量不高，但系统稳定。',
         publicShare: '测出来我是「工位充电工」。\n每天低电量运行，但还算稳定交付。\n打工人的续航能力，有时候真的很神奇。',
-        groupShare: '我是「工位充电工」。\n电量 18%，任务 100%。\n不知道怎么撑的，但确实还活着。',
+        groupShare: '我先认领了「工位充电工」。\n这玩意居然有点像我。\n现在轮到你们了。',
         tags: ['低电量', '续航', '充电', '稳定'],
         resonance: '你像一台长期处于 20% 电量、但 somehow 还能稳定运行的系统。你不一定满电，但你很会低耗续航。',
         workStyle: '你的开机速度可能慢一点，反应可能要一杯咖啡和一点安静，但真正进入状态后，通常不会轻易掉链。',
@@ -1932,7 +2016,7 @@
         traits: ['边界清晰', '温柔拒绝', '合理协作', '能量保护'],
         declaration: '我可以配合，但也需要边界。',
         publicShare: '测出来我是「边界守门工」。\n我不是不帮忙，\n只是希望每一份努力都有清楚的边界。',
-        groupShare: '我是「边界守门工」。\n可以帮，\n但不能默认变成我的活儿，谢谢理解。',
+        groupShare: '我先认领了「边界守门工」。\n这玩意居然有点像我。\n现在轮到你们了。',
         tags: ['边界', '清晰', '保护', '协作'],
         resonance: '你很知道什么叫帮忙，什么叫被默认负责；什么叫配合，什么叫无限外扩。你的边界感不是冷漠，是自保。',
         workStyle: '你会在很多人还没反应过来之前，先问清楚责任、范围、时间和预期，因为你知道模糊的好人，最容易变成隐形的兜底人。',
@@ -1946,7 +2030,7 @@
         traits: ['表情管理', '外在在线', '后台重启', '临场应对'],
         declaration: '看起来稳定，也是一种能力。',
         publicShare: '测出来我是「表面营业工」。\n看起来很正常，其实后台一直在重启。\n成年人有时候靠的就是一个稳定界面。',
-        groupShare: '我是「表面营业工」。\n外表：可以。\n内心：系统繁忙，请稍后再试。',
+        groupShare: '我先认领了「表面营业工」。\n这玩意居然有点像我。\n现在轮到你们了。',
         tags: ['营业', '重启', '表情管理', '在线'],
         resonance: '你很会维持一个看起来还不错的外在界面。哪怕后台正在重启、加载、报错，表面上也还能继续营业。',
         workStyle: '这不是虚假，而是一种临场能力。你知道很多时候先让场面稳住，比立刻暴露全部真实状态更重要。',
@@ -1960,7 +2044,7 @@
         traits: ['细节控', '反复检查', '质量优先', '认真交付'],
         declaration: '不是我慢，是我想让它更好。',
         publicShare: '测出来我是「细节抛光工」。\n交出去之前，自己先改八遍。\n不是纠结，是我真的看不得它差一点。',
-        groupShare: '我是「细节抛光工」。\n别人说可以了，我说我再看最后一眼。\n然后又过了半小时。',
+        groupShare: '我先认领了「细节抛光工」。\n这玩意居然有点像我。\n现在轮到你们了。',
         tags: ['细节', '质量', '认真', '抛光'],
         resonance: '你属于那种交出去前一定会自己再看八遍的人。不是你闲，是你真的很难对“差不多”完全放心。',
         workStyle: '你会在格式、措辞、逻辑、标点这些别人容易忽略的地方反复打磨，因为你知道，作品最后的体面很多时候就藏在这些小地方。',
@@ -1974,7 +2058,7 @@
         traits: ['救火能力', '快速成型', '临场反应', '抓大放小'],
         declaration: '先别慌，我先搭个框架。',
         publicShare: '测出来我是「方案急救工」。\n专治“明天就要”。\n虽然我不想每天救火，但火来了我确实能先把水管接上。',
-        groupShare: '我是「方案急救工」。\n需求一急，我就自动进入抢救模式。\n人可以慌，文档不能乱。',
+        groupShare: '我先认领了「方案急救工」。\n这玩意居然有点像我。\n现在轮到你们了。',
         tags: ['方案', '急救', '救火', '框架'],
         resonance: '你像那种一听到“明天就要”就会自动进入抢救模式的人。平时也许不想救火，但火真来了，你确实会先接水管。',
         workStyle: '你很擅长在混乱里抓主线，在时间不够的时候先把骨架搭起来，让事情至少先能站住。',
@@ -1988,7 +2072,7 @@
         traits: ['能量管理', '轻度放空', '节奏感', '自我恢复'],
         declaration: '短暂离线，是为了更好上线。',
         publicShare: '测出来我是「快乐摸鱼工」。\n摸的是鱼，护的是能量。\n只要不影响交付，我认为这叫科学续航。',
-        groupShare: '我是「快乐摸鱼工」。\n不是偷懒，是系统降温。\n降完温还能继续干。',
+        groupShare: '我先认领了「快乐摸鱼工」。\n这玩意居然有点像我。\n现在轮到你们了。',
         tags: ['摸鱼', '能量', '放空', '续航'],
         resonance: '你对摸鱼的理解很先进：不是偷懒，而是给系统降温。你知道人不可能一直满载输出，总得给自己一点缓冲。',
         workStyle: '你会在不影响交付的前提下，偷偷把能量拉回来一点。别人也许会觉得你在放空，你心里知道自己是在续命。',
@@ -2433,7 +2517,7 @@
       const q = QUESTIONS[currentQ];
       const progress = ((currentQ + 1) / totalQuestions) * 100;
       document.getElementById('progress-text').textContent = '第 ' + (currentQ + 1) + ' / ' + totalQuestions + ' 题';
-      const progressHintMap = { 4: '你的工感正在加载中……', 9: '已经有点像某种工了。', 14: '马上生成你的劳动者工牌。' };
+      const progressHintMap = { 4: '有点像了，你平时上班确实有这味。', 9: '你这套上班生存法，已经快藏不住了。', 14: '再答几题，你的工牌就能发群了。' };
       document.getElementById('progress-hint').textContent = progressHintMap[currentQ] || '';
       document.getElementById('progress-fill').style.width = progress.toFixed(1) + '%';
       document.getElementById('q-number').textContent = 'Q' + (currentQ + 1);
@@ -2446,12 +2530,13 @@
       q.options.forEach(function(option, optionIndex) {
         const btn = document.createElement('button');
         btn.className = 'choice-btn';
+        btn.setAttribute('aria-label', '选择：' + option.text);
         btn.textContent = option.text;
         btn.onclick = createAnswerHandler(optionIndex, btn);
         options.appendChild(btn);
       });
 
-      document.getElementById('question-footer-tip').textContent = '轻点一下，马上下一题。';
+      document.getElementById('question-footer-tip').textContent = '做完可以直接生成工牌，不用自己想文案。';
       renderProgressDots();
     }
 
@@ -2464,6 +2549,7 @@
         });
         btn.style.opacity = '1';
         btn.classList.add('selected');
+        btn.style.transform = 'scale(0.985)';
         answers[currentQ] = value;
         setTimeout(function () {
           currentQ += 1;
@@ -2528,15 +2614,13 @@
 
       document.getElementById('result-code').textContent = typeId;
       document.getElementById('result-avatar').innerHTML = buildCharacterAvatar(typeId, 132);
-      document.getElementById('poster-mini-emoji').innerHTML = buildCharacterAvatar(typeId, 96);
       document.getElementById('result-type').textContent = result.name;
-      document.getElementById('poster-mini-type').textContent = result.name;
       document.getElementById('result-subtitle').textContent = result.subtitle;
       document.getElementById('result-en-name').textContent = result.enName || typeId;
-      document.getElementById('poster-mini-en').textContent = result.enName || typeId;
-      document.getElementById('poster-mini-line').textContent = status.replace('今日状态：', '');
       document.getElementById('result-desc').textContent = result.description;
       document.getElementById('manifesto-text').textContent = '“' + result.declaration + '”';
+      document.getElementById('manifesto-inline').textContent = '“' + result.declaration + '”';
+      document.getElementById('status-pill').textContent = status;
       document.getElementById('public-copy-preview').textContent = publicCopy;
       document.getElementById('group-copy-preview').textContent = groupCopy;
       document.getElementById('public-copy-length').textContent = publicCopy.length + ' 字';
@@ -2611,7 +2695,7 @@
     function buildGroupShare() {
       if (!currentResult) return '';
       const shareUrl = window.location.href.split('#')[0];
-      return currentResult.groupShare + '\n\n你也测一下，我想看看你是哪种工：\n' + shareUrl;
+      return currentResult.groupShare + '\n\n你也来认领一下，我想看看咱们群里到底有几种工：\n' + shareUrl;
     }
 
     async function copyText(text) {
@@ -2680,7 +2764,7 @@
       const imageUrl = canvas.toDataURL('image/png');
       const opened = window.open('');
       if (opened && opened.document) {
-        opened.document.write('<title>51TI 工牌</title><body style="margin:0;background:#0b0c12;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px;"><img src="' + imageUrl + '" style="max-width:100%;height:auto;border-radius:18px;box-shadow:0 14px 36px rgba(0,0,0,0.28);" alt="51TI 工牌图片" />  <!-- 51TI viral version: 2026-04-29-v2 -->\n</body>');
+        opened.document.write('<title>51TI 工牌</title><body style="margin:0;background:#0b0c12;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px;"><img src="' + imageUrl + '" style="max-width:100%;height:auto;border-radius:18px;box-shadow:0 14px 36px rgba(0,0,0,0.28);" alt="51TI 工牌图片" />  <!-- 51TI viral version: 2026-04-29-v3 -->\n</body>');
         opened.document.close();
         showToast('已打开工牌图片，长按图片即可保存');
       } else {
@@ -2768,6 +2852,6 @@
     document.getElementById('progress-fill').style.width = (100 / totalQuestions).toFixed(1) + '%';
     renderResult(currentTypeKey, currentResult);
   </script>
-  <!-- 51TI viral version: 2026-04-29-v2 -->
+  <!-- 51TI viral version: 2026-04-29-v3 -->
 </body>
 </html>
